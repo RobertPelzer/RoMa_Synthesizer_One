@@ -1,0 +1,18 @@
+# Executables and Objects
+RoMaSynth
+RoMaSynth.exe
+obj/
+obj/*
+
+# Tempfiles
+*.swp
+
+# Music and Sounds
+*.wav
+*.ogg
+
+# Fonts
+*.ttf
+
+# Ignore Mac specific files
+.DS_Store
