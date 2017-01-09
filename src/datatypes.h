@@ -20,19 +20,28 @@
 #define DATATYPES_H
 
 
-typedef struct  {
-    int noteNumber          = -1;    /// @var noteNumber The note number
-    double velocity         = -1;
-    bool hasBeenProcessed   = false;
+struct noteMessage {
+    int noteNumber;    /// @var noteNumber The note number
+    double velocity;
+    bool hasBeenProcessed;
 
-}noteMessage;
+};
 
 
-typedef struct  {
-    int ctlNumber          = -1;    /// @var noteNumber The note number
-    double value         = -1;
-    bool hasBeenProcessed   = false;
+struct ctlMessage{
+    int ctlNumber;    /// @var noteNumber The note number
+    double value;
+    bool hasBeenProcessed;
 
-}ctlMessage;
+};
+
+
+struct midiMessage{
+	int byte1;
+	int byte2;
+	double byte3;
+	bool hasBeenProcessed;
+
+};
 
 #endif // DATATYPES_H

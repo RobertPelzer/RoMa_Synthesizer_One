@@ -29,7 +29,7 @@
 
 using std::cout;
 using std::endl;
-
+int midi_buffer;
 
 
 class SimpleSaw: public JackCpp::AudioIO {
@@ -50,22 +50,51 @@ public:
 
 
         /// process midi messages
-		MidiMan::midiMessage mm = midiMan->get_rtmidi();
+        
+        // In RT Midi werden definierte Note On und Note off Werte ausgeggeben
+        // val1 : 144 -> Note on, 128 -> Note off
+        //val2 : Tonhöhe von 0 bis 127 - > Tonhöhe wird bei Note On und Note Off ausgegeben
+        //val3 : Velocity - bei Note On wird Wert zwischen 0 un 126 ausgegeben, bei Note Off: 127
+        
+        midiMessage Info = midiMan->get_rtmidi();
+       // int val = midiMan->get_rtmidi;
+       int val1 = Info.byte1;
+       int val2 = Info.byte2;
+       double val3 = Info.byte3;
+        int n   = midiMan->getNumFaderMessages();
+        
+        
+        //Kontrollsausgabe
+       // if (val1>=0) {
+         //std::cout << midi_buffer<<endl;
+       // }
 
+          if(val1==144)
+            {
+              //Berechnung der Frequnenz aus der Midi Note
+              double f0 = std::pow(double (2), (val2-double(69))/double(12))*440;
+              
+             //alte und ungenaue Berechnung - nicht mehr benutzen!//////
+             //double f0 = std::pow((double) val2 / 126.0,4.0) * 10000.0; 
+               //std::cout <<std::setprecision (4) <<f0<<std::endl;
+               /// flush all messages
+               
+              midiMan->flushProcessedMessages();
 
-
-        if(mm.byte1 != -1)
-        {
-
-            double f0 = std::pow((double) mm.byte3 / 126.0,4.0) * 1000.0;
-             /// flush all messages
-            midiMan->flushProcessedMessages();
-
-            saw1->frequency(f0);
-
-        }
-
-
+              saw1->frequency(f0);
+              //buffer zum Zwischenspeichern und Ausschalten des Tons
+             midi_buffer=val2;
+             
+             //std::cout << "Val1 "<<val1<<" Val2 "<<val2<<" Val3 "<<val3<<" Midi"<<midi_buffer<<std::endl;
+             
+              //Amplitude aus der Midi-Info uebergeben 
+              saw1->amplitude(val3/126);
+              }
+            
+        //Note off bei Note off Befehl (128) und wenn dies den aktuell bespielen Ton betrifft  
+        if(val1==128 && val2==midi_buffer) {
+          saw1->amplitude(0);
+          }
 
 
         /// LOOP over all output buffers
@@ -84,7 +113,7 @@ public:
     }
 
     /// Constructor
-    SimpleSaw(double f1) :
+    SimpleSaw(double f1, double a) :
         JackCpp::AudioIO("sawtoothwave_example", 0,1){
 
         reserveInPorts(2);
@@ -93,7 +122,7 @@ public:
 
 
 
-        saw1        = new Sawtoothwave(f1,0.5,1,44100,2);
+        saw1        = new Sawtoothwave(f1,a,1,44100,2);
 
         /// allocate a new midi manager
         midiMan = new MidiMan();
@@ -108,10 +137,11 @@ public:
 int main(int argc, char *argv[]){
 
 
-    double f1 = 60.0;
+    double f1 = 400.0;
+	double a = 0;
 
     /// initial ports from constructor created here.
-    SimpleSaw * t = new SimpleSaw(f1);
+    SimpleSaw * t = new SimpleSaw(f1, a);
 
 
 

@@ -7,7 +7,12 @@ MidiMan::MidiMan()
 
 
     // rtmidid intit
-    midiin = new RtMidiIn(RtMidiIn::Api::UNSPECIFIED ,std::string("RtMidi Input Client"),(unsigned int) 100);
+//    midiin = new RtMidiIn(RtMidiIn::Api::UNSPECIFIED ,std::string("RtMidi Input Client"),(unsigned int) 100);
+	RtMidi::Api api = RtMidi::UNSPECIFIED;
+	const std::string clientName = std::string("RtMidi Input Client");
+	unsigned int queueSizeLimit = 100;
+
+	midiin = new RtMidiIn(api,clientName,queueSizeLimit);	
 
     //
     unsigned int nPorts = midiin->getPortCount();
@@ -16,6 +21,7 @@ MidiMan::MidiMan()
     //    // Don't ignore sysex, timing, or active sensing messages.
     midiin->ignoreTypes( false, false, false );
     done = false;
+	isVerbose = false;
 
 
 
@@ -31,10 +37,10 @@ void MidiMan::setVerbose()
 
 }
 
-MidiMan::midiMessage MidiMan::get_rtmidi()
+midiMessage MidiMan::get_rtmidi()
 {
 
-   MidiMan::midiMessage mm;
+   midiMessage mm = {-1,-1,-1,false};
 
     std::vector<unsigned char>  a;
 
