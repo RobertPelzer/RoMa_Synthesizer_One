@@ -25,6 +25,7 @@
 #include <jackaudioio.hpp>
 
 #include "sawtoothwave.h"
+#include "sinusoid.h"
 #include "midiman.h"
 
 using std::cout;
@@ -37,6 +38,7 @@ class SimpleSaw: public JackCpp::AudioIO {
 private:
 
     Sawtoothwave *saw1;
+    Sawtoothwave *saw2;
     MidiMan *midiMan;
 
 public:
@@ -82,6 +84,7 @@ public:
               midiMan->flushProcessedMessages();
 
               saw1->frequency(f0);
+              saw2->frequency(440);
               //buffer zum Zwischenspeichern und Ausschalten des Tons
              midi_buffer=val2;
              
@@ -89,11 +92,13 @@ public:
              
               //Amplitude aus der Midi-Info uebergeben 
               saw1->amplitude(val3/126);
+              saw2->amplitude(val3/126);
               }
             
         //Note off bei Note off Befehl (128) und wenn dies den aktuell bespielen Ton betrifft  
         if(val1==128 && val2==midi_buffer) {
           saw1->amplitude(0);
+          saw2->amplitude(0);
           }
 
 
@@ -104,7 +109,7 @@ public:
             for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
             {
 
-                outBufs[0][frameCNT] = saw1->getNextSample();
+                outBufs[0][frameCNT] = saw1->getNextSample() + saw2->getNextSample();
             }
         }
 
@@ -123,6 +128,7 @@ public:
 
 
         saw1        = new Sawtoothwave(f1,a,1,44100,2);
+        saw2       = new Sawtoothwave(440,a,1,44100,2);
 
         /// allocate a new midi manager
         midiMan = new MidiMan();
