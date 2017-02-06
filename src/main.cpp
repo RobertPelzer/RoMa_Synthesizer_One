@@ -23,25 +23,39 @@
 #include <unistd.h>
 #include <cmath>
 #include <jackaudioio.hpp>
+#include <vector>
+#include <algorithm>
 
 #include "sawtoothwave.h"
 #include "sinusoid.h"
 #include "midiman.h"
 
-using std::cout;
-using std::endl;
+using namespace std;
 int midi_buffer;
 
+    //vector<Sawtoothwave*> Oszi;
+    Sawtoothwave ** oszi=new  Sawtoothwave *[5];
+    vector<int> Noten= {-1, -1, -1, -1, -1} ;
+    //vector<int> freeOszi={9, 8, 7, 6, 5, 4, 3, 2, 1, 0};
+    vector<int> freeOszi={ 4, 3, 2, 1, 0};
+    vector<double> timetracker={ -1, -1, -1, -1, -1};
+    
+    //maximale Anzahl der Oszillator
+    int maxAnzahl_Oszi=Noten.size();
 
+        
 class SimpleSaw: public JackCpp::AudioIO {
 
 private:
+// hier muss eine allgemeine Oszillatorklasse her, indem die verschiedenen Typen aufgerufen werden
+// die zehn Instanzen sind fuer das polyphone Spielen
 
-    Sawtoothwave *saw1;
-    Sawtoothwave *saw2;
-    MidiMan *midiMan;
+
+
+
 
 public:
+    MidiMan *midiMan;
     /// Audio Callback Function:
     /// - the output buffers are filled here
     virtual int audioCallback(jack_nframes_t nframes,
@@ -51,57 +65,7 @@ public:
                               audioBufVector outBufs){
 
 
-        /// process midi messages
         
-        // In RT Midi werden definierte Note On und Note off Werte ausgeggeben
-        // val1 : 144 -> Note on, 128 -> Note off
-        //val2 : Tonhöhe von 0 bis 127 - > Tonhöhe wird bei Note On und Note Off ausgegeben
-        //val3 : Velocity - bei Note On wird Wert zwischen 0 un 126 ausgegeben, bei Note Off: 127
-        
-        midiMessage Info = midiMan->get_rtmidi();
-       // int val = midiMan->get_rtmidi;
-       int val1 = Info.byte1;
-       int val2 = Info.byte2;
-       double val3 = Info.byte3;
-        int n   = midiMan->getNumFaderMessages();
-        
-        
-        //Kontrollsausgabe
-       // if (val1>=0) {
-         //std::cout << midi_buffer<<endl;
-       // }
-
-          if(val1==144)
-            {
-              //Berechnung der Frequnenz aus der Midi Note
-              double f0 = std::pow(double (2), (val2-double(69))/double(12))*440;
-              
-             //alte und ungenaue Berechnung - nicht mehr benutzen!//////
-             //double f0 = std::pow((double) val2 / 126.0,4.0) * 10000.0; 
-               //std::cout <<std::setprecision (4) <<f0<<std::endl;
-               /// flush all messages
-               
-              midiMan->flushProcessedMessages();
-
-              saw1->frequency(f0);
-              saw2->frequency(440);
-              //buffer zum Zwischenspeichern und Ausschalten des Tons
-             midi_buffer=val2;
-             
-             //std::cout << "Val1 "<<val1<<" Val2 "<<val2<<" Val3 "<<val3<<" Midi"<<midi_buffer<<std::endl;
-             
-              //Amplitude aus der Midi-Info uebergeben 
-              saw1->amplitude(val3/126);
-              saw2->amplitude(val3/126);
-              }
-            
-        //Note off bei Note off Befehl (128) und wenn dies den aktuell bespielen Ton betrifft  
-        if(val1==128 && val2==midi_buffer) {
-          saw1->amplitude(0);
-          saw2->amplitude(0);
-          }
-
-
         /// LOOP over all output buffers
         for(unsigned int i = 0; i < 1; i++)
         {
@@ -109,11 +73,12 @@ public:
             for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
             {
 
-                outBufs[0][frameCNT] = saw1->getNextSample() + saw2->getNextSample();
+                outBufs[0][frameCNT] = (oszi[0]->getNextSample() +oszi[1]->getNextSample()+oszi[2]->getNextSample() +oszi[3]->getNextSample() +oszi[4]->getNextSample() )*0.3; /*+oszi[5]->getNextSample() +oszi[6]->getNextSample() +oszi[7]->getNextSample() +oszi[8]->getNextSample() +oszi[9]->getNextSample())*0.3 ;*/
             }
         }
 
         ///return 0 on success
+
         return 0;
     }
 
@@ -123,15 +88,19 @@ public:
 
         reserveInPorts(2);
         reserveOutPorts(2);
+        
+        oszi[0]        = new Sawtoothwave(f1,a,1,44100,2);
+        oszi[1]        = new Sawtoothwave(f1,a,1,44100,2);
+        oszi[2]        = new Sawtoothwave(f1,a,1,44100,2);
+        oszi[3]        = new Sawtoothwave(f1,a,1,44100,2);
+        oszi[4]        = new Sawtoothwave(f1,a,1,44100,2); // bei mehr als 5 Oszis entstehen Artefakte
+        /*oszi[5]        = new Sawtoothwave(f1,a,1,44100,2);
+        oszi[6]        = new Sawtoothwave(f1,a,1,44100,2);
+        oszi[7]        = new Sawtoothwave(f1,a,1,44100,2);
+        oszi[8]        = new Sawtoothwave(f1,a,1,44100,2);
+        oszi[9]        = new Sawtoothwave(f1,a,1,44100,2);*/
+        
 
-
-
-
-        saw1        = new Sawtoothwave(f1,a,1,44100,2);
-        saw2       = new Sawtoothwave(440,a,1,44100,2);
-
-        /// allocate a new midi manager
-        midiMan = new MidiMan();
 
     }
 
@@ -144,12 +113,16 @@ int main(int argc, char *argv[]){
 
 
     double f1 = 400.0;
-	double a = 0;
-
+	  double a = 0;
+	  double t_tracking=0; //Zeit Counter
+	  int counter=0; //counter fue die Anzahl benutzer Oszillatoren
     /// initial ports from constructor created here.
+    
+    
     SimpleSaw * t = new SimpleSaw(f1, a);
 
-
+     /// allocate a new midi manager
+    MidiMan *midiMan = new MidiMan();
 
     /// activate the client
     t->start();
@@ -163,8 +136,119 @@ int main(int argc, char *argv[]){
     for(unsigned int i = 0; i < t->outPorts(); i++)
         cout << "\t" << t->getOutputPortName(i) << endl;
 
+    /// flush all messages
+    midiMan->flushProcessedMessages();
+    
+    
     /// run for EVER
-    sleep(-1);
+
+    
+    while(1) {
+
+      /// process midi messages
+        
+        // In RT Midi werden definierte Note On und Note off Werte ausgeggeben
+        // val1 : 144 -> Note on, 128 -> Note off
+        //val2 : Tonhöhe von 0 bis 127 - > Tonhöhe wird bei Note On und Note Off ausgegeben
+        //val3 : Velocity - bei Note On wird Wert zwischen 0 un 126 ausgegeben, bei Note Off: 127
+        
+        midiMessage Info = midiMan->get_rtmidi();
+       // int val = midiMan->get_rtmidi;
+       int val1 = Info.byte1;
+       int val2 = Info.byte2;
+       double val3 = Info.byte3;
+       double delta_time=Info.stamp; // get time information
+      
+       t_tracking=t_tracking+delta_time; //akkumuliere Zeit
+       
+       //int n   = midiMan->getNumFaderMessages();
+       int oszi_nummer=0;
+       int position=0;
+       
+        
+       // Prezedur bei Note-On
+        if(val1==144)
+            {
+             //wenn alle Oszillatoren benutzte werden, kill oldest
+            if(counter==5){
+              
+              int min=timetracker[0];
+              int index=0;
+              //finde den aeltesten Wert == kleinste Zeit
+              for(int i=1; i<timetracker.size(); i++) {
+              
+                if(timetracker[i]<min) {
+                 min=timetracker[i];
+                 index=i;
+                 }
+              }
+                   //kill oldest Oszi und 
+                   oszi[index]->amplitude(0);
+                  //value im Notenarray loeschen
+                  Noten[index]= -1;
+                  //freigewordenen Oszi zurueckgeben
+                  freeOszi.push_back(index);
+                  
+                    //Zeitinstanz löschen
+                   timetracker[index]= -1;
+                   
+                   counter--;
+               }
+              //Berechnung der Frequnenz aus der Midi Note
+              double f0 = std::pow(double (2), (val2-double(69))/double(12))*440;
+              
+              //freien Oszi finden
+              oszi_nummer= freeOszi.back();
+              //std::cout << oszi_nummer<<" benutzt"<<endl;
+              
+              //verwendeten Oszi loeschen
+              freeOszi.pop_back();
+              //std::cout << freeOszi.back()<<" ware der nachste"<<endl;
+              oszi[oszi_nummer]->frequency(f0);
+              
+             
+              //Amplitude aus der Midi-Info uebergeben 
+              oszi[oszi_nummer]->amplitude(val3/126);
+              
+             //Notenwert zwischenspeichern
+              Noten[oszi_nummer]=val2;
+              
+              //Zeit zwischenspeichern
+              timetracker[oszi_nummer]=t_tracking;
+              
+              counter++;
+           }
+            
+        //Note off bei Note off Befehl (128)
+        if(val1==128 ) {
+
+           //finde Oszillator
+           //std::cout << val2<<" Ton aus"<<endl;
+            position = find(Noten.begin(), Noten.end(), val2) - Noten.begin();
+            
+            //Sicherheitsabfrage - wenn bei find nichts gefunden wird, wird hinter das letzte gezeigt und des kommt zu stackdump
+            if(position<maxAnzahl_Oszi) {
+              //std::cout<<" Das ist Oszi" << position<<endl;
+              oszi[position]->amplitude(0);
+              
+              //value im Notenarray loeschen
+              Noten[position]= -1;
+              //freigewordenen Oszi zurueckgeben
+              freeOszi.push_back(position);
+              
+                //Zeitinstanz löschen
+               timetracker[position]= -1;
+               
+               counter--;
+              }   
+            }
+            
+         //Kontrollsausgabe
+        if (val1>=0) {
+         std::cout << "Frei: "<<freeOszi.size()<<" Zeit: "<<t_tracking<<"Counter: "<<counter<<endl;
+       }
+
+    }
 
     /// never reached:!=
     t->disconnectInPort(0);	// Disconnecting ports.
@@ -172,5 +256,7 @@ int main(int argc, char *argv[]){
     t->close();	// stop client.
     delete t;	// always clean up after yourself.
     exit(0);
+    
+    cout<<"ende"<<endl;
 }
 

@@ -28,10 +28,12 @@
 #include <vector>
 #include <iostream>
 #include <jack/midiport.h>
-//#include <rtmidi/RtMidi.h>
-#include <RtMidi.h>
+#include <rtmidi/RtMidi.h>
+//#include <RtMidi.h>
 
 #include "datatypes.h"
+
+#include <unistd.h>
 
 
 
@@ -90,6 +92,7 @@ private:
     bool isVerbose;
 
     std::vector<int>     val;
+
 
     noteMessage *tmpNote;
 
