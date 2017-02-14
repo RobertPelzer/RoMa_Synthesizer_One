@@ -28,8 +28,7 @@ Sawtoothwave::Sawtoothwave(double f, double a, double p,  int fS, int N)
 	harm	= N;
 }
 
-double Sawtoothwave::getNextSample()
-{
+double Sawtoothwave::getNextSample() {
 
     /// This method gets the next sample of the Sawtoothwave.
     /// The amplitude is applied and the angle of the
@@ -56,18 +55,15 @@ double Sawtoothwave::getNextSample()
 }
 
 
-double Sawtoothwave::frequency()
-{
+double Sawtoothwave::frequency() {
     return freq;
 }
 
-double Sawtoothwave::amplitude()
-{
+double Sawtoothwave::amplitude() {
     return amp;
 }
 
-double Sawtoothwave::phase()
-{
+double Sawtoothwave::phase() {
     return phi;
 }
 
@@ -75,18 +71,15 @@ int Sawtoothwave::harmonics() {
 	return harm;
 }
 
-void Sawtoothwave::frequency(double f)
-{
+void Sawtoothwave::frequency(double f) {
     freq = f;
 }
 
-void Sawtoothwave::amplitude(double a)
-{
+void Sawtoothwave::amplitude(double a) {
     amp = a;
 }
 
-void Sawtoothwave::phase(double p)
-{
+void Sawtoothwave::phase(double p) {
     phi = p;
 }
 void Sawtoothwave::harmonics(int N) {

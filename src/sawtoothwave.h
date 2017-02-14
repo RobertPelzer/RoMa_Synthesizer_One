@@ -7,6 +7,21 @@
 #include<cmath>
 
 class Sawtoothwave {
+private:
+
+    // PURE SAWTOOTH STATE
+    double freq;
+    double amp;
+    double phi;
+	int harm;		// number of harmonics
+
+    // SYSTEM RELATED
+    int nframes;
+    int fs;
+
+    double *t;
+
+
 public:
     Sawtoothwave(double f, double a, double p, int fS, int harm);
     void proceed(double ms);
@@ -22,25 +37,7 @@ public:
     void phase(double p);
 	void harmonics(int N);
 
-
     double getNextSample();
-
-
-
-private:
-
-    // PURE SAWTOOTH STATE
-    double freq;
-    double amp;
-    double phi;
-	int harm;		// number of harmonics
-
-    // SYSTEM RELATED
-    int nframes;
-    int fs;
-
-    double *t;
-
 
 };
 

@@ -17,12 +17,13 @@ OscMan::OscMan(int p)
 	lo_server_thread st = lo_server_thread_new("50000", error);
 
     /// Add the example handler to the server!
-    lo_server_thread_add_method(st, NULL, NULL, generic_handler, NULL);
+    //lo_server_thread_add_method(st, NULL, NULL, generic_handler, NULL);
+	lo_server_thread_add_method(st, NULL, NULL, double_callback, this);
 
     
 	lo_server_thread_start(st);
 
-    std::cout << "Started Server!" << std::endl;
+    std::cout << "Started OSC Server!" << std::endl;
 }
 
 
@@ -38,26 +39,6 @@ void error(int num, const char *msg, const char *path)
 /// \param void
 /// \return void
 /////////////////////////////////////////////////////////////////////////
-int OscMan::generic_handler(const char *path, const char *types, lo_arg ** argv,
-		int argc, void *data, void *user_data)
-{
-	int i;
-	
-	printf("path: <%s>\n", path);
-	for (i = 0; i < argc; i++) {
-		printf("arg %d '%c' ", i, types[i]);
-		lo_arg_pp((lo_type)types[i], argv[i]);
-		printf("\n");
-	}
-	printf("\n");
-	fflush(stdout);
-	
-	return 1;
-}
-
-
-
-
 int OscMan::double_callback(const char *path, const char *types, lo_arg ** argv,
                             int argc, void *data, void *user_data )
 {
@@ -73,39 +54,41 @@ int OscMan::double_callback(const char *path, const char *types, lo_arg ** argv,
     {
 
 
-        std::cout << "GOT FLOAT" << std::endl;
+        //std::cout << "GOT FLOAT" << std::endl;
 
         /// assemble the struct
         dMess tmpD;
-        tmpD.type =types;
-        tmpD.path =path;
-        tmpD.val = argv[0]->f;
+        
+		tmpD.type = types;
+        
+		tmpD.path = path;
+        
+		tmpD.val = argv[0]->f;
 
-
-        statCast->dMessages.push_back(tmpD);
+		//OscMan::setdMessage(types, path, argv[0]->f);
+		statCast->dMessages.push_back(tmpD);
     }
     else if (std::string(types)=="i")
     {
 
-        std::cout << "GOT INT" << std::endl;
+        //std::cout << "GOT INT" << std::endl;
 
 
         /// assemble the struct
         iMess tmp;
-        tmp.type =types;
-        tmp.path =path;
+        tmp.type = types;
+        tmp.path = path;
         tmp.val = argv[0]->i;
 
 
-        statCast->iMessages.push_back(tmp);
+        //statCast->iMessages.push_back(tmp);
     }
     /// store all information
-    //statCast->paths.push_back(path);
-    //statCast->types.push_back(types);
-    //statCast->messages.push_back(argv[0]->f);
+    statCast->paths.push_back(path);
+    statCast->types.push_back(types);
+	statCast->messages.push_back(argv[0]->f);
 
 }
-
 
 ///////////////////////////////////////////////////////////////////////
 /// \brief Example of use: Prints all collected messages and clears them.
@@ -115,7 +98,7 @@ int OscMan::double_callback(const char *path, const char *types, lo_arg ** argv,
 void OscMan::printAllMessages()
 {
 
-    std::cout <<  "All Messages:   " << std::endl;
+    std::cout <<  "All You are..:   " << std::endl;
 
     int i = 0;
     for(std::vector<dMess>::iterator it = dMessages.begin(); it != dMessages.end(); ++it)
@@ -172,7 +155,7 @@ void OscMan::printAllMessages()
 std::string OscMan::getLastPath()
 {
 
-    if(messages.size()>0)
+    if(paths.size()>0)
     {
         std::string s = paths[0];
 
@@ -190,8 +173,7 @@ std::string OscMan::getLastPath()
 /// \param void
 /// \return void
 ///////////////////////////////////////////////////////////////////////
-std::string OscMan::getLastType()
-{
+std::string OscMan::getLastType() {
 
     if(types.size()>0)
     {
@@ -203,8 +185,8 @@ std::string OscMan::getLastType()
         return s;
     }
     else
-        return "No messages received!";}
-
+        return "No messages received!";
+}
 
 
 ///////////////////////////////////////////////////////////////////////
@@ -212,15 +194,19 @@ std::string OscMan::getLastType()
 /// \param void
 /// \return void
 ///////////////////////////////////////////////////////////////////////
-double OscMan::getLastMessage()
-{
+double OscMan::getLastMessage() {
 
-    double d = messages[0];
+    if(messages.size()>0)
+    {
 
-    messages.clear();
-    paths.clear();
+		double d = messages[0];
+        messages.clear();
 
-    return d;
+        return d;
+    }
+    else
+        return 0.0;
+
 }
 
 

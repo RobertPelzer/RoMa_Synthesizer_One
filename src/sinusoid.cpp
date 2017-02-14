@@ -1,34 +1,13 @@
-/**
- * \class Sinusoid
- *
- *
- * \brief Simple sinusoid handler class.
- *
- *
- *
- * \author Henrik von Coler
- *
- * \version $Revision: 0.5 $
- *
- * \date $Date: 2016/08/01 14:16:20 $
- *
- * Contact: von_coler@intelligent-noise-solutions.de
- *
- *
- */
-
 #include "sinusoid.h"
 
-Sinusoid::Sinusoid(double f, double a, double p,  int fS)
-{
+Sinusoid::Sinusoid(double f, double a, double p,  int fS) {
     freq    = f;
     amp     = a;
     phi     = p;
     fs      = fS;
 }
 
-double Sinusoid::getNextSample()
-{
+double Sinusoid::getNextSample() {
 
     /// This method gets the next sample of the sinusoid.
     /// The amplitude is applied and the angle of the
@@ -52,32 +31,26 @@ double Sinusoid::getNextSample()
 }
 
 
-double Sinusoid::frequency()
-{
+double Sinusoid::frequency() {
     return freq;
 }
 
-double Sinusoid::amplitude()
-{
+double Sinusoid::amplitude() {
     return amp;
 }
 
-double Sinusoid::phase()
-{
+double Sinusoid::phase() {
     return phi;
 }
 
-void Sinusoid::frequency(double f)
-{
+void Sinusoid::frequency(double f) {
     freq = f;
 }
 
-void Sinusoid::amplitude(double a)
-{
+void Sinusoid::amplitude(double a) {
     amp = a;
 }
 
-void Sinusoid::phase(double p)
-{
+void Sinusoid::phase(double p) {
     phi = p;
 }

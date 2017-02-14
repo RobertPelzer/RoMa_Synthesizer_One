@@ -40,6 +40,7 @@ struct midiMessage{
 	int byte1;
 	int byte2;
 	double byte3;
+	double stamp;
 	bool hasBeenProcessed;
 
 };

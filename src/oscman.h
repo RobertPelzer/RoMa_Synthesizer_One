@@ -71,9 +71,6 @@ private:
     static int double_callback(const char *path, const char *types, lo_arg ** argv,
                                int argc, void *data, void *user_data);
 
-    static int generic_handler(const char *path, const char *types, lo_arg ** argv,
-                               int argc, void *data, void *user_data);
-
 public:
 
     OscMan(int p);
@@ -91,7 +88,6 @@ public:
     int getNumberOfMessages();
 
     int getNumberOfdMess();
-
 
 };
 

@@ -1,34 +1,13 @@
-/**
- * \class Sinusoid
- *
- *
- * \brief Simple sinusoid handler class.
- *
- *
- *
- * \author Henrik von Coler
- *
- * \version $Revision: 0.5 $
- *
- * \date $Date: 2016/08/01 14:16:20 $
- *
- * Contact: von_coler@intelligent-noise-solutions.de
- *
- *
- */
-
 #include "squarewave.h"
 
-Squarewave::Squarewave(double f, double a, double p,  int fS)
-{
+Squarewave::Squarewave(double f, double a, double p,  int fS) {
     freq    = f;
     amp     = a;
     phi     = p;
     fs      = fS;
 }
 
-double Squarewave::getNextSample()
-{
+double Squarewave::getNextSample() {
 
     /// This method gets the next sample of the squarewave.
     /// The amplitude is applied and the angle of the
@@ -56,32 +35,26 @@ double Squarewave::getNextSample()
 }
 
 
-double Squarewave::frequency()
-{
+double Squarewave::frequency() {
     return freq;
 }
 
-double Squarewave::amplitude()
-{
+double Squarewave::amplitude() {
     return amp;
 }
 
-double Squarewave::phase()
-{
+double Squarewave::phase() {
     return phi;
 }
 
-void Squarewave::frequency(double f)
-{
+void Squarewave::frequency(double f) {
     freq = f;
 }
 
-void Squarewave::amplitude(double a)
-{
+void Squarewave::amplitude(double a) {
     amp = a;
 }
 
-void Squarewave::phase(double p)
-{
+void Squarewave::phase(double p) {
     phi = p;
 }
