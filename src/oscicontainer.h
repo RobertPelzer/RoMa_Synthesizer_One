@@ -17,6 +17,11 @@ private:
 	Squarewave *osciSquare;
 	Noise *osciNoise;
 
+	double osciSineAmpl;
+	double osciSawAmpl;
+	double osciSquareAmpl;
+	double osciNoiseAmpl;
+
 public:
 	Oscicontainer();
 
@@ -24,6 +29,10 @@ public:
 	// Setters
 	void amplitude(double a);
 	void frequency(double f);
+	void setSawAmpl(double a);
+	void setSineAmpl(double a);
+	void setSquareAmpl(double a);
+	void setNoiseAmpl(double a);
 
 	// Getters
     double getNextSample();

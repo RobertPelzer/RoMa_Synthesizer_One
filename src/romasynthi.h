@@ -27,6 +27,9 @@ private:
 	vector<int> freeOsci;
 	vector<double> timetracker;
 
+	double valOld;
+	string typeOld;
+	string pathOld;
 
 public:
     //MidiMan *midiMan;
@@ -66,6 +69,7 @@ public:
 
 
 	void midiHandler();
+	void oscHandler();
 };
 
 #endif // ROMASYNTHI_H

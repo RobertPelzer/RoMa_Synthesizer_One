@@ -30,6 +30,9 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
     //maximale Anzahl der Oszillator
 	maxAnzahl_Osci = Noten.size();
 
+	valOld = 0.0;
+	typeOld = "";
+	pathOld = "";
 }
 
 
@@ -135,4 +138,51 @@ void RoMaSynthi::midiHandler() {
         if (val1>=0) {
          std::cout << "Frei: " << freeOsci.size() << " Zeit: " << t_tracking << "Counter: " << counter << endl;
        }
+}
+
+
+void RoMaSynthi::oscHandler() {
+
+	double val = osc->getLastMessage();
+	string type = osc->getLastType();
+	string path = osc->getLastPath();
+	if (val != 0) {
+		typeOld = type;
+		pathOld = path;
+		valOld = val;
+		
+		if (path.compare("/SineAmpl") == 0) {
+			osci[0]->setSineAmpl(val);
+			osci[1]->setSineAmpl(val);
+			osci[2]->setSineAmpl(val);
+			osci[3]->setSineAmpl(val);
+			osci[4]->setSineAmpl(val);
+			//cout << "OSC01 Ampl: " << val	<< endl;
+		}
+		if (path.compare("/SawAmpl") == 0) {
+			//cout << "OSC02 Ampl: " << val	<< endl;
+			osci[0]->setSawAmpl(val);
+			osci[1]->setSawAmpl(val);
+			osci[2]->setSawAmpl(val);
+			osci[3]->setSawAmpl(val);
+			osci[4]->setSawAmpl(val);
+		}
+		if (path.compare("/SquareAmpl") == 0) {
+			//cout << "Harm: " << val << endl;
+			osci[0]->setSquareAmpl(val);
+			osci[1]->setSquareAmpl(val);
+			osci[2]->setSquareAmpl(val);
+			osci[3]->setSquareAmpl(val);
+			osci[4]->setSquareAmpl(val);
+		}
+		if (path.compare("/NoiseAmpl") == 0) {
+			//cout << "NoiseLevel: " << val << endl;
+			osci[0]->setNoiseAmpl(val);
+			osci[1]->setNoiseAmpl(val);
+			osci[2]->setNoiseAmpl(val);
+			osci[3]->setNoiseAmpl(val);
+			osci[4]->setNoiseAmpl(val);
+		}
+	}
+	usleep(500);
 }
