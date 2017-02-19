@@ -1,11 +1,9 @@
 #ifndef NOISE_H
 #define NOISE_H
 
-#define _USE_MATH_DEFINES
-
-#include<vector>
-#include<cmath>
 #include <stdlib.h>     /* srand, rand */
+
+#define _USE_MATH_DEFINES
 
 class Noise {
 public:
@@ -23,7 +21,6 @@ public:
 
 private:
 
-    // PURE SAWTOOTH STATE
     double amp;
 
     // SYSTEM RELATED

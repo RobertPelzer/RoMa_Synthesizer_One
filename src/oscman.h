@@ -1,66 +1,32 @@
-/**
- * \class OscMan
- *
- *
- * \brief Class which parses the incoming OSC messages.
- *
- * This class parses the incoming OSC messages by
- *
- *
- *
- * \author Henrik von Coler
- *
- * \version $Revision: 0.5 $
- *
- * \date $Date: 2016/08/18$
- *
- * Contact: von_coler@tu-berlin.de
- *
- *
- */
-
 #ifndef OSCMAN_H
 #define OSCMAN_H
 
- 
-// works with 'self built'
-#include "lo/lo.h"
-//#include "lo/lo_cpp.h"
-
-#include<iostream>
-#include<vector>
-#include<string>
-
-#include <stdio.h>                                                                                            
-#include <stdlib.h>                                                                                           
-#include <unistd.h>
+#include <lo/lo.h>
+#include <iostream>
+#include <vector>
 
 struct dMess{
  std::string type;
  std::string path;
  double val;
-} ;
+};
 
 struct iMess{
  std::string type;
  std::string path;
  int val;
-} ;
+};
 
-class OscMan
-{
-
+class OscMan {
 private:
 
-
-
-    /// the port to be opened
+    // the port to be opened
     int port;
 
     lo_server_thread st;
 
     // for each OSC message we store its path, value and type
-    /// messages are only integers, at this point:
+    // messages are only integers, at this point:
     std::vector<double> messages;
     std::vector<std::string> paths;
     std::vector<std::string> types;
@@ -74,19 +40,11 @@ private:
 public:
 
     OscMan(int p);
-
-    void printAllMessages();
-
     double getLastMessage();
-
     dMess getLast_dMess();
-
     std::string getLastPath();
-
     std::string getLastType();
-
     int getNumberOfMessages();
-
     int getNumberOfdMess();
 
 };

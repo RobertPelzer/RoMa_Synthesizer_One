@@ -1,21 +1,3 @@
-/**
- * \struct noteMessage
- *
- *
- * \brief Structure for holding Note (on,off) messages.
- *
- *
- * \author Henrik von Coler
- *
- * \version $Revision: 0.5 $
- *
- * \date $Date: 2005/04/14 14:16:20 $
- *
- * Contact: von_coler@intelligent-noise-solutions.de
- *
- *
- */
-
 #ifndef DATATYPES_H
 #define DATATYPES_H
 

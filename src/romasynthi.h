@@ -1,9 +1,9 @@
 #ifndef ROMASYNTHI_H
 #define ROMASYNTHI_H
 
-#include <algorithm>
 #include <jackaudioio.hpp>
-#include <vector>
+#include <algorithm>
+#include <unistd.h>
 
 #include "oscicontainer.h"
 #include "oscman.h"

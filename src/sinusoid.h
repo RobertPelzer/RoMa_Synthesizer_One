@@ -1,13 +1,11 @@
 #ifndef SINUSOID_H
 #define SINUSOID_H
 
+#include <math.h>
+
 #define _USE_MATH_DEFINES
 
-#include<vector>
-#include<math.h>
-
-class Sinusoid
-{
+class Sinusoid {
 public:
     Sinusoid(double f, double a, double p, int fS);
     void proceed(double ms);

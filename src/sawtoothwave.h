@@ -1,10 +1,9 @@
 #ifndef SAWTOOTHWAVE_H
 #define SAWTOOTHWAVE_H
 
-#define _USE_MATH_DEFINES
+#include <cmath>
 
-#include<vector>
-#include<cmath>
+#define _USE_MATH_DEFINES
 
 class Sawtoothwave {
 private:

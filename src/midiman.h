@@ -1,47 +1,11 @@
-/**
- * \class MidiMan
- *
- *
- * \brief Class which parses and stores the incoming MIDI messages.
- *
- *
- * \author Henrik von Coler
- *
- * \version $Revision: 0.5 $
- *
- * \date $Date: 2005/04/14 14:16:20 $
- *
- * Contact: von_coler@tu-berlin.de
- *
- *
- */
-
 #ifndef MIDIMAN_H
 #define MIDIMAN_H
 
-#include <iostream>
-#include <cstdlib>
-#include <signal.h>
-
-#include <stdlib.h>
-#include <string>
-#include <vector>
-#include <iostream>
-#include <jack/midiport.h>
-#include <rtmidi/RtMidi.h>
-//#include <RtMidi.h>
-
 #include "datatypes.h"
-
+#include <rtmidi/RtMidi.h>
 #include <unistd.h>
 
-
-
-class MidiMan
-{
-
-
-
+class MidiMan {
 public:
 
 
@@ -80,12 +44,7 @@ public:
 
     void setVerbose();
 
-//	void handler();
-
-
-
 private:
-
     // rtmidi
     static bool done;
     RtMidiIn *midiin;
@@ -100,14 +59,6 @@ private:
 
     void mycallback( double deltatime, std::vector< unsigned char > *message, void *userData );
 
-
 };
 
-
-
-
-
-
-
 #endif // MIDIMAN_H
-

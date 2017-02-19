@@ -1,26 +1,6 @@
-/**
- * \class Sawtoothwave
- *
- *
- * \brief Simple Sawtoothwave handler class.
- *
- *
- *
- * \author Henrik von Coler
- *
- * \version $Revision: 0.5 $
- *
- * \date $Date: 2016/08/01 14:16:20 $
- *
- * Contact: von_coler@intelligent-noise-solutions.de
- *
- *
- */
-
 #include "sawtoothwave.h"
 
-Sawtoothwave::Sawtoothwave(double f, double a, double p,  int fS, int N)
-{
+Sawtoothwave::Sawtoothwave(double f, double a, double p,  int fS, int N) {
     freq    = f;
     amp     = a;
     phi     = p;
