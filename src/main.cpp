@@ -62,6 +62,7 @@ int main(int argc, char *argv[]) {
 
 	while(!done) {
 		synth->midiHandler();
+		synth->oscHandler();
 		usleep(5);
     }
 
