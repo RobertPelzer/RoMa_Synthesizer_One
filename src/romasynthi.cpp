@@ -136,7 +136,7 @@ void RoMaSynthi::midiHandler() {
             
          //Kontrollsausgabe
         if (val1>=0) {
-         std::cout << "Frei: " << freeOsci.size() << " Zeit: " << t_tracking << "Counter: " << counter << endl;
+         //std::cout << "Frei: " << freeOsci.size() << " Zeit: " << t_tracking << "Counter: " << counter << endl;
        }
 }
 

@@ -23,7 +23,7 @@ MidiMan::MidiMan() {
     //    // Don't ignore sysex, timing, or active sensing messages.
     midiin->ignoreTypes( false, false, false );
     done = false;
-	isVerbose = true;
+	isVerbose = false;
 
 	cout << "Started Midi Server!" << endl;
 
@@ -60,7 +60,7 @@ midiMessage MidiMan::get_rtmidi() {
 
             buffer.insert(buffer.begin(), {a[0], a[1], a[2]});
             Zeit.insert(Zeit.begin(), stamp);
-            std::cout<<std::endl;
+            //std::cout<<std::endl;
             //std::cout<<Zeit.size()<<std::endl;
         }
 
@@ -77,7 +77,7 @@ midiMessage MidiMan::get_rtmidi() {
 		buffer.pop_back();
 		mm.stamp=Zeit.back();
 		Zeit.pop_back();
-		std::cout<<mm.byte1<< mm.byte2<<mm.byte3<<"stamp :"<< mm.stamp<<std::endl;
+		//std::cout<<mm.byte1<< mm.byte2<<mm.byte3<<"stamp :"<< mm.stamp<<std::endl;
     }
     
     return mm;

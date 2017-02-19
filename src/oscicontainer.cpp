@@ -1,9 +1,9 @@
 #include "oscicontainer.h"
 
 Oscicontainer::Oscicontainer() {
-    osciSine = new Sinusoid(440,0.0,0,44100);
-	osciSaw = new Sawtoothwave(440,0.0,0,44100,4);
-	osciSquare = new Squarewave(440,0.0,0,44100);
+    osciSine = new Sinusoid(440,0.0,0,48000);
+	osciSaw = new Sawtoothwave(440,0.0,0,48000,4);
+	osciSquare = new Squarewave(440,0.0,0,48000);
 	osciNoise = new Noise(0.0);
 
 	osciSineAmpl = 0.0;
