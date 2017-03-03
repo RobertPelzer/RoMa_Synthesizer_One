@@ -151,14 +151,7 @@ void RoMaSynthi::oscHandler() {
 		pathOld = path;
 		valOld = val;
 		
-		if (path.compare("/SineAmpl") == 0) {
-			osci[0]->setSineAmpl(val);
-			osci[1]->setSineAmpl(val);
-			osci[2]->setSineAmpl(val);
-			osci[3]->setSineAmpl(val);
-			osci[4]->setSineAmpl(val);
-			//cout << "OSC01 Ampl: " << val	<< endl;
-		}
+
 		if (path.compare("/SawAmpl") == 0) {
 			//cout << "OSC02 Ampl: " << val	<< endl;
 			osci[0]->setSawAmpl(val);
