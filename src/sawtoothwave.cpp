@@ -4,10 +4,8 @@
 
 
 #include "sawtoothwave.h"
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <cmath>
+
+
 using namespace std;
 Sawtoothwave::Sawtoothwave(double f, double a, double p,  int fS)
 {

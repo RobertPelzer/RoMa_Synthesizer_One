@@ -4,10 +4,11 @@
 #include "sawtoothwave.h"
 #include "squarewave.h"
 #include "noise.h"
+#include "sinusoid.h"
 
 class Oscicontainer {
 private:
-
+  Sinusoid *osciSine;
 	Sawtoothwave *osciSaw;
 	Squarewave *osciSquare;
 	Noise *osciNoise;
@@ -15,6 +16,7 @@ private:
 	double osciSawAmpl;
 	double osciSquareAmpl;
 	double osciNoiseAmpl;
+	double osciSineAmpl;
 
 public:
 	Oscicontainer();
@@ -26,6 +28,7 @@ public:
 	void setSawAmpl(double a);
 	void setSquareAmpl(double a);
 	void setNoiseAmpl(double a);
+	void setSineAmpl(double a);
 
 	// Getters
     double getNextSample();
