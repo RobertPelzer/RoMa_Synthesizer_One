@@ -49,7 +49,7 @@ public:
 	// Setters
 	
 
-
+ double lfo_setter();
 	void midiHandler();
 	void oscHandler();
 };

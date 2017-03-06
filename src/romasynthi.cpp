@@ -15,7 +15,8 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	osc = new OscMan(50000);
 	midi = new MidiMan();
 	filter= new Biquad();
-	filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
+	lfo=new Sinusoid(3,1.0,0,48000);
+	//filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
 
 	midi->flushProcessedMessages();
 
@@ -53,7 +54,8 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 
             for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
             {
-
+            
+                filter->setFc(lfo_setter());
                 outBufs[0][frameCNT] = (osci[0]->getNextSample() +
 										osci[1]->getNextSample() + 
 										osci[2]->getNextSample() +
@@ -220,3 +222,12 @@ void RoMaSynthi::oscHandler() {
 	}
 	usleep(500);
 }
+
+double RoMaSynthi::lfo_setter() {
+
+  double lfo_sinus=(lfo->getNextSample()+1.0)/2; //make value positiv
+  if(lfo_sinus<0) lfo_sinus=0;//no negative values - dirty workaround in case amplitude is higher than 1
+  
+  return lfo_sinus*10000;
+  }
+  
