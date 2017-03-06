@@ -6,10 +6,10 @@ Oscicontainer::Oscicontainer() {
 	osciSquare = new Squarewave(440,0.0,0,48000);
 	osciNoise = new Noise(0.0);
 
- osciSineAmpl = 0.0;
-	osciSawAmpl = 0.0;
-	osciSquareAmpl = 0.0;
-	osciNoiseAmpl = 0.0;
+ osciSineAmpl = 1.0;
+	osciSawAmpl = 1.0;
+	osciSquareAmpl = 1.0;
+	osciNoiseAmpl = 0.3;
 }
 
 double Oscicontainer::getNextSample() {

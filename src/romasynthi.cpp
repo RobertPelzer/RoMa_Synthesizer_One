@@ -14,6 +14,8 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 
 	osc = new OscMan(50000);
 	midi = new MidiMan();
+	filter= new Biquad();
+	filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
 
 	midi->flushProcessedMessages();
 
@@ -34,6 +36,37 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	typeOld = "";
 	pathOld = "";
 }
+
+
+
+    /// Audio Callback Function:
+    /// - the output buffers are filled here
+     int RoMaSynthi::audioCallback(jack_nframes_t nframes,
+                              // A vector of pointers to each input port.
+                              audioBufVector inBufs,
+                              // A vector of pointers to each output port.
+                              audioBufVector outBufs) {
+
+        /// LOOP over all output buffers
+        for(unsigned int i = 0; i < 1; i++)
+        {
+
+            for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
+            {
+
+                outBufs[0][frameCNT] = (osci[0]->getNextSample() +
+										osci[1]->getNextSample() + 
+										osci[2]->getNextSample() +
+										osci[3]->getNextSample() +
+										osci[4]->getNextSample()) / 5;
+										outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
+			}
+        }
+
+        ///return 0 on success
+
+        return 0;
+	}
 
 
 
