@@ -1,38 +1,59 @@
-#N canvas 922 48 440 716 10;
+#N canvas 922 48 737 877 10;
 #X declare -lib mrpeach;
 #X obj 62 13 vsl 32 512 0 0.5 0 0 empty empty Sine 0 -9 0 10 -4033
 -1793 -1 51100 1;
-#X obj 239 604 packOSC;
-#X obj 293 627 udpsend;
+#X obj 244 713 packOSC;
+#X obj 298 736 udpsend;
 #X obj 538 -29 import mrpeach;
-#X msg 364 571 connect localhost 50000;
-#X msg 367 539 disconnect;
+#X msg 367 609 disconnect;
 #X floatatom 64 535 5 0 0 0 - - -;
 #X obj 136 13 vsl 32 512 0.01 1 1 0 empty empty Square 0 -9 0 10 -4034
--110593 -1 7800 1;
+-110593 -1 51100 1;
 #X floatatom 137 535 5 0 0 0 - - -;
 #X obj 173 13 vsl 32 512 0 0.9 0 0 empty empty Noise 0 -9 0 10 -262081
--145409 -1 6500 1;
+-145409 -1 0 1;
 #X floatatom 174 536 5 0 0 0 - - -;
 #X obj 99 13 vsl 32 512 0 0.5 0 0 empty empty Saw 0 -9 0 10 -4033 -1793
--1 26800 1;
+-1 50900 1;
 #X floatatom 100 535 5 0 0 0 - - -;
-#X msg 64 622 send /SineAmpl \$1;
-#X msg 100 603 send /SawAmpl \$1;
-#X msg 137 581 send /SquareAmpl \$1;
-#X msg 174 560 send /NoiseAmpl \$1;
-#X connect 0 0 6 0;
+#X msg 69 731 send /SineAmpl \$1;
+#X msg 97 694 send /SawAmpl \$1;
+#X msg 156 655 send /SquareAmpl \$1;
+#X msg 213 617 send /NoiseAmpl \$1;
+#X obj 289 -25 vsl 32 512 0.001 0.9 1 0 empty empty LFO_Q 0 -9 0 10
+-258113 -110593 -1 45700 1;
+#X floatatom 272 541 5 0 0 0 - - -;
+#X msg 369 680 connect 192.168.23.1 50000;
+#X obj 394 -4 vsl 32 512 0.5 6.5 1 0 empty empty Filter_Type 0 -9 0
+10 -4032 -110593 -1 38700 1;
+#X msg 220 572 send /LFO_Q \$1;
+#X floatatom 397 532 5 0 0 0 - - -;
+#X msg 364 568 send /Filter_Type \$1;
+#X obj 498 12 vsl 32 512 0.2 20 1 0 empty empty Filter_Gain 0 -9 0
+10 -159808 -110593 -1 28000 1;
+#X floatatom 513 537 5 0 0 0 - - -;
+#X msg 524 588 send /Filter_Gain \$1;
+#X connect 0 0 5 0;
 #X connect 1 0 2 0;
 #X connect 4 0 2 0;
-#X connect 5 0 2 0;
-#X connect 6 0 13 0;
-#X connect 7 0 8 0;
-#X connect 8 0 15 0;
-#X connect 9 0 10 0;
-#X connect 10 0 16 0;
-#X connect 11 0 12 0;
-#X connect 12 0 14 0;
+#X connect 5 0 12 0;
+#X connect 6 0 7 0;
+#X connect 7 0 14 0;
+#X connect 8 0 9 0;
+#X connect 9 0 15 0;
+#X connect 10 0 11 0;
+#X connect 11 0 13 0;
+#X connect 12 0 1 0;
 #X connect 13 0 1 0;
 #X connect 14 0 1 0;
 #X connect 15 0 1 0;
-#X connect 16 0 1 0;
+#X connect 16 0 17 0;
+#X connect 17 0 20 0;
+#X connect 18 0 2 0;
+#X connect 19 0 21 0;
+#X connect 20 0 1 0;
+#X connect 21 0 22 0;
+#X connect 22 0 1 0;
+#X connect 23 0 24 0;
+#X connect 24 0 25 0;
+#X connect 25 0 1 0;

@@ -18,9 +18,11 @@
 
 #include <math.h>
 #include "Biquad.h"
+#include <iostream> 
+#include <unistd.h>
 
 Biquad::Biquad() {
-    type = bq_type_lowpass;
+    type = bq_type_notch;//bq_type_lowpass;
     a0 = 1.0;
     a1 = a2 = b1 = b2 = 0.0;
     Fc = 0.50;
@@ -52,6 +54,10 @@ void Biquad::setFc(double Fc) {
     calcBiquad();
 }
 
+void Biquad::status() {
+    //std::cout<<"Cutoff: "<<Fc<<"a: "<<a0<<"a1: "<<a1<<"b1: "<<b1<<"b2: "<<b2<<std::endl;
+    std::cout<<"Filter Type: "<<type<<std::endl;
+}
 void Biquad::setPeakGain(double peakGainDB) {
     this->peakGain = peakGainDB;
     calcBiquad();
@@ -160,6 +166,6 @@ void Biquad::calcBiquad(void) {
             }
             break;
     }
-    
+    usleep(500);
     return;
 }

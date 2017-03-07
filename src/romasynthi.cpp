@@ -14,8 +14,9 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 
 	osc = new OscMan(50000);
 	midi = new MidiMan();
-	filter= new Biquad();
-	lfo=new Sinusoid(3,1.0,0,48000);
+	//filter= new Biquad();
+	filter= new Biquad(0, 0.3, 0.2, 1.0);
+	lfo=new Sinusoid(300, 1, 0, 48000); //warum hoher Wert noetig?
 	//filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
 
 	midi->flushProcessedMessages();
@@ -55,13 +56,22 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
             for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
             {
             
-                filter->setFc(lfo_setter());
+               
+                
                 outBufs[0][frameCNT] = (osci[0]->getNextSample() +
 										osci[1]->getNextSample() + 
 										osci[2]->getNextSample() +
 										osci[3]->getNextSample() +
 										osci[4]->getNextSample()) / 5;
 										outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
+										/*outBufs[0][frameCNT] = 
+										(filter->process(osci[0]->getNextSample()) +
+										filter->process(osci[1]->getNextSample()) + 
+										filter->process(osci[2]->getNextSample())+
+										filter->process(osci[3]->getNextSample()) +
+										filter->process(osci[4]->getNextSample())) / 5;
+										cout<<*outBufs[0]<<endl;*/
+										 //hand over to filter
 			}
         }
 
@@ -219,15 +229,31 @@ void RoMaSynthi::oscHandler() {
 			osci[3]->setNoiseAmpl(val);
 			osci[4]->setNoiseAmpl(val);
 		}
+		
+    if (path.compare("/LFO_Q") == 0) {
+      filter->setQ(val);
+		}
+		
+		    if (path.compare("/Filter_Type") == 0) {
+      filter->setType((int)val);
+		}
+		
+		if (path.compare("/Filter_Gain") == 0) {
+      filter->setPeakGain(val);
+		}
+		filter->status();
 	}
+	
+	
 	usleep(500);
 }
 
-double RoMaSynthi::lfo_setter() {
+void RoMaSynthi::lfo_setter() {
 
-  double lfo_sinus=(lfo->getNextSample()+1.0)/2; //make value positiv
+  double lfo_sinus=((lfo->getNextSample()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
   if(lfo_sinus<0) lfo_sinus=0;//no negative values - dirty workaround in case amplitude is higher than 1
   
-  return lfo_sinus*10000;
+  filter->setFc(lfo_sinus);
+  //cout<< "Sinuswert: "<<lfo_sinus<<endl;
   }
   

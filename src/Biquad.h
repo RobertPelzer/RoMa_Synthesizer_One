@@ -21,12 +21,12 @@
 
 enum {
     bq_type_lowpass = 0,
-    bq_type_highpass,
-    bq_type_bandpass,
-    bq_type_notch,
-    bq_type_peak,
-    bq_type_lowshelf,
-    bq_type_highshelf
+    bq_type_highpass=1,
+    bq_type_bandpass=2,
+    bq_type_notch=3,
+    bq_type_peak=4,
+    bq_type_lowshelf=5,
+    bq_type_highshelf=6
 };
 
 class Biquad {
@@ -40,6 +40,7 @@ public:
     void setPeakGain(double peakGainDB);
     void setBiquad(int type, double Fc, double Q, double peakGain);
     float process(float in);
+    void status();
     
 protected:
     void calcBiquad(void);
