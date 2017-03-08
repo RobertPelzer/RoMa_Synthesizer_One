@@ -1,12 +1,12 @@
 #include "oscicontainer.h"
 
-Oscicontainer::Oscicontainer() {
-  osciSine = new Sinusoid(440,0.0,0,48000);
-	osciSaw = new Sawtoothwave(440,0.0,0,48000);
-	osciSquare = new Squarewave(440,0.0,0,48000);
+Oscicontainer::Oscicontainer(uint32_t fs) {
+ 	osciSine = new Sinusoid(440,0.0,0,fs);
+	osciSaw = new Sawtoothwave(440,0.0,0,fs);
+	osciSquare = new Squarewave(440,0.0,0,fs);
 	osciNoise = new Noise(0.0);
 
- osciSineAmpl = 0.0;
+ 	osciSineAmpl = 0.0;
 	osciSawAmpl = 0.0;
 	osciSquareAmpl = 0.0;
 	osciNoiseAmpl = 0.0;
@@ -15,11 +15,10 @@ Oscicontainer::Oscicontainer() {
 double Oscicontainer::getNextSample() {
 
 
-	double thisVal = osciSaw->getNextSample();
+	double thisVal = osciSine->getNextSample();
+	thisVal = thisVal + osciSaw->getNextSample();
 	thisVal = thisVal + osciSquare->getNextSample();
 	thisVal = thisVal + osciNoise->getNextSample();
-	thisVal = thisVal + osciSine->getNextSample();
-	
 
     return thisVal;
 

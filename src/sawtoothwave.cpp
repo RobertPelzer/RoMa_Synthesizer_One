@@ -1,10 +1,6 @@
-
 //class Sawtoothwave
 
-
-
 #include "sawtoothwave.h"
-
 
 using namespace std;
 Sawtoothwave::Sawtoothwave(double f, double a, double p,  int fS)
@@ -63,4 +59,3 @@ void Sawtoothwave::amplitude(double a) {
 void Sawtoothwave::phase(double p) {
     phi = p;
 }
-

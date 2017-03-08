@@ -1,6 +1,8 @@
 #ifndef OSCICONTAINER_H
 #define OSCICONTAINER_H
 
+#include <stdint.h>
+
 #include "sawtoothwave.h"
 #include "squarewave.h"
 #include "noise.h"
@@ -8,7 +10,7 @@
 
 class Oscicontainer {
 private:
-  Sinusoid *osciSine;
+ 	Sinusoid *osciSine;
 	Sawtoothwave *osciSaw;
 	Squarewave *osciSquare;
 	Noise *osciNoise;
@@ -19,8 +21,7 @@ private:
 	double osciSineAmpl;
 
 public:
-	Oscicontainer();
-
+	Oscicontainer(uint32_t fs);
 
 	// Setters
 	void amplitude(double a);
