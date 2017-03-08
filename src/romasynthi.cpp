@@ -4,13 +4,17 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	reserveInPorts(2);
 	reserveOutPorts(2);
 
+	jack_nframes_t fs = getSampleRate();
+
+	std::cout << "Sampling frequency is: " << fs << " Hz" << endl;
+
 	osci = new Oscicontainer *[5];
 
-	osci[0] = new Oscicontainer();
-	osci[1] = new Oscicontainer();
-	osci[2] = new Oscicontainer();
-	osci[3] = new Oscicontainer();
-	osci[4] = new Oscicontainer();
+	osci[0] = new Oscicontainer(fs);
+	osci[1] = new Oscicontainer(fs);
+	osci[2] = new Oscicontainer(fs);
+	osci[3] = new Oscicontainer(fs);
+	osci[4] = new Oscicontainer(fs);
 
 	osc = new OscMan(50000);
 	midi = new MidiMan();
@@ -35,7 +39,31 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	pathOld = "";
 }
 
+int RoMaSynthi::audioCallback(jack_nframes_t nframes,
+                              // A vector of pointers to each input port.
+                              audioBufVector inBufs,
+                              // A vector of pointers to each output port.
+                              audioBufVector outBufs) {
 
+        /// LOOP over all output buffers
+        for(unsigned int i = 0; i < 1; i++)
+        {
+
+            for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
+            {
+
+                outBufs[0][frameCNT] = (osci[0]->getNextSample() +
+										osci[1]->getNextSample() + 
+										osci[2]->getNextSample() +
+										osci[3]->getNextSample() +
+										osci[4]->getNextSample()) / 5;
+			}
+        }
+
+        ///return 0 on success
+
+        return 0;
+	}
 
 void RoMaSynthi::midiHandler() {
 
@@ -159,6 +187,7 @@ void RoMaSynthi::oscHandler() {
 			osci[4]->setSineAmpl(val);
 			//cout << "OSC01 Ampl: " << val	<< endl;
 		}
+		
 		if (path.compare("/SawAmpl") == 0) {
 			//cout << "OSC02 Ampl: " << val	<< endl;
 			osci[0]->setSawAmpl(val);

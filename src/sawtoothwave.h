@@ -12,7 +12,7 @@ private:
     double freq;
     double amp;
     double phi;
-	int harm;		// number of harmonics
+
 
     // SYSTEM RELATED
     int nframes;
@@ -22,19 +22,19 @@ private:
 
 
 public:
-    Sawtoothwave(double f, double a, double p, int fS, int harm);
+    Sawtoothwave(double f, double a, double p, int fS);
     void proceed(double ms);
 
     /// getters
     double frequency();
     double amplitude();
     double phase();
-	int harmonics();
+
     /// setters (override)
     void frequency(double f);
     void amplitude(double a);
     void phase(double p);
-	void harmonics(int N);
+
 
     double getNextSample();
 

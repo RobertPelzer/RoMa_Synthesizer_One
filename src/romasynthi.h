@@ -32,41 +32,13 @@ private:
 	string pathOld;
 
 public:
-    //MidiMan *midiMan;
-    /// Audio Callback Function:
-    /// - the output buffers are filled here
-    virtual int audioCallback(jack_nframes_t nframes,
-                              // A vector of pointers to each input port.
-                              audioBufVector inBufs,
-                              // A vector of pointers to each output port.
-                              audioBufVector outBufs) {
-
-        /// LOOP over all output buffers
-        for(unsigned int i = 0; i < 1; i++)
-        {
-
-            for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
-            {
-
-                outBufs[0][frameCNT] = (osci[0]->getNextSample() +
-										osci[1]->getNextSample() + 
-										osci[2]->getNextSample() +
-										osci[3]->getNextSample() +
-										osci[4]->getNextSample()) / 5;
-			}
-        }
-
-        ///return 0 on success
-
-        return 0;
-	};
 
     /// Constructor
     RoMaSynthi();
 
-	// Setters
-	
-
+	virtual int audioCallback(jack_nframes_t nframes,
+							audioBufVector inBufs,
+							audioBufVector outBufs);
 
 	void midiHandler();
 	void oscHandler();
