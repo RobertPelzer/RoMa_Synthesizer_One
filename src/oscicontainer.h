@@ -12,15 +12,24 @@ private:
 	Sawtoothwave *osciSaw;
 	Squarewave *osciSquare;
 	Noise *osciNoise;
+	
+	Sawtoothwave *lfoSaw;
+	Squarewave *lfoSquare;
+	Sinusoid *lfoSin;
 
 	double osciSawAmpl;
 	double osciSquareAmpl;
 	double osciNoiseAmpl;
 	double osciSineAmpl;
+	bool isLFO;
+	int type;
+
 
 public:
 	Oscicontainer();
-
+	// constructor for lfo oscillator
+	Oscicontainer(int type, double f);
+	
 
 	// Setters
 	void amplitude(double a);
@@ -29,9 +38,11 @@ public:
 	void setSquareAmpl(double a);
 	void setNoiseAmpl(double a);
 	void setSineAmpl(double a);
+	void setLFOtype(int Type);
 
 	// Getters
     double getNextSample();
+    double getCurrentAmpl();
 };
 
 #endif // OSCICONTAINER_H

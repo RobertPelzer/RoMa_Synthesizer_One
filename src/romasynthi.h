@@ -20,7 +20,7 @@ private:
 	OscMan *osc;
 	MidiMan *midi;
 	Biquad *filter;
-	Sinusoid *lfo;
+	Oscicontainer *lfo;
 
 	double t_tracking; //Zeit Counter
 	int counter; //counter fue die Anzahl benutzer Oszillatoren
@@ -33,6 +33,7 @@ private:
 	double valOld;
 	string typeOld;
 	string pathOld;
+	double lfo_oldValue=0;
 
 public:
     //MidiMan *midiMan;
@@ -49,7 +50,7 @@ public:
 	// Setters
 	
 
- void lfo_setter();
+ void lfoHandler();
 	void midiHandler();
 	void oscHandler();
 };

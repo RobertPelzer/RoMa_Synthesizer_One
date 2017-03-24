@@ -17,7 +17,7 @@ double Noise::getNextSample() {
 	float diff = b - a;
 	float r = random * diff;
 	thisVal = a + r;
-
+  curr_ampl=thisVal;
     return thisVal;
 
 }
@@ -29,4 +29,8 @@ double Noise::amplitude() {
 
 void Noise::amplitude(double a) {
     amp = a;
+}
+
+double Noise::getCurrentAmpl() {
+return curr_ampl;
 }

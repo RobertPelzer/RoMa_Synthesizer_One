@@ -25,7 +25,7 @@ double Sinusoid::getNextSample() {
     // wrap to 2 pi
     if(phi>=2*M_PI)
         phi=0;
-
+    curr_ampl = thisVal;
     return thisVal;
 
 }
@@ -53,4 +53,8 @@ void Sinusoid::amplitude(double a) {
 
 void Sinusoid::phase(double p) {
     phi = p;
+}
+
+double Sinusoid::getCurrentAmpl() {
+return curr_ampl;
 }

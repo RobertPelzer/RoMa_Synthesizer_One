@@ -16,6 +16,7 @@ public:
     void amplitude(double a);
 
     double getNextSample();
+    double getCurrentAmpl();
 
 
 
@@ -28,6 +29,7 @@ private:
     int fs;
 
     double *t;
+    double curr_ampl;
 
 
 };

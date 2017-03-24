@@ -19,6 +19,7 @@ private:
     int fs;
 
     double *t;
+    double curr_ampl;
 
 
 public:
@@ -37,6 +38,7 @@ public:
 
 
     double getNextSample();
+    double getCurrentAmpl();
 
 };
 

@@ -34,7 +34,8 @@ int main(int argc, char *argv[]) {
 	while(!done) {
 		synth->midiHandler();
 		synth->oscHandler();
-		synth->lfo_setter();
+		synth->lfoHandler();
+		
 		usleep(5);
     }
 

@@ -33,7 +33,8 @@ double Sawtoothwave::getNextSample() {
      // rotate to next step
     phi += n;
     if (phi>=2.0*M_PI) phi=0;
-
+    
+    curr_ampl=thisVal;
     return thisVal;
 
 }
@@ -64,3 +65,6 @@ void Sawtoothwave::phase(double p) {
     phi = p;
 }
 
+double Sawtoothwave::getCurrentAmpl() {
+return curr_ampl;
+}

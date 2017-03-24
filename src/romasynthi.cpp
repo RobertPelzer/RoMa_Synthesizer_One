@@ -1,4 +1,5 @@
 #include "romasynthi.h"
+#include <fstream>
 
 RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	reserveInPorts(2);
@@ -16,7 +17,8 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	midi = new MidiMan();
 	//filter= new Biquad();
 	filter= new Biquad(0, 0.3, 0.2, 1.0);
-	lfo=new Sinusoid(300, 1, 0, 48000); //warum hoher Wert noetig?
+	lfo= new Oscicontainer(0, 1);
+	//lfo=new Sinusoid(300, 1, 0, 48000); //warum hoher Wert noetig?
 	//filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
 
 	midi->flushProcessedMessages();
@@ -72,11 +74,12 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 										filter->process(osci[4]->getNextSample())) / 5;
 										cout<<*outBufs[0]<<endl;*/
 										 //hand over to filter
+										 lfo->getNextSample();
 			}
         }
 
         ///return 0 on success
-
+         
         return 0;
 	}
 
@@ -241,19 +244,45 @@ void RoMaSynthi::oscHandler() {
 		if (path.compare("/Filter_Gain") == 0) {
       filter->setPeakGain(val);
 		}
-		filter->status();
+		
+		 if (path.compare("/LFO_Freq") == 0) {
+      lfo->frequency(val);
+      //cout<<val<<endl;
+      }
+     if (path.compare("/LFO_Type") == 0) {
+      lfo->setLFOtype((int)val);
+		}
+		//filter->status();
+
 	}
 	
 	
 	usleep(500);
 }
 
-void RoMaSynthi::lfo_setter() {
+void RoMaSynthi::lfoHandler() {
 
-  double lfo_sinus=((lfo->getNextSample()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
-  if(lfo_sinus<0) lfo_sinus=0;//no negative values - dirty workaround in case amplitude is higher than 1
+  //limits LFO Signal to 6- Bit 
+  double lfo_step = 0.0078125;
+
+  double lfo_value=((lfo->getCurrentAmpl()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
+  if(lfo_value<0) lfo_value=0;//no negative values - dirty workaround in case amplitude is higher than 1
+
+  if (lfo_value > (lfo_oldValue + lfo_step) || lfo_value < (lfo_oldValue - lfo_step) ) {
+      //change Cutoff of Filter when lfo_value changes
+      filter->setFc(lfo_value);
+      lfo_oldValue=lfo_value;
+      
+        //Ausgabe Lfo als Textfile
+      /*ofstream info ("info.txt", ios::out | ios::app );
+      info<<lfo_value;
+      info<<"\n";
+      */
+     // cout<< "Sinuswert: "<<lfo_value<<endl;
+  }
   
-  filter->setFc(lfo_sinus);
-  //cout<< "Sinuswert: "<<lfo_sinus<<endl;
+  
+
+  //cout<< "Sinuswert: "<<lfo_value<<endl;
   }
   
