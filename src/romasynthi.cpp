@@ -18,7 +18,6 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	//filter= new Biquad();
 	filter= new Biquad(0, 0.3, 0.2, 1.0);
 	lfo= new Oscicontainer(0, 1);
-	//lfo=new Sinusoid(300, 1, 0, 48000); //warum hoher Wert noetig?
 	//filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
 
 	midi->flushProcessedMessages();
