@@ -17,7 +17,11 @@ private:
 
 	Oscicontainer **osci;
 	OscMan *osc;
+
 	MidiMan *midi;
+
+	jack_nframes_t fs;
+	jack_nframes_t nframes;
 
 	double t_tracking; //Zeit Counter
 	int counter; //counter fue die Anzahl benutzer Oszillatoren

@@ -9,6 +9,7 @@ Sawtoothwave::Sawtoothwave(double f, double a, double p,  int fS)
     amp     = a;
     phi     = p;
     fs      = fS;
+    curr_ampl = 0.0;
 }
 
 double Sawtoothwave::getNextSample() {
@@ -30,6 +31,8 @@ double Sawtoothwave::getNextSample() {
     phi += n;
     if (phi>=2.0*M_PI) phi=0;
 
+    curr_ampl = thisVal;
+
     return thisVal;
 
 }
@@ -47,6 +50,9 @@ double Sawtoothwave::phase() {
     return phi;
 }
 
+double Sawtoothwave::getCurrentAmpl() {
+    return curr_ampl;
+}
 
 void Sawtoothwave::frequency(double f) {
     freq = f;

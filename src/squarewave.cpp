@@ -5,6 +5,7 @@ Squarewave::Squarewave(double f, double a, double p,  int fS) {
     amp     = a;
     phi     = p;
     fs      = fS;
+    curr_ampl = 0.0;
 }
 
 double Squarewave::getNextSample() {
@@ -29,6 +30,8 @@ double Squarewave::getNextSample() {
     // wrap to 2 pi
     if(phi>=2*M_PI)
         phi=0;
+
+    curr_ampl = thisVal;
 
     return thisVal;
 
@@ -57,4 +60,8 @@ void Squarewave::amplitude(double a) {
 
 void Squarewave::phase(double p) {
     phi = p;
+}
+
+double Squarewave::getCurrentAmpl() {
+    return curr_ampl;
 }

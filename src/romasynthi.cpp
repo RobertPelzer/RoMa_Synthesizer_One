@@ -4,17 +4,21 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	reserveInPorts(2);
 	reserveOutPorts(2);
 
-	jack_nframes_t fs = getSampleRate();
+	fs = getSampleRate();
+	nframes = getBufferSize();
 
-	std::cout << "Sampling frequency is: " << fs << " Hz" << endl;
+	std::cout << "fs: " << fs << " Hz";
+	std::cout << " || buffer size: " << nframes << " samples" << endl;
 
-	osci = new Oscicontainer *[5];
+	osci = new Oscicontainer *[7];
 
 	osci[0] = new Oscicontainer(fs);
 	osci[1] = new Oscicontainer(fs);
 	osci[2] = new Oscicontainer(fs);
 	osci[3] = new Oscicontainer(fs);
 	osci[4] = new Oscicontainer(fs);
+	osci[5] = new Oscicontainer(fs);
+	osci[6] = new Oscicontainer(fs);
 
 	osc = new OscMan(50000);
 	midi = new MidiMan();
@@ -27,9 +31,9 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 
 	//int midi_buffer;
 
-	Noten = {-1, -1, -1, -1, -1} ;
-	freeOsci = { 4, 3, 2, 1, 0};
-	timetracker = { -1, -1, -1, -1, -1};
+	Noten = {-1, -1, -1, -1, -1, -1, -1} ;
+	freeOsci = { 6, 5, 4, 3, 2, 1, 0};
+	timetracker = { -1, -1, -1, -1, -1, -1, -1};
     
     //maximale Anzahl der Oszillator
 	maxAnzahl_Osci = Noten.size();
@@ -56,7 +60,10 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
 										osci[1]->getNextSample() + 
 										osci[2]->getNextSample() +
 										osci[3]->getNextSample() +
-										osci[4]->getNextSample()) / 5;
+										osci[4]->getNextSample() +
+										osci[5]->getNextSample() +
+										osci[6]->getNextSample());
+				outBufs[0][frameCNT] = outBufs[0][frameCNT] / 5;
 			}
         }
 
@@ -91,7 +98,7 @@ void RoMaSynthi::midiHandler() {
 		// Prezedur bei Note-On
         if(val1==144) {
              //wenn alle Oszillatoren benutzte werden, kill oldest
-            if(counter==5) {
+            if(counter==7) {
 				int min = timetracker[0];
 				int index = 0;
 				//finde den aeltesten Wert == kleinste Zeit
@@ -101,8 +108,10 @@ void RoMaSynthi::midiHandler() {
 						index = i;
 					}
 				}
-				//kill oldest Oszi und 
-				osci[index]->amplitude(0);
+				//kill oldest Oszi und
+
+				osci[index]->setReleaseNoteState(2);
+				//osci[index]->amplitude(0);
 				//value im Notenarray loeschen
 				Noten[index] = -1;
 				//freigewordenen Oszi zurueckgeben
@@ -113,6 +122,8 @@ void RoMaSynthi::midiHandler() {
 				   
 				counter--;
 			}
+
+
 			//Berechnung der Frequnenz aus der Midi Note
 			double f0 = std::pow(double (2), (val2-double(69))/double(12))*440;
 				  
@@ -127,13 +138,19 @@ void RoMaSynthi::midiHandler() {
 				  
 				 
 			//Amplitude aus der Midi-Info uebergeben 
+			osci[osci_nummer]->setReleaseNoteState(1);
 			osci[osci_nummer]->amplitude(val3/126);
+			osci[osci_nummer]->phase(0);
 				  
 			//Notenwert zwischenspeichern
 			Noten[osci_nummer] = val2;
 				  
 			//Zeit zwischenspeichern
 			timetracker[osci_nummer] = t_tracking;
+			
+
+			// at some point, by MIDI perhaps, the envelope is gated "on"
+			//env->gate(true);
 				  
 			counter++;
         }
@@ -147,19 +164,21 @@ void RoMaSynthi::midiHandler() {
             
             //Sicherheitsabfrage - wenn bei find nichts gefunden wird, wird hinter das letzte gezeigt und des kommt zu stackdump
             if(position<maxAnzahl_Osci) {
-              //std::cout<<" Das ist Oszi" << position<<endl;
-              osci[position]->amplitude(0);
+              	osci[position]->setReleaseNoteState(2);
+              	//osci[position]->amplitude(0);
               
-              //value im Notenarray loeschen
-              Noten[position]= -1;
-              //freigewordenen Oszi zurueckgeben
-              freeOsci.push_back(position);
+              	//value im Notenarray loeschen
+              	Noten[position]= -1;
+              	//freigewordenen Oszi zurueckgeben
+              	freeOsci.push_back(position);
               
                 //Zeitinstanz löschen
-               timetracker[position]= -1;
+               	timetracker[position]= -1;
                
-               counter--;
-              }   
+               	counter--;
+              	}  
+              // and some time later, it's gated "off"
+			//env->gate(false); 
             }
             
          //Kontrollsausgabe
@@ -185,6 +204,8 @@ void RoMaSynthi::oscHandler() {
 			osci[2]->setSineAmpl(val);
 			osci[3]->setSineAmpl(val);
 			osci[4]->setSineAmpl(val);
+			osci[5]->setSineAmpl(val);
+			osci[6]->setSineAmpl(val);
 			//cout << "OSC01 Ampl: " << val	<< endl;
 		}
 		
@@ -195,6 +216,8 @@ void RoMaSynthi::oscHandler() {
 			osci[2]->setSawAmpl(val);
 			osci[3]->setSawAmpl(val);
 			osci[4]->setSawAmpl(val);
+			osci[5]->setSawAmpl(val);
+			osci[6]->setSawAmpl(val);
 		}
 		if (path.compare("/SquareAmpl") == 0) {
 			//cout << "Harm: " << val << endl;
@@ -203,6 +226,8 @@ void RoMaSynthi::oscHandler() {
 			osci[2]->setSquareAmpl(val);
 			osci[3]->setSquareAmpl(val);
 			osci[4]->setSquareAmpl(val);
+			osci[5]->setSquareAmpl(val);
+			osci[6]->setSquareAmpl(val);
 		}
 		if (path.compare("/NoiseAmpl") == 0) {
 			//cout << "NoiseLevel: " << val << endl;
@@ -211,6 +236,8 @@ void RoMaSynthi::oscHandler() {
 			osci[2]->setNoiseAmpl(val);
 			osci[3]->setNoiseAmpl(val);
 			osci[4]->setNoiseAmpl(val);
+			osci[5]->setNoiseAmpl(val);
+			osci[6]->setNoiseAmpl(val);
 		}
 	}
 	usleep(500);

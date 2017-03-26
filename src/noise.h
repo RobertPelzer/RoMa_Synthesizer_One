@@ -16,12 +16,13 @@ public:
     void amplitude(double a);
 
     double getNextSample();
-
+    double getCurrentAmpl();
 
 
 private:
 
     double amp;
+    double curr_ampl;
 
     // SYSTEM RELATED
     int nframes;

@@ -21,7 +21,7 @@ public:
 
 
     double getNextSample();
-
+    double getCurrentAmpl();
 
 
 private:
@@ -30,6 +30,7 @@ private:
     double freq;
     double amp;
     double phi;
+    double curr_ampl;
 
     // SYSTEM RELATED
     int nframes;
@@ -37,6 +38,7 @@ private:
 
     double *t;
 
+    bool midiNoteOff;
 
 };
 

@@ -21,6 +21,7 @@ public:
 
 
     double getNextSample();
+    double getCurrentAmpl();
 
 
 
@@ -30,6 +31,7 @@ private:
     double freq;
     double amp;
     double phi;
+    double curr_ampl;
 
     // SYSTEM RELATED
     int nframes;

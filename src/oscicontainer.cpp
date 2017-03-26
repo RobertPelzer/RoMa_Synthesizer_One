@@ -6,6 +6,9 @@ Oscicontainer::Oscicontainer(uint32_t fs) {
 	osciSquare = new Squarewave(440,0.0,0,fs);
 	osciNoise = new Noise(0.0);
 
+	// create release Note Object
+	relNote = new releaseNote();
+
  	osciSineAmpl = 0.0;
 	osciSawAmpl = 0.0;
 	osciSquareAmpl = 0.0;
@@ -14,11 +17,11 @@ Oscicontainer::Oscicontainer(uint32_t fs) {
 
 double Oscicontainer::getNextSample() {
 
-
 	double thisVal = osciSine->getNextSample();
 	thisVal = thisVal + osciSaw->getNextSample();
 	thisVal = thisVal + osciSquare->getNextSample();
 	thisVal = thisVal + osciNoise->getNextSample();
+	thisVal = thisVal * relNote->process();
 
     return thisVal;
 
@@ -31,10 +34,23 @@ void Oscicontainer::amplitude(double a) {
 	osciSine->amplitude(osciSineAmpl*a);
 }
 
+double Oscicontainer::getCurrentAmpl() {
+	return 	osciSine->getCurrentAmpl() +
+			osciSaw->getCurrentAmpl() +
+			osciSquare->getCurrentAmpl() + 
+			osciNoise->getCurrentAmpl();
+}
+
 void Oscicontainer::frequency(double f) {
 	osciSaw->frequency(f);
 	osciSquare->frequency(f);
 	osciSine->frequency(f);
+}
+
+void Oscicontainer::phase(double phi) {
+	osciSaw->phase(phi);
+	osciSquare->phase(phi);
+	osciSine->phase(phi);
 }
 
 void Oscicontainer::setSineAmpl(double a) {
@@ -50,4 +66,12 @@ void Oscicontainer::setSquareAmpl(double a) {
 
 void Oscicontainer::setNoiseAmpl(double a) {
 	osciNoiseAmpl = a;
+}
+
+void Oscicontainer::setReleaseNoteState(int status) {
+	relNote->gate(status);
+}
+
+float Oscicontainer::releaseNoteProcess() {
+	return relNote->process();
 }
