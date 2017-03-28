@@ -190,14 +190,24 @@ void RoMaSynthi::midiHandler() {
 
 void RoMaSynthi::oscHandler() {
 
-	double val = osc->getLastMessage();
+  	double val;
 	string type = osc->getLastType();
+	
+	if (type== "s") val =  osc->getLastChar();
+
+  	else if (type== "f") val =  osc->getLastDouble();
+
+  	else if (type== "i") val =  osc->getLastInt();
+  	
+  
 	string path = osc->getLastPath();
+	
+	
 	if (val != 0) {
 		typeOld = type;
 		pathOld = path;
 		valOld = val;
-		
+		cout<<val<<path<<endl;
 		if (path.compare("/SineAmpl") == 0) {
 			osci[0]->setSineAmpl(val);
 			osci[1]->setSineAmpl(val);
@@ -232,56 +242,46 @@ void RoMaSynthi::oscHandler() {
 			osci[4]->setNoiseAmpl(val);
 		}
 		
-    if (path.compare("/LFO_Q") == 0) {
-      filter->setQ(val);
+	    if (path.compare("/LFO_Q") == 0) {
+	      filter->setQ(val);
 		}
-		
-		    if (path.compare("/Filter_Type") == 0) {
-      filter->setType((int)val);
+			
+		if (path.compare("/Filter_Type") == 0) {
+	      filter->setType((int)val);
 		}
-		
+			
 		if (path.compare("/Filter_Gain") == 0) {
-      filter->setPeakGain(val);
+	      filter->setPeakGain(val);
 		}
-		
-		 if (path.compare("/LFO_Freq") == 0) {
-      lfo->frequency(val);
-      //cout<<val<<endl;
-      }
-     if (path.compare("/LFO_Type") == 0) {
-      lfo->setLFOtype((int)val);
-		}
-		//filter->status();
+			
+		if (path.compare("/LFO_Freq") == 0) {
+	      lfo->frequency(val);
+	    }
 
+	    if (path.compare("/LFO_Type") == 0) {
+	      lfo->setLFOtype((int)val);
+		}
 	}
 	
 	
 	usleep(500);
 }
 
+
 void RoMaSynthi::lfoHandler() {
 
-  //limits LFO Signal to 6- Bit 
-  double lfo_step = 0.0078125;
+	  //limits LFO Signal to 6- Bit 
+	 double lfo_step = 0.0078125;
 
-  double lfo_value=((lfo->getCurrentAmpl()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
-  if(lfo_value<0) lfo_value=0;//no negative values - dirty workaround in case amplitude is higher than 1
+	 double lfo_value=((lfo->getCurrentAmpl()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
+	 if (lfo_value<0) lfo_value=0;//no negative values - dirty workaround in case amplitude is higher than 1
 
-  if (lfo_value > (lfo_oldValue + lfo_step) || lfo_value < (lfo_oldValue - lfo_step) ) {
-      //change Cutoff of Filter when lfo_value changes
-      filter->setFc(lfo_value);
-      lfo_oldValue=lfo_value;
+	 if (lfo_value > (lfo_oldValue + lfo_step) || lfo_value < (lfo_oldValue - lfo_step) ) {
+      	//change Cutoff of Filter when lfo_value changes
+     	filter->setFc(lfo_value);
+      	lfo_oldValue=lfo_value;
       
-        //Ausgabe Lfo als Textfile
-      /*ofstream info ("info.txt", ios::out | ios::app );
-      info<<lfo_value;
-      info<<"\n";
-      */
-     // cout<< "Sinuswert: "<<lfo_value<<endl;
-  }
-  
-  
+	 }
 
-  //cout<< "Sinuswert: "<<lfo_value<<endl;
-  }
+}
   

@@ -10,6 +10,7 @@
 #include "midiman.h"
 #include "Biquad.h"
 #include "sinusoid.h"
+
 using namespace std;
 
 class RoMaSynthi: public JackCpp::AudioIO {

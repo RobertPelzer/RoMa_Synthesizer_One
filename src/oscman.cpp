@@ -1,5 +1,8 @@
 #include "oscman.h"
-
+#include <fstream>
+#include <string>
+using namespace std;
+ 
 void error(int num, const char *m, const char *path);
 
 OscMan::OscMan(int p) {
@@ -27,38 +30,76 @@ int OscMan::double_callback(const char *path, const char *types, lo_arg ** argv,
 
     if (std::string(types)=="f") {
 
-        dMess tmpD;
+    	dMess tmpD;
         
-		tmpD.type = types;
-        
-		tmpD.path = path;
-        
-		tmpD.val = argv[0]->f;
+      	tmpD.type = types;
+          
+      	tmpD.path = path;
+          
+      	tmpD.val = argv[0]->f;
 
-		statCast->dMessages.push_back(tmpD);
-    }
-    else if (std::string(types)=="i") {
+      	statCast->dMessages.push_back(tmpD);
+
+    }	else if (std::string(types)=="i") {
 
         iMess tmp;
         tmp.type = types;
         tmp.path = path;
-        tmp.val = argv[0]->i;
+        tmp.val = argv[0]->f;
+        statCast->iMessages.push_back(tmp);
 
+    }	else if (std::string(types)=="s") {
+    
+        sMess tmps;
+        tmps.type = types;
+        tmps.path = path;
+        tmps.val = argv[0]->s;
+        statCast->sMessages.push_back(tmps);
+        
+     
     }
     // store all information
     statCast->paths.push_back(path);
     statCast->types.push_back(types);
-	statCast->messages.push_back(argv[0]->f);
+    //statCast->messages.push_back(argv[0]->f);
 
 }
 
 
-dMess OscMan::getLast_dMess() {
+double OscMan::getLastDouble() {
 
-    dMess tmp = dMessages[0];
-    dMessages.clear();
+	if(dMessages.size()>0) {
+	    dMess tmp = dMessages[0];
+	    dMessages.clear();
+		return (double)tmp;
+	}
 
-    return tmp;
+    else
+      	return 0.0;
+}
+
+double OscMan::getLastInt() {
+
+	if(iMessages.size()>0) {
+	    iMess tmp = iMessages[0];
+	    iMessages.clear();
+    	return (double)tmp.val;
+    }
+
+    else
+      	return 0.0;
+}
+
+double OscMan::getLastChar() {
+   
+    if(sMessages.size()>0) {
+        sMess tmp = sMessages[0];
+        sMessages.clear();
+        return (double)tmp.val;
+    }
+
+    else
+      return 0.0;
 }
 
 std::string OscMan::getLastPath() {
@@ -94,7 +135,7 @@ double OscMan::getLastMessage() {
 
     if(messages.size()>0) {
 
-		double d = messages[0];
+		double d = (double)messages[0];
         messages.clear();
 
         return d;
