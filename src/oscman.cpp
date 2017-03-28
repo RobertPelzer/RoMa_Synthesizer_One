@@ -71,7 +71,7 @@ double OscMan::getLastDouble() {
 	if(dMessages.size()>0) {
 	    dMess tmp = dMessages[0];
 	    dMessages.clear();
-		return (double)tmp;
+		return (double)tmp.val;
 	}
 
     else

@@ -207,7 +207,7 @@ void RoMaSynthi::oscHandler() {
 		typeOld = type;
 		pathOld = path;
 		valOld = val;
-		cout<<val<<path<<endl;
+		cout<<val<<path<<type<<endl;
 		if (path.compare("/SineAmpl") == 0) {
 			osci[0]->setSineAmpl(val);
 			osci[1]->setSineAmpl(val);
