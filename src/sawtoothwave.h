@@ -20,6 +20,7 @@ private:
     int fs;
 
     double *t;
+    double curr_ampl;
 
 
 public:

@@ -22,6 +22,10 @@ public:
 
     double getNextSample();
     double getCurrentAmpl();
+<<<<<<< HEAD
+=======
+
+>>>>>>> biquad_lfo
 
 
 private:
@@ -37,6 +41,7 @@ private:
     int fs;
 
     double *t;
+    double curr_ampl;
 
     bool midiNoteOff;
 

@@ -34,5 +34,8 @@ void Noise::amplitude(double a) {
 }
 
 double Noise::getCurrentAmpl() {
+
 	return curr_ampl;
 }
+
+

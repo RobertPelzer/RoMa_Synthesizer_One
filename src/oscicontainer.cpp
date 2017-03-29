@@ -5,6 +5,7 @@ Oscicontainer::Oscicontainer(uint32_t fs) {
 	osciSaw = new Sawtoothwave(440,0.0,0,fs);
 	osciSquare = new Squarewave(440,0.0,0,fs);
 	osciNoise = new Noise(0.0);
+	this->isLFO = false;
 
 	// create release Note Object
 	relNote = new releaseNote();
@@ -13,25 +14,82 @@ Oscicontainer::Oscicontainer(uint32_t fs) {
 	osciSawAmpl = 0.0;
 	osciSquareAmpl = 0.0;
 	osciNoiseAmpl = 0.0;
+
+}
+//LFO Constructor: type and frequency selectable. Type 0 (and any other non-defined): Sinus, Type 1: Saw, Type 2: Square
+Oscicontainer::Oscicontainer(int type, double f) {
+ 
+  lfoSaw= new Sawtoothwave(f,1,0,48000);
+  lfoSquare= new Squarewave(f,1,0,48000);
+  lfoSin = new Sinusoid(f,1,0,48000);
+  
+   if(type ==1) {
+     lfoSaw->amplitude(1);
+     lfoSquare->amplitude(0);
+     lfoSin->amplitude(0);
+   }
+  else if (type ==2) {
+     lfoSaw->amplitude(0);
+     lfoSquare->amplitude(1);
+     lfoSin->amplitude(0);
+     }
+  else {
+     lfoSaw->amplitude(0);
+     lfoSquare->amplitude(0);
+     lfoSin->amplitude(1);
+     }
+
+  this->isLFO = true;
 }
 
+
+
 double Oscicontainer::getNextSample() {
+double thisVal;
 
-	double thisVal = osciSine->getNextSample();
-	thisVal = thisVal + osciSaw->getNextSample();
-	thisVal = thisVal + osciSquare->getNextSample();
-	thisVal = thisVal + osciNoise->getNextSample();
-	thisVal = thisVal * relNote->process();
-
+  if (this->isLFO==true) {
+    if(this->type ==1) thisVal= lfoSaw->getNextSample();
+    else if (this->type ==2) thisVal = lfoSquare->getNextSample();
+    else thisVal= lfoSin->getNextSample();
+   
+	}
+	else {
+  thisVal = osciSine->getNextSample();
+  thisVal = thisVal + osciSaw->getNextSample();
+  thisVal = thisVal + osciSquare->getNextSample();
+  thisVal = thisVal + osciNoise->getNextSample();
+  thisVal = thisVal * relNote->process();
+}
     return thisVal;
 
 }
 
 void Oscicontainer::amplitude(double a) {
+
+ if (this->isLFO==true) {
+    if(this->type ==1) {
+     lfoSaw->amplitude(1);
+     lfoSquare->amplitude(0);
+     lfoSin->amplitude(0);
+   }
+  else if (this->type ==2) {
+      lfoSaw->amplitude(0);
+     lfoSquare->amplitude(1);
+     lfoSin->amplitude(0);
+     }
+  else {
+      lfoSaw->amplitude(0);
+     lfoSquare->amplitude(0);
+     lfoSin->amplitude(1);
+     }
+     }
+     
+   else {
 	osciSaw->amplitude(osciSawAmpl*a);
 	osciSquare->amplitude(osciSquareAmpl*a);
 	osciNoise->amplitude(osciNoiseAmpl*a);
 	osciSine->amplitude(osciSineAmpl*a);
+	}
 }
 
 double Oscicontainer::getCurrentAmpl() {
@@ -42,9 +100,16 @@ double Oscicontainer::getCurrentAmpl() {
 }
 
 void Oscicontainer::frequency(double f) {
-	osciSaw->frequency(f);
-	osciSquare->frequency(f);
-	osciSine->frequency(f);
+  if (this->isLFO==true) {
+     if(this->type ==1) lfoSaw->frequency(f);
+    else if (this->type ==2) lfoSquare->frequency(f);
+    else lfoSin->frequency(f);
+    }
+  else {
+    osciSaw->frequency(f);
+    osciSquare->frequency(f);
+    osciSine->frequency(f);
+	}
 }
 
 void Oscicontainer::phase(double phi) {
@@ -68,10 +133,29 @@ void Oscicontainer::setNoiseAmpl(double a) {
 	osciNoiseAmpl = a;
 }
 
+
 void Oscicontainer::setReleaseNoteState(int status) {
 	relNote->gate(status);
 }
 
 float Oscicontainer::releaseNoteProcess() {
 	return relNote->process();
+
+void Oscicontainer::setLFOtype(int Type) {
+	this->type = Type;
+	Oscicontainer::amplitude(0);
+}
+
+
+double Oscicontainer::getCurrentAmpl() {
+  if (this->isLFO==true) {
+     if(this->type ==1) return lfoSaw->getCurrentAmpl();
+    else if (this->type ==2) return lfoSquare->getCurrentAmpl();
+    else return lfoSin->getCurrentAmpl();
+    }
+  else {
+    return 0; // osciSaw->getCurrentAmpl() + osciSquare->getCurrentAmpl() + osciSine->getCurrentAmpl();
+    
+	}
+
 }
