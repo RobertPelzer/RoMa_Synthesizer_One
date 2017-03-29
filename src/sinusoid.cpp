@@ -60,9 +60,6 @@ void Sinusoid::phase(double p) {
 }
 
 double Sinusoid::getCurrentAmpl() {
-<<<<<<< HEAD
+
     return curr_ampl;
-=======
-return curr_ampl;
->>>>>>> biquad_lfo
 }

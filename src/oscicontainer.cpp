@@ -92,12 +92,12 @@ void Oscicontainer::amplitude(double a) {
 	}
 }
 
-double Oscicontainer::getCurrentAmpl() {
+/*double Oscicontainer::getCurrentAmpl() {
 	return 	osciSine->getCurrentAmpl() +
 			osciSaw->getCurrentAmpl() +
 			osciSquare->getCurrentAmpl() + 
 			osciNoise->getCurrentAmpl();
-}
+}*/
 
 void Oscicontainer::frequency(double f) {
   if (this->isLFO==true) {
@@ -140,6 +140,7 @@ void Oscicontainer::setReleaseNoteState(int status) {
 
 float Oscicontainer::releaseNoteProcess() {
 	return relNote->process();
+}
 
 void Oscicontainer::setLFOtype(int Type) {
 	this->type = Type;

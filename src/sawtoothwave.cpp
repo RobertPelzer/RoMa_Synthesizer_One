@@ -64,11 +64,5 @@ void Sawtoothwave::amplitude(double a) {
 
 void Sawtoothwave::phase(double p) {
     phi = p;
-<<<<<<< HEAD
-=======
-}
 
-double Sawtoothwave::getCurrentAmpl() {
-return curr_ampl;
->>>>>>> biquad_lfo
 }

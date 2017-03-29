@@ -48,6 +48,9 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	pathOld = "";
 }
 
+
+    /// Audio Callback Function:
+    /// - the output buffers are filled here
 int RoMaSynthi::audioCallback(jack_nframes_t nframes,
                               // A vector of pointers to each input port.
                               audioBufVector inBufs,
@@ -55,42 +58,9 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
                               audioBufVector outBufs) {
 
         /// LOOP over all output buffers
-        for(unsigned int i = 0; i < 1; i++)
-        {
+    for(unsigned int i = 0; i < 1; i++) {
 
-            for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
-            {
-
-                outBufs[0][frameCNT] = (osci[0]->getNextSample() +
-										osci[1]->getNextSample() + 
-										osci[2]->getNextSample() +
-										osci[3]->getNextSample() +
-										osci[4]->getNextSample() +
-										osci[5]->getNextSample() +
-										osci[6]->getNextSample());
-				outBufs[0][frameCNT] = outBufs[0][frameCNT] / 5;
-			}
-        }
-
-        ///return 0 on success
-
-        return 0;
-	}
-
-    /// Audio Callback Function:
-    /// - the output buffers are filled here
-     int RoMaSynthi::audioCallback(jack_nframes_t nframes,
-                              // A vector of pointers to each input port.
-                              audioBufVector inBufs,
-                              // A vector of pointers to each output port.
-                              audioBufVector outBufs) {
-
-        /// LOOP over all output buffers
-        for(unsigned int i = 0; i < 1; i++)
-        {
-
-            for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
-            {
+    	for(int frameCNT = 0; frameCNT  < nframes; frameCNT++) {
             
                
                 
@@ -98,24 +68,20 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
 										osci[1]->getNextSample() + 
 										osci[2]->getNextSample() +
 										osci[3]->getNextSample() +
-										osci[4]->getNextSample()) / 5;
-										outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
-										/*outBufs[0][frameCNT] = 
-										(filter->process(osci[0]->getNextSample()) +
-										filter->process(osci[1]->getNextSample()) + 
-										filter->process(osci[2]->getNextSample())+
-										filter->process(osci[3]->getNextSample()) +
-										filter->process(osci[4]->getNextSample())) / 5;
-										cout<<*outBufs[0]<<endl;*/
-										 //hand over to filter
-										 lfo->getNextSample();
-			}
-        }
+										osci[4]->getNextSample() +
+										osci[5]->getNextSample() +
+										osci[6]->getNextSample()) / 7;
+
+				outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
+		
+				lfo->getNextSample();
+		}
+    }
 
         ///return 0 on success
          
-        return 0;
-	}
+    return 0;
+}
 
 
 
