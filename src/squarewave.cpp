@@ -15,7 +15,7 @@ double Squarewave::getNextSample() {
     /// squarewave is increased, according to the sample rate.
 
     // get squarewave value
-	double thisVal = 0.0;
+	double thisVal = -1.0;
 
 	if (phi <= M_PI) {
 		thisVal = 1.0;
