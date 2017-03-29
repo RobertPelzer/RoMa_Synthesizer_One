@@ -193,21 +193,21 @@ void RoMaSynthi::oscHandler() {
   	double val;
 	string type = osc->getLastType();
 	
-	if (type== "s") val =  osc->getLastChar();
+	if (type != "empty")
+	{
 
-  	else if (type== "f") val =  osc->getLastDouble();
+	  	if (type== "f") val =  osc->getLastDouble();
 
-  	else if (type== "i") val =  osc->getLastInt();
-  	
-  
-	string path = osc->getLastPath();
-	
-	
-	if (val != 0) {
+	  	else if (type== "i") val =  osc->getLastInt();
+
+	  	else if  (type== "s") val =  osc->getLastChar();
+
+	  	string path = osc->getLastPath();
+
 		typeOld = type;
 		pathOld = path;
 		valOld = val;
-		cout<<val<<path<<type<<endl;
+		cout<<val<<path<<"Type:"<<type<<endl;
 		if (path.compare("/SineAmpl") == 0) {
 			osci[0]->setSineAmpl(val);
 			osci[1]->setSineAmpl(val);

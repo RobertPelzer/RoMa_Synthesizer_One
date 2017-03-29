@@ -40,13 +40,16 @@ int OscMan::double_callback(const char *path, const char *types, lo_arg ** argv,
 
       	statCast->dMessages.push_back(tmpD);
 
+
     }	else if (std::string(types)=="i") {
 
         iMess tmp;
         tmp.type = types;
         tmp.path = path;
-        tmp.val = argv[0]->f;
+        tmp.val = argv[0]->i;
         statCast->iMessages.push_back(tmp);
+
+
 
     }	else if (std::string(types)=="s") {
     
@@ -54,13 +57,14 @@ int OscMan::double_callback(const char *path, const char *types, lo_arg ** argv,
         tmps.type = types;
         tmps.path = path;
         tmps.val = argv[0]->s;
-        statCast->sMessages.push_back(tmps);
-        
+        statCast->sMessages.push_back(tmps);         
      
     }
+
     // store all information
     statCast->paths.push_back(path);
     statCast->types.push_back(types);
+    
     //statCast->messages.push_back(argv[0]->f);
 
 }
@@ -71,7 +75,7 @@ double OscMan::getLastDouble() {
 	if(dMessages.size()>0) {
 	    dMess tmp = dMessages[0];
 	    dMessages.clear();
-		return (double)tmp.val;
+		return tmp.val;
 	}
 
     else
@@ -80,14 +84,14 @@ double OscMan::getLastDouble() {
 
 double OscMan::getLastInt() {
 
-	if(iMessages.size()>0) {
+	//if(iMessages.size()>0) {
 	    iMess tmp = iMessages[0];
 	    iMessages.clear();
     	return (double)tmp.val;
-    }
+    //}
 
-    else
-      	return 0.0;
+    //else
+      	//return 0.0;
 }
 
 double OscMan::getLastChar() {
@@ -95,7 +99,7 @@ double OscMan::getLastChar() {
     if(sMessages.size()>0) {
         sMess tmp = sMessages[0];
         sMessages.clear();
-        return (double)tmp.val;
+        return (double)tmp.val-48; //ASCII Umrechnung
     }
 
     else
@@ -127,7 +131,7 @@ std::string OscMan::getLastType() {
         return s;
     }
     else
-        return "No messages received!";
+        return "empty";
 }
 
 
