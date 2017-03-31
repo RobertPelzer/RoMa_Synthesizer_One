@@ -8,6 +8,8 @@
 #include "oscicontainer.h"
 #include "oscman.h"
 #include "midiman.h"
+#include "Biquad.h"
+#include "sinusoid.h"
 
 using namespace std;
 
@@ -19,6 +21,8 @@ private:
 	OscMan *osc;
 
 	MidiMan *midi;
+	Biquad *filter;
+	Oscicontainer *lfo;
 
 	jack_nframes_t fs;
 	jack_nframes_t nframes;
@@ -34,16 +38,25 @@ private:
 	double valOld;
 	string typeOld;
 	string pathOld;
+	double lfo_oldValue=0;
 
 public:
 
+    //MidiMan *midiMan;
+    /// Audio Callback Function:
+    /// - the output buffers are filled here
+    virtual int audioCallback(jack_nframes_t nframes,
+                              // A vector of pointers to each input port.
+                              audioBufVector inBufs,
+                              // A vector of pointers to each output port.
+                              audioBufVector outBufs); 
     /// Constructor
     RoMaSynthi();
 
-	virtual int audioCallback(jack_nframes_t nframes,
-							audioBufVector inBufs,
-							audioBufVector outBufs);
+	// Setters
+	
 
+ 	void lfoHandler();
 	void midiHandler();
 	void oscHandler();
 };

@@ -24,6 +24,7 @@ public:
     double getCurrentAmpl();
 
 
+
 private:
 
     // PURE SINE STATE

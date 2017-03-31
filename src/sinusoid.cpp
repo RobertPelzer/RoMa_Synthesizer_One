@@ -60,5 +60,6 @@ void Sinusoid::phase(double p) {
 }
 
 double Sinusoid::getCurrentAmpl() {
+
     return curr_ampl;
 }

@@ -20,6 +20,7 @@ private:
     int fs;
 
     double *t;
+    
 
 
 public:

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 
+
 struct dMess{
  std::string type;
  std::string path;
@@ -15,6 +16,12 @@ struct iMess{
  std::string type;
  std::string path;
  int val;
+};
+
+struct sMess{
+ std::string type;
+ std::string path;
+  char val;
 };
 
 class OscMan {
@@ -33,6 +40,7 @@ private:
 
     std::vector<dMess> dMessages;
     std::vector<iMess> iMessages;
+    std::vector<sMess> sMessages;
 
     static int double_callback(const char *path, const char *types, lo_arg ** argv,
                                int argc, void *data, void *user_data);
@@ -41,7 +49,9 @@ public:
 
     OscMan(int p);
     double getLastMessage();
-    dMess getLast_dMess();
+    double getLastDouble();
+    double getLastInt();
+    double getLastChar();
     std::string getLastPath();
     std::string getLastType();
     int getNumberOfMessages();

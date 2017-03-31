@@ -1,4 +1,5 @@
 #include "romasynthi.h"
+//#include <fstream>
 
 RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	reserveInPorts(2);
@@ -22,6 +23,10 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 
 	osc = new OscMan(50000);
 	midi = new MidiMan();
+	//filter= new Biquad();
+	filter= new Biquad(0, 0.3, 0.2, 1.0);
+	lfo= new Oscicontainer(0, 1);
+	//filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
 
 	midi->flushProcessedMessages();
 
@@ -43,6 +48,9 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	pathOld = "";
 }
 
+
+    /// Audio Callback Function:
+    /// - the output buffers are filled here
 int RoMaSynthi::audioCallback(jack_nframes_t nframes,
                               // A vector of pointers to each input port.
                               audioBufVector inBufs,
@@ -50,27 +58,32 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
                               audioBufVector outBufs) {
 
         /// LOOP over all output buffers
-        for(unsigned int i = 0; i < 1; i++)
-        {
+    for(unsigned int i = 0; i < 1; i++) {
 
-            for(int frameCNT = 0; frameCNT  < nframes; frameCNT++)
-            {
-
+    	for(int frameCNT = 0; frameCNT  < nframes; frameCNT++) {
+            
+               
+                
                 outBufs[0][frameCNT] = (osci[0]->getNextSample() +
 										osci[1]->getNextSample() + 
 										osci[2]->getNextSample() +
 										osci[3]->getNextSample() +
 										osci[4]->getNextSample() +
 										osci[5]->getNextSample() +
-										osci[6]->getNextSample());
-				outBufs[0][frameCNT] = outBufs[0][frameCNT] / 5;
-			}
-        }
+										osci[6]->getNextSample()) / 7;
+
+				outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
+		
+				lfo->getNextSample();
+		}
+    }
 
         ///return 0 on success
+         
+    return 0;
+}
 
-        return 0;
-	}
+
 
 void RoMaSynthi::midiHandler() {
 
@@ -190,14 +203,24 @@ void RoMaSynthi::midiHandler() {
 
 void RoMaSynthi::oscHandler() {
 
-	double val = osc->getLastMessage();
+  	double val;
 	string type = osc->getLastType();
-	string path = osc->getLastPath();
-	if (val != 0) {
+	
+	if (type != "empty")
+	{
+
+	  	if (type== "f") val =  osc->getLastDouble();
+
+	  	else if (type== "i") val =  osc->getLastInt();
+
+	  	else if  (type== "s") val =  osc->getLastChar();
+
+	  	string path = osc->getLastPath();
+
 		typeOld = type;
 		pathOld = path;
 		valOld = val;
-		
+		cout<<val<<path<<"Type:"<<type<<endl;
 		if (path.compare("/SineAmpl") == 0) {
 			osci[0]->setSineAmpl(val);
 			osci[1]->setSineAmpl(val);
@@ -239,6 +262,47 @@ void RoMaSynthi::oscHandler() {
 			osci[5]->setNoiseAmpl(val);
 			osci[6]->setNoiseAmpl(val);
 		}
+		
+	    if (path.compare("/LFO_Q") == 0) {
+	      filter->setQ(val);
+		}
+			
+		if (path.compare("/Filter_Type") == 0) {
+	      filter->setType((int)val);
+		}
+			
+		if (path.compare("/Filter_Gain") == 0) {
+	      filter->setPeakGain(val);
+		}
+			
+		if (path.compare("/LFO_Freq") == 0) {
+	      lfo->frequency(val);
+	    }
+
+	    if (path.compare("/LFO_Type") == 0) {
+	      lfo->setLFOtype((int)val);
+		}
 	}
+	
+	
 	usleep(500);
 }
+
+
+void RoMaSynthi::lfoHandler() {
+
+	  //limits LFO Signal to 6- Bit 
+	 double lfo_step = 0.0078125;
+
+	 double lfo_value=((lfo->getCurrentAmpl()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
+	 if (lfo_value<0) lfo_value=0;//no negative values - dirty workaround in case amplitude is higher than 1
+
+	 if (lfo_value > (lfo_oldValue + lfo_step) || lfo_value < (lfo_oldValue - lfo_step) ) {
+      	//change Cutoff of Filter when lfo_value changes
+     	filter->setFc(lfo_value);
+      	lfo_oldValue=lfo_value;
+      
+	 }
+
+}
+  

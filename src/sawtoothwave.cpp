@@ -64,4 +64,5 @@ void Sawtoothwave::amplitude(double a) {
 
 void Sawtoothwave::phase(double p) {
     phi = p;
+
 }

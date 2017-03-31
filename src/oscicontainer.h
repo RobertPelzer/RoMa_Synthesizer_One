@@ -16,6 +16,10 @@ private:
 	Sawtoothwave *osciSaw;
 	Squarewave *osciSquare;
 	Noise *osciNoise;
+	
+	Sawtoothwave *lfoSaw;
+	Squarewave *lfoSquare;
+	Sinusoid *lfoSin;
 
 	releaseNote *relNote;
 
@@ -23,9 +27,16 @@ private:
 	double osciSquareAmpl;
 	double osciNoiseAmpl;
 	double osciSineAmpl;
+	bool isLFO;
+	int type;
+
 
 public:
+
 	Oscicontainer(uint32_t fs);
+
+	Oscicontainer(int type, double f);
+	
 
 	// Setters
 	void amplitude(double a);
@@ -35,8 +46,12 @@ public:
 	void setSquareAmpl(double a);
 	void setNoiseAmpl(double a);
 	void setSineAmpl(double a);
+
 	void setReleaseNoteState(int status);
 	float releaseNoteProcess();
+
+	void setLFOtype(int Type);
+
 
 	// Getters
     double getNextSample();

@@ -31,7 +31,9 @@ double Squarewave::getNextSample() {
     if(phi>=2*M_PI)
         phi=0;
 
+
     curr_ampl = thisVal;
+
 
     return thisVal;
 
@@ -63,5 +65,7 @@ void Squarewave::phase(double p) {
 }
 
 double Squarewave::getCurrentAmpl() {
+
     return curr_ampl;
+
 }
