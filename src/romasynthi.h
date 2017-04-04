@@ -10,6 +10,7 @@
 #include "midiman.h"
 #include "Biquad.h"
 #include "sinusoid.h"
+#include "distortion.h"
 
 using namespace std;
 
@@ -23,6 +24,7 @@ private:
 	MidiMan *midi;
 	Biquad *filter;
 	Oscicontainer *lfo;
+	Distortion* distortion;
 
 	jack_nframes_t fs;
 	jack_nframes_t nframes;
@@ -39,6 +41,7 @@ private:
 	string typeOld;
 	string pathOld;
 	double lfo_oldValue=0;
+	bool distortion_on;
 
 public:
 

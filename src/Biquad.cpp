@@ -16,7 +16,7 @@
 //  for your own purposes, free or commercial.
 //
 
-#include <math.h>
+
 #include "Biquad.h"
 #include <iostream> 
 #include <unistd.h>
@@ -42,6 +42,9 @@ Biquad::~Biquad() {
 void Biquad::setType(int type) {
     this->type = type;
     calcBiquad();
+
+    if(type==bq_type_peak || type==bq_type_lowshelf || type==bq_type_highshelf) setGainReduce(1); //reduce gain for peak, highshelf and lowshelf
+    else setGainReduce(0);
 }
 
 void Biquad::setQ(double Q) {
@@ -55,7 +58,7 @@ void Biquad::setFc(double Fc) {
 }
 
 void Biquad::status() {
-    //std::cout<<"Cutoff: "<<Fc<<"a: "<<a0<<"a1: "<<a1<<"b1: "<<b1<<"b2: "<<b2<<std::endl;
+
     std::cout<<"Filter Type: "<<type<<std::endl;
 }
 void Biquad::setPeakGain(double peakGainDB) {
@@ -68,6 +71,15 @@ void Biquad::setBiquad(int type, double Fc, double Q, double peakGainDB) {
     this->Q = Q;
     this->Fc = Fc;
     setPeakGain(peakGainDB);
+}
+
+
+void Biquad::setGainReduce(int on) {
+
+    if (on==1) {
+      gain_reduce=true;  
+    }
+    else gain_reduce=false;
 }
 
 void Biquad::calcBiquad(void) {

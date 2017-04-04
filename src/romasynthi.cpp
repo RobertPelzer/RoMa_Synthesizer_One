@@ -26,7 +26,7 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	//filter= new Biquad();
 	filter= new Biquad(0, 0.3, 0.2, 1.0);
 	lfo= new Oscicontainer(0, 1);
-	//filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
+	distortion = new Distortion();
 
 	midi->flushProcessedMessages();
 
@@ -46,7 +46,10 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	valOld = 0.0;
 	typeOld = "";
 	pathOld = "";
+	bool distortion_on = false;
+
 }
+
 
 
     /// Audio Callback Function:
@@ -73,6 +76,8 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
 										osci[6]->getNextSample()) / 7;
 
 				outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
+
+				if(distortion_on) outBufs[0][frameCNT] = distortion->process(outBufs[0][frameCNT]); //hand over to distortion
 		
 				lfo->getNextSample();
 		}
@@ -264,24 +269,33 @@ void RoMaSynthi::oscHandler() {
 		}
 		
 	    if (path.compare("/LFO_Q") == 0) {
-	      filter->setQ(val);
+	      	filter->setQ(val);
 		}
 			
 		if (path.compare("/Filter_Type") == 0) {
-	      filter->setType((int)val);
+	      	filter->setType((int)val);
 		}
 			
 		if (path.compare("/Filter_Gain") == 0) {
-	      filter->setPeakGain(val);
+	      	filter->setPeakGain(val);
 		}
 			
 		if (path.compare("/LFO_Freq") == 0) {
-	      lfo->frequency(val);
+	    	lfo->frequency(val);
 	    }
 
 	    if (path.compare("/LFO_Type") == 0) {
-	      lfo->setLFOtype((int)val);
+	      	lfo->setLFOtype((int)val);
 		}
+
+		if (path.compare("/Distortion_Gain") == 0) {
+	      	distortion->setGain((int)val);
+		}
+
+		if (path.compare("/Dist_On") == 0) {
+	      	distortion_on=(int)val;
+		}
+
 	}
 	
 	

@@ -101,14 +101,15 @@ void Oscicontainer::amplitude(double a) {
 
 void Oscicontainer::frequency(double f) {
   if (this->isLFO==true) {
-     if(this->type ==1) lfoSaw->frequency(f);
-    else if (this->type ==2) lfoSquare->frequency(f);
-    else lfoSin->frequency(f);
-    }
+      lfoSaw->frequency(f);
+      lfoSquare->frequency(f);
+      lfoSin->frequency(f);
+  }  
+   
   else {
-    osciSaw->frequency(f);
-    osciSquare->frequency(f);
-    osciSine->frequency(f);
+      osciSaw->frequency(f);
+      osciSquare->frequency(f);
+      osciSine->frequency(f);
 	}
 }
 
