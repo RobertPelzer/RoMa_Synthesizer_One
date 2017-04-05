@@ -24,9 +24,10 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	osc = new OscMan(50000);
 	midi = new MidiMan();
 	//filter= new Biquad();
-	filter= new Biquad(0, 0.3, 0.2, 1.0);
-	lfo= new Oscicontainer(0, 1);
+	filter = new Biquad(0, 0.3, 0.2, 1.0);
+	lfo = new Oscicontainer(0, 1);
 	//filter->setBiquad(bq_type_lowpass, 10000.0 / 44100.0, 0.707, 0);
+	filterStatus = false;
 
 	midi->flushProcessedMessages();
 
@@ -71,8 +72,9 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
 										osci[4]->getNextSample() +
 										osci[5]->getNextSample() +
 										osci[6]->getNextSample()) / 7;
-
-				outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
+                if(filterStatus) {
+                	outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
+                }
 		
 				lfo->getNextSample();
 		}
@@ -124,6 +126,7 @@ void RoMaSynthi::midiHandler() {
 				//kill oldest Oszi und
 
 				osci[index]->setReleaseNoteState(2);
+				osci[index]->setADSRState(4);
 				//osci[index]->amplitude(0);
 				//value im Notenarray loeschen
 				Noten[index] = -1;
@@ -152,6 +155,8 @@ void RoMaSynthi::midiHandler() {
 				 
 			//Amplitude aus der Midi-Info uebergeben 
 			osci[osci_nummer]->setReleaseNoteState(1);
+			osci[osci_nummer]->setADSRState(1);
+
 			osci[osci_nummer]->amplitude(val3/126);
 			osci[osci_nummer]->phase(0);
 				  
@@ -178,21 +183,22 @@ void RoMaSynthi::midiHandler() {
             //Sicherheitsabfrage - wenn bei find nichts gefunden wird, wird hinter das letzte gezeigt und des kommt zu stackdump
             if(position<maxAnzahl_Osci) {
               	osci[position]->setReleaseNoteState(2);
+              	osci[position]->setADSRState(4);
               	//osci[position]->amplitude(0);
               
               	//value im Notenarray loeschen
               	Noten[position]= -1;
               	//freigewordenen Oszi zurueckgeben
-              	freeOsci.push_back(position);
+              	freeOsci.insert(freeOsci.begin(),position);
               
                 //Zeitinstanz löschen
                	timetracker[position]= -1;
                
                	counter--;
-              	}  
+            }  
               // and some time later, it's gated "off"
 			//env->gate(false); 
-            }
+        }
             
          //Kontrollsausgabe
         if (val1>=0) {
@@ -264,23 +270,89 @@ void RoMaSynthi::oscHandler() {
 		}
 		
 	    if (path.compare("/LFO_Q") == 0) {
-	      filter->setQ(val);
+	     	filter->setQ(val);
 		}
 			
 		if (path.compare("/Filter_Type") == 0) {
-	      filter->setType((int)val);
+	    	filter->setType((int)val);
 		}
 			
 		if (path.compare("/Filter_Gain") == 0) {
-	      filter->setPeakGain(val);
+	    	filter->setPeakGain(val);
 		}
 			
 		if (path.compare("/LFO_Freq") == 0) {
-	      lfo->frequency(val);
+	    	lfo->frequency(val);
 	    }
 
 	    if (path.compare("/LFO_Type") == 0) {
-	      lfo->setLFOtype((int)val);
+	    	lfo->setLFOtype((int)val);
+		}
+
+		if (path.compare("/Filter_Status") == 0) {
+			if ((int)val == 1) filterStatus = true;
+			else filterStatus = false;
+		}
+
+		if (path.compare("/ADSR_Status") == 0) {
+			if ((int)val == 1) {
+				osci[0]->setADSRStatus(true);
+				osci[1]->setADSRStatus(true);
+				osci[2]->setADSRStatus(true);
+				osci[3]->setADSRStatus(true);
+				osci[4]->setADSRStatus(true);
+				osci[5]->setADSRStatus(true);
+				osci[6]->setADSRStatus(true);
+			}
+			else {
+				osci[0]->setADSRStatus(false);
+				osci[1]->setADSRStatus(false);
+				osci[2]->setADSRStatus(false);
+				osci[3]->setADSRStatus(false);
+				osci[4]->setADSRStatus(false);
+				osci[5]->setADSRStatus(false);
+				osci[6]->setADSRStatus(false);
+			}
+		}
+
+		if (path.compare("/ADSR_Sustain_Level") == 0) {
+	    	osci[0]->setADSRSustainLevel(val);
+			osci[1]->setADSRSustainLevel(val);
+			osci[2]->setADSRSustainLevel(val);
+			osci[3]->setADSRSustainLevel(val);
+			osci[4]->setADSRSustainLevel(val);
+			osci[5]->setADSRSustainLevel(val);
+			osci[6]->setADSRSustainLevel(val);
+		}
+
+		if (path.compare("/ADSR_Attack_Time") == 0) {
+	    	osci[0]->setADSRAttackTime(val);
+			osci[1]->setADSRAttackTime(val);
+			osci[2]->setADSRAttackTime(val);
+			osci[3]->setADSRAttackTime(val);
+			osci[4]->setADSRAttackTime(val);
+			osci[5]->setADSRAttackTime(val);
+			osci[6]->setADSRAttackTime(val);
+		}
+
+		if (path.compare("/ADSR_Release_Time") == 0) {
+	    	osci[0]->setADSRReleaseTime(val);
+			osci[1]->setADSRReleaseTime(val);
+			osci[2]->setADSRReleaseTime(val);
+			osci[3]->setADSRReleaseTime(val);
+			osci[4]->setADSRReleaseTime(val);
+			osci[5]->setADSRReleaseTime(val);
+			osci[6]->setADSRReleaseTime(val);
+		}
+
+		if (path.compare("/ADSR_Decay_Time") == 0) {
+	    	osci[0]->setADSRDecayTime(val);
+			osci[1]->setADSRDecayTime(val);
+			osci[2]->setADSRDecayTime(val);
+			osci[3]->setADSRDecayTime(val);
+			osci[4]->setADSRDecayTime(val);
+			osci[5]->setADSRDecayTime(val);
+			osci[6]->setADSRDecayTime(val);
 		}
 	}
 	
@@ -292,7 +364,7 @@ void RoMaSynthi::oscHandler() {
 void RoMaSynthi::lfoHandler() {
 
 	  //limits LFO Signal to 6- Bit 
-	 double lfo_step = 0.0078125;
+	 double lfo_step = 0.0000001;
 
 	 double lfo_value=((lfo->getCurrentAmpl()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
 	 if (lfo_value<0) lfo_value=0;//no negative values - dirty workaround in case amplitude is higher than 1

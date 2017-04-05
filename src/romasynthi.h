@@ -10,6 +10,7 @@
 #include "midiman.h"
 #include "Biquad.h"
 #include "sinusoid.h"
+#include "adsr.h"
 
 using namespace std;
 
@@ -23,6 +24,8 @@ private:
 	MidiMan *midi;
 	Biquad *filter;
 	Oscicontainer *lfo;
+
+	bool filterStatus;
 
 	jack_nframes_t fs;
 	jack_nframes_t nframes;

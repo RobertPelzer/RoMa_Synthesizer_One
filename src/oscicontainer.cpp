@@ -10,6 +10,9 @@ Oscicontainer::Oscicontainer(uint32_t fs) {
 	// create release Note Object
 	relNote = new releaseNote();
 
+  envelope = new ADSR();
+  ADSRStatus = false;
+
  	osciSineAmpl = 0.0;
 	osciSawAmpl = 0.0;
 	osciSquareAmpl = 0.0;
@@ -54,11 +57,15 @@ double thisVal;
    
 	}
 	else {
-  thisVal = osciSine->getNextSample();
-  thisVal = thisVal + osciSaw->getNextSample();
-  thisVal = thisVal + osciSquare->getNextSample();
-  thisVal = thisVal + osciNoise->getNextSample();
-  thisVal = thisVal * relNote->process();
+    thisVal = osciSine->getNextSample();
+    thisVal = thisVal + osciSaw->getNextSample();
+    thisVal = thisVal + osciSquare->getNextSample();
+    thisVal = thisVal + osciNoise->getNextSample();
+    if (this->ADSRStatus) {
+      thisVal = thisVal * envelope->process();
+    } else {
+      thisVal = thisVal * relNote->process();
+    }
 }
     return thisVal;
 
@@ -138,9 +145,18 @@ void Oscicontainer::setReleaseNoteState(int status) {
 	relNote->gate(status);
 }
 
+void Oscicontainer::setADSRState(int status) {
+  envelope->gate(status);
+}
+
+void Oscicontainer::setADSRStatus(bool status) {
+  this->ADSRStatus = status;
+}
+
+/*
 float Oscicontainer::releaseNoteProcess() {
 	return relNote->process();
-}
+}*/
 
 void Oscicontainer::setLFOtype(int Type) {
 	this->type = Type;
@@ -159,4 +175,20 @@ double Oscicontainer::getCurrentAmpl() {
     
 	}
 
+}
+
+void Oscicontainer::setADSRAttackTime(float t) {
+  envelope->setAttackTime(t);
+}
+
+void Oscicontainer::setADSRDecayTime(float t) {
+  envelope->setDecayTime(t);
+}
+
+void Oscicontainer::setADSRSustainLevel(float level) {
+  envelope->setSustainLevel(level);
+}
+
+void Oscicontainer::setADSRReleaseTime(float t) {
+  envelope->setReleaseTime(t);
 }
