@@ -11,6 +11,7 @@
 #include "Biquad.h"
 #include "sinusoid.h"
 #include "distortion.h"
+#include "adsr.h"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ private:
 	Biquad *filter;
 	Oscicontainer *lfo;
 	Distortion* distortion;
+
+	bool filterStatus;
 
 	jack_nframes_t fs;
 	jack_nframes_t nframes;
