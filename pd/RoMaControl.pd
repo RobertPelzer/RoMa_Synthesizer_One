@@ -1,9 +1,9 @@
-#N canvas 680 608 596 412 10;
+#N canvas 1280 48 1276 972 10;
 #X declare -lib mrpeach;
 #X obj 212 363 packOSC;
 #X obj 212 387 udpsend;
 #X obj 15 21 import mrpeach;
-#X msg 391 392 disconnect;
+#X msg 292 431 disconnect;
 #X floatatom 11 103 5 0 0 0 - - -;
 #X floatatom 81 103 5 0 0 0 - - -;
 #X floatatom 122 104 5 0 0 0 - - -;
@@ -13,33 +13,33 @@
 #X msg 81 125 send /SquareAmpl \$1;
 #X msg 124 177 send /NoiseAmpl \$1;
 #X obj 245 53 vsl 32 128 0.001 0.9 1 0 empty empty LFO_Q 0 -9 0 10
--258113 -110593 -1 3000 1;
+-258113 -110593 -1 3400 1;
 #X floatatom 241 193 5 0 0 0 - - -;
 #X obj 281 53 vsl 32 128 0.5 6.5 1 0 empty empty Filter_Type 0 -9 0
-10 -4032 -110593 -1 11000 1;
+10 -4032 -110593 -1 1600 1;
 #X msg 212 319 send /LFO_Q \$1;
 #X floatatom 280 198 5 0 0 0 - - -;
 #X msg 249 296 send /Filter_Type \$1;
 #X obj 320 67 vsl 32 128 0.2 50 1 0 empty empty Filter_Gain 0 -9 0
-10 -159808 -110593 -1 8700 1;
+10 -159808 -110593 -1 0 1;
 #X floatatom 320 203 5 0 0 0 - - -;
 #X msg 320 272 send /Filter_Gain \$1;
 #X obj 359 78 vsl 32 128 0.1 10 1 0 empty empty LFO_Frequency 0 -9
-0 10 -191407 -110593 -1 10900 1;
+0 10 -191407 -110593 -1 10100 1;
 #X msg 385 249 send /LFO_Freq \$1;
 #X floatatom 360 217 5 0 0 0 - - -;
 #X obj 399 99 vradio 30 1 0 4 empty empty LFO_Type 0 -8 0 20 -262144
 -1 -1 1;
 #X floatatom 403 223 5 0 0 0 - - -;
-#X msg 469 225 send /LFO_Type \$1;
-#X msg 392 355 connect 192.168.23.1 50000;
-#X msg 395 321 connect localhost 50000;
-#X obj 452 154 tgl 30 0 empty empty Filter_On/Off -20 -10 0 10 -4160
+#X msg 394 294 send /LFO_Type \$1;
+#X msg 293 394 connect 192.168.23.1 50000;
+#X msg 296 360 connect localhost 50000;
+#X obj 561 166 tgl 30 0 empty empty Filter_On/Off -20 -10 0 10 -4160
 -257985 -1 0 1;
 #X floatatom 511 181 5 0 0 0 - - -;
 #X msg 511 202 send /Filter_Status \$1;
 #X obj 70 295 tgl 30 0 empty empty ADSR_On/Off -20 -10 0 10 -4160 -257985
--1 1 1;
+-1 0 1;
 #X floatatom 4 235 5 0 0 0 - - -;
 #X msg 115 242 send /ADSR_Status \$1;
 #X obj 81 67 tgl 30 0 empty empty Square 0 -10 0 10 -13381 -262144
@@ -47,25 +47,33 @@
 #X obj 46 67 tgl 30 0 empty empty Saw 0 -10 0 10 -13381 -262144 -1
 0 1;
 #X obj 11 67 tgl 30 0 empty empty Sine 0 -10 0 10 -13381 -262144 -1
-1 1;
+0 1;
 #X obj 122 67 tgl 30 0 empty empty Noise 0 -10 0 10 -260097 -262144
 -1 0 1;
 #X obj 80 342 vsl 32 128 0.1 1 1 0 empty empty Sust 0 -9 0 10 -4160
--257985 -1 0 1;
+-257985 -1 8600 1;
 #X floatatom 80 478 5 0 0 0 - - -;
 #X msg 218 479 send /ADSR_Sustain_Level \$1;
 #X obj -2 342 vsl 32 128 0.05 0.0001 1 0 empty empty Attack 0 -9 0
-10 -4160 -257985 -1 11100 1;
+10 -4160 -257985 -1 12700 1;
 #X floatatom -2 478 5 0 0 0 - - -;
 #X msg 193 523 send /ADSR_Attack_Time \$1;
 #X obj 41 342 vsl 32 128 0.999 0.99999 0 0 empty empty Decay 0 -9 0
-10 -4160 -257985 -1 11100 1;
+10 -4160 -257985 -1 12700 1;
 #X obj 120 341 vsl 32 128 0.999 0.99999 0 0 empty empty Release 0 -9
 0 10 -4160 -257985 -1 12700 1;
 #X floatatom 41 476 5 0 0 0 - - -;
 #X floatatom 120 477 5 0 0 0 - - -;
 #X msg 232 457 send /ADSR_Release_Time \$1;
 #X msg 200 504 send /ADSR_Decay_Time \$1;
+#X obj 438 119 vsl 32 128 1 1000 1 0 empty empty Overdrive_gain 0 -9
+0 12 -261682 -110593 -1 0 1;
+#X floatatom 455 272 5 0 0 0 - - -;
+#X obj 474 131 tgl 30 0 empty empty Distortion_on 0 -5 0 12 -262144
+-1 -1 0 1;
+#X floatatom 510 293 5 0 0 0 - - -;
+#X msg 401 341 send /Dist_On \$1;
+#X msg 402 319 send /Distortion_Gain \$1;
 #X connect 0 0 1 0;
 #X connect 3 0 1 0;
 #X connect 4 0 8 0;
@@ -115,3 +123,9 @@
 #X connect 48 0 49 0;
 #X connect 49 0 0 0;
 #X connect 50 0 0 0;
+#X connect 51 0 52 0;
+#X connect 52 0 56 0;
+#X connect 53 0 54 0;
+#X connect 54 0 55 0;
+#X connect 55 0 0 0;
+#X connect 56 0 0 0;
