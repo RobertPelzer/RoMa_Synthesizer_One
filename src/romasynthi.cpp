@@ -1,5 +1,5 @@
 #include "romasynthi.h"
-#include <iostream>
+
 
 RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	reserveInPorts(2);
