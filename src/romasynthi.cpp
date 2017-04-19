@@ -1,5 +1,5 @@
 #include "romasynthi.h"
-//#include <fstream>
+#include <iostream>
 
 RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	reserveInPorts(2);
@@ -296,6 +296,7 @@ void RoMaSynthi::oscHandler() {
 	      	distortion_on=(int)val;
 		}
 
+
 	}
 	
 	
@@ -305,15 +306,21 @@ void RoMaSynthi::oscHandler() {
 
 void RoMaSynthi::lfoHandler() {
 
-	  //limits LFO Signal to 6- Bit 
-	 double lfo_step = 0.0078125;
+	  //limits LFO Signal to 9- Bit (0.5/512)
+	 double lfo_step = 0.001;
+	 double fc_limit=100.0/fs;
 
 	 double lfo_value=((lfo->getCurrentAmpl()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
 	 if (lfo_value<0) lfo_value=0;//no negative values - dirty workaround in case amplitude is higher than 1
 
-	 if (lfo_value > (lfo_oldValue + lfo_step) || lfo_value < (lfo_oldValue - lfo_step) ) {
+	 if (lfo_value > (lfo_oldValue + lfo_step) || lfo_value < (lfo_oldValue - lfo_step) ) { //limits step size
       	//change Cutoff of Filter when lfo_value changes
+      	
+
+      	if (lfo_value < fc_limit) lfo_value=fc_limit; //don´t let FC drop below fc_limit
+
      	filter->setFc(lfo_value);
+     	
       	lfo_oldValue=lfo_value;
       
 	 }

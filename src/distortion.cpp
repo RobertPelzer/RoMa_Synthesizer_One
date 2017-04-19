@@ -21,6 +21,4 @@ Distortion::~Distortion() {
 void Distortion::setGain(int gain) {
     this->gain = gain;
 }
-    
-
 

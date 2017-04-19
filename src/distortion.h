@@ -24,6 +24,7 @@ public:
 protected:
 
     int gain;
+    int daempfer;
 
 };
 
@@ -32,6 +33,7 @@ inline float Distortion::process(float in) {
     
 
     out=(out/abs(out))*(1-exp(gain*out*out/abs(out))); //Distortion Schetzen Formula  
+    
 
     return out;
 }

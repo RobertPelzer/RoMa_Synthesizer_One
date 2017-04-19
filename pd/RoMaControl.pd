@@ -1,4 +1,4 @@
-#N canvas 499 169 1276 972 10;
+#N canvas 384 56 1276 676 10;
 #X declare -lib mrpeach;
 #X obj 15 66 vsl 32 128 0 0.999 0 0 empty empty Sine 0 -9 0 10 -4033
 -1793 -1 12700 1;
@@ -10,7 +10,7 @@
 #X obj 147 60 vsl 32 128 0 0.9 0 0 empty empty Noise 0 -9 0 10 -262081
 -145409 -1 0 1;
 #X floatatom 126 204 5 0 0 0 - - -;
-#X obj 52 66 vsl 32 128 0 0.999 0 0 empty empty Saw 0 -9 0 10 -4033
+#X obj 53 66 vsl 32 128 0 0.999 0 0 empty empty Saw 0 -9 0 10 -4033
 -1793 -1 12700 1;
 #X floatatom 52 204 5 0 0 0 - - -;
 #X msg 15 306 send /SineAmpl \$1;
@@ -18,27 +18,27 @@
 #X msg 89 256 send /SquareAmpl \$1;
 #X msg 126 230 send /NoiseAmpl \$1;
 #X obj 212 67 vsl 32 128 0.001 0.9 1 0 empty empty LFO_Q 0 -9 0 10
--258113 -110593 -1 5000 1;
+-258113 -110593 -1 7700 1;
 #X floatatom 212 203 5 0 0 0 - - -;
 #X obj 249 67 vsl 32 128 0.5 6.5 1 0 empty empty Filter_Type 0 -9 0
-10 -4032 -110593 -1 12000 1;
+10 -4032 -110593 -1 1800 1;
 #X msg 212 319 send /LFO_Q \$1;
 #X floatatom 249 203 5 0 0 0 - - -;
 #X msg 249 296 send /Filter_Type \$1;
-#X obj 320 67 vsl 32 128 0.2 50 1 0 empty empty Filter_Gain 0 -9 0
-10 -159808 -110593 -1 10700 1;
+#X obj 320 67 vsl 32 128 0.2 100 1 0 empty empty Filter_Gain 0 -9 0
+10 -159808 -110593 -1 12700 1;
 #X floatatom 320 203 5 0 0 0 - - -;
 #X msg 320 272 send /Filter_Gain \$1;
 #X obj 388 67 vsl 32 128 0.1 10 1 0 empty empty LFO_Frequency 0 -9
-0 10 -191407 -110593 -1 7500 1;
+0 10 -191407 -110593 -1 11900 1;
 #X msg 388 248 send /LFO_Freq \$1;
 #X floatatom 388 203 5 0 0 0 - - -;
 #X obj 491 73 vradio 30 1 0 4 empty empty LFO_Type 0 -8 0 20 -262144
--1 -1 1;
+-1 -1 2;
 #X floatatom 476 205 5 0 0 0 - - -;
 #X msg 474 279 send /LFO_Type \$1;
-#X obj 633 75 vsl 32 128 1 100000 1 0 empty empty Overdrive_gain 0
--9 0 12 -261682 -110593 -1 2300 1;
+#X obj 634 75 vsl 32 128 1 1000 1 0 empty empty Overdrive_gain 0 -9
+0 12 -261682 -110593 -1 7300 1;
 #X msg 392 355 connect 192.168.23.1 50000;
 #X msg 388 379 connect localhost 50000;
 #X floatatom 623 225 5 0 0 0 - - -;
@@ -46,7 +46,7 @@
 #X obj 96 65 vsl 32 128 0 0.999 0 0 empty empty Square 0 -9 0 10 -4033
 -1793 -1 12700 1;
 #X obj 752 83 tgl 30 0 empty empty Distortion_on 0 -5 0 12 -262144
--1 -1 0 1;
+-1 -1 1 1;
 #X floatatom 749 293 5 0 0 0 - - -;
 #X msg 754 322 send /Dist_On \$1;
 #X msg 602 268 send /Distortion_Gain \$1;
