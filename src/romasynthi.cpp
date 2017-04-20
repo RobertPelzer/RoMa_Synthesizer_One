@@ -379,24 +379,37 @@ void RoMaSynthi::oscHandler() {
 
 void RoMaSynthi::lfoHandler() {
 
-	  //limits LFO Signal to 9- Bit (0.5/512)
-	 double lfo_step = 0.001;
-	 double fc_limit=100.0/fs;
+	//limits LFO Signal to 9- Bit (0.5/512)
+	double lfo_step = 0.001;
 
-	 double lfo_value=((lfo->getCurrentAmpl()+1.0)/2)*0.5; //make value positiv, skaliere mit FC=0.5
-	 if (lfo_value<0) lfo_value=0;//no negative values - dirty workaround in case amplitude is higher than 1
+	//smallest value for Cutoff Frequency
+	double fc_min=200.0/fs;
 
-	 if (lfo_value > (lfo_oldValue + lfo_step) || lfo_value < (lfo_oldValue - lfo_step) ) { //limits step size
-      	//change Cutoff of Filter when lfo_value changes
-      	
+	//highest value for Cutoff Frequency
+	double fc_max=20000.0/fs;
 
-      	if (lfo_value < fc_limit) lfo_value=fc_limit; //don´t let FC drop below fc_limit
+	//Get current LFO 
+	double lfo_value=lfo->getCurrentAmpl(); 
 
-     	filter->setFc(lfo_value);
-     	
+
+	//scale from -1 to 1 in a way that the signal can oscillate between fc_max and fc_min
+	lfo_value=((fc_max-fc_min)/(1-(-1))) * (lfo_value -(-1)) + fc_min;
+
+	 
+	//no negative values - dirty workaround just in case amplitude should be higher than 1 for some reason
+	if (lfo_value<0) lfo_value=0;
+
+	//limits step size
+	if (lfo_value > (lfo_oldValue + lfo_step) || lfo_value < (lfo_oldValue - lfo_step) ) { 
+      
+		//change Cutoff of Filter when lfo_value changes
+    	filter->setFc(lfo_value);
+
+
       	lfo_oldValue=lfo_value;
       
 	 }
 
 }
+
   
