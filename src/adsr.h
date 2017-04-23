@@ -14,19 +14,25 @@ private:
     float release_time;
     
 public:
+    // constructor
 	ADSR(void);
-	~ADSR(void);
+
+    // helper functions
 	float process(void);
-    float getOutput(void);
 	void gate(int on);
     void reset(void);
+
+    // getters
+    float getOutput(void);
     int getState(void);
 
+    // setters
     void setAttackTime(float t);
     void setDecayTime(float t);
     void setReleaseTime(float t);
     void setSustainLevel(float level);
 
+    // states of the ADSR
     enum noteState {
         note_off = 0,
         attack = 1,
@@ -36,6 +42,10 @@ public:
     };
 };
 
+/* process() function
+ * returns the value which the signal is muliplicated
+ * the calculation depends on the state in which the signal is
+ */
 inline float ADSR::process() {
 
     if (state == attack) {

@@ -5,10 +5,6 @@ ADSR::ADSR(void) {
     reset();
 }
 
-ADSR::~ADSR(void) {
-}
-
-
 void ADSR::gate(int gate) {
     if (gate == 0)
         state = note_off;
