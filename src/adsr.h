@@ -1,6 +1,8 @@
 #ifndef adsr_h
 #define adsr_h
 
+#include <math.h>
+
 class ADSR {
 private:
     int state;
@@ -41,23 +43,29 @@ inline float ADSR::process() {
             output = 0.001;
         if (oldState >= 2)
             output = 0.001;
-
-        output = output + output * attack_time;
+        // multiplicator goes from 0.04 to 0.00002
+        // with release_time from 1 to 99
+        output = output + output * (1 - (exp(-log10((1.0 + 10) / 10 ) / attack_time) + 0.0004));
         oldState = state;
         if (output >= 0.99) {
             output = 1.0;
             state = decay;
         }
     } else if (state == decay) {
-        output = output * decay_time;
+        // multiplicator goes from 0.99924 to 0.999992
+        // with release_time from 1 to 99
+        output = output * (0.99 + (exp(-log10((2.0 + 10) / 10 ) / decay_time) / 100));
         oldState = state;
-        if (output <= sustain_level) {
+        if (output <= sustain_level / 100) {
             state = sustain;
         }
     } else if (state == sustain) {
-        output = sustain_level;
+        // sustain goes from 1 to 99
+        output = sustain_level / 100;
     } else if (state == release) {
-        output = output * release_time;
+        // multiplicator goes from 0.99924 to 0.999992
+        // with release_time from 1 to 99
+        output = output * (0.99 + (exp(-log10((2.0 + 10) / 10 ) / release_time) / 100));
         oldState = state;
         if (output <= 0.001) {
             output = 0.0;

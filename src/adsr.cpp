@@ -1,5 +1,4 @@
 #include "adsr.h"
-#include <math.h>
 
 
 ADSR::ADSR(void) {
@@ -27,10 +26,10 @@ void ADSR::reset() {
     state = note_off;
     output = 0.0;
 
-    attack_time = 0.05;
-    decay_time = 0.999;
-    sustain_level = 1.0;
-    release_time = 0.999;
+    attack_time = 1.0;
+    decay_time = 1.0;
+    sustain_level = 99;
+    release_time = 1.0;
 }
 
 float ADSR::getOutput() {
