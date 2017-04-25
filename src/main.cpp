@@ -31,9 +31,13 @@ int main(int argc, char *argv[]) {
 	sigIntHandler.sa_flags = 0;						// Flags to modify the behavior of the handler, or 0
 	sigaction(SIGINT, &sigIntHandler, NULL);
 
+	// Main Program Loop
 	while(!done) {
+		// calls the midi handler to process midi events
 		synth->midiHandler();
+		// calls the osc handler to process osc events
 		synth->oscHandler();
+		// calls the lfo handler to calculate the filter coefficients
 		synth->lfoHandler();
 		
 		usleep(5);

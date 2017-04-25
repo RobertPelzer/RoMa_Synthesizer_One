@@ -5,24 +5,7 @@
 #include <iostream>
 #include <vector>
 
-
-struct dMess{
- std::string type;
- std::string path;
- double val;
-};
-
-struct iMess{
- std::string type;
- std::string path;
- int val;
-};
-
-struct sMess{
- std::string type;
- std::string path;
-  char val;
-};
+#include "datatypes.h"
 
 class OscMan {
 private:

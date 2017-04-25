@@ -5,9 +5,13 @@
 
 class ADSR {
 private:
+    // state of the adsr, e.g. attack, decay ...
     int state;
+    // previous state
     int oldState;
+    // output value, which the signal is multipled
     float output;
+    // variables to manipulate the envelope of the adsr
     float attack_time;
     float decay_time;
     float sustain_level;
@@ -43,8 +47,13 @@ public:
 };
 
 /* process() function
- * returns the value which the signal is muliplicated
+ * returns the value which the signal is muliplied with
  * the calculation depends on the state in which the signal is
+ * and the envelope variables:
+ * float attack_time
+ * float decay_time
+ * float sustain_level
+ * float release_time
  */
 inline float ADSR::process() {
 
