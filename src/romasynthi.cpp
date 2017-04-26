@@ -398,10 +398,6 @@ void RoMaSynthi::oscHandler() {
 			osci[6]->setADSRDecayTime(val);
 		}
 
-		if (path.compare("/Dist_On") == 0) {
-	      	distortion_on=(int)val;
-		}
-
 
 	}
 	

@@ -8,7 +8,7 @@
 
 using namespace std;
 
-bool MidiMan::done;
+
 vector<unsigned char>  a;
 // vector to buffer the incoming data from rt midi
 vector<unsigned char>  buffer;
@@ -30,7 +30,6 @@ MidiMan::MidiMan() {
     midiin->openPort( 0 );
     //    // Don't ignore sysex, timing, or active sensing messages.
     midiin->ignoreTypes( false, false, false );
-    done = false;
 	isVerbose = false;
 
 	cout << "Started Midi Server!" << endl;
