@@ -3,20 +3,6 @@
 
 #include <string>
 
-struct noteMessage {
-    int noteNumber;
-    double velocity;
-    bool hasBeenProcessed;
-
-};
-
-struct ctlMessage {
-    int ctlNumber;
-    double value;
-    bool hasBeenProcessed;
-
-};
-
 /* struct for the osc double message
  * type: 'f' -> double (float), type of the osc message value
  */
