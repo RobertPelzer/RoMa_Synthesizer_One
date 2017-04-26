@@ -1,3 +1,8 @@
+// Romasynth Class
+// In this class all oscillators and filter obejcts are created
+// Midi handling and OSC handling happens here
+// Callback function of the jack client is loaded with output buffers here as well
+
 #include "romasynthi.h"
 
 
@@ -5,12 +10,15 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	reserveInPorts(2);
 	reserveOutPorts(2);
 
+	// delivers the sample rate
 	fs = getSampleRate();
+	// delivers the buffer size
 	nframes = getBufferSize();
 
 	std::cout << "fs: " << fs << " Hz";
 	std::cout << " || buffer size: " << nframes << " samples" << endl;
 
+	// Osclillator Containers for all available playable notes are created here
 	osci = new Oscicontainer *[7];
 
 	osci[0] = new Oscicontainer(fs);
@@ -21,13 +29,19 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	osci[5] = new Oscicontainer(fs);
 	osci[6] = new Oscicontainer(fs);
 
+	// osc manager is created
 	osc = new OscMan(50000);
+	// midi manager is created
 	midi = new MidiMan();
-	//filter= new Biquad();
 
+	// the filter object is created
 	filter= new Biquad(0, 0.3, 0.2, 1.0);
+	// creates the lfo oscillator
 	lfo= new Oscicontainer(0, 1);
+	// disortion object is created
 	distortion = new Distortion();
+
+
 	filterStatus = false;
 
 	midi->flushProcessedMessages();
@@ -35,14 +49,14 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	t_tracking = 0;
 	counter = 0;
 
-
-	//int midi_buffer;
-
+	//vector to store the played Midi Value - the position within the vector corresponds to the oscillator number
 	Noten = {-1, -1, -1, -1, -1, -1, -1} ;
+	//vector containing the unused oscillators
 	freeOsci = { 6, 5, 4, 3, 2, 1, 0};
+	//vector to track the time of played notes - the position within the vector corresponds to the oscillator number
 	timetracker = { -1, -1, -1, -1, -1, -1, -1};
     
-    //maximale Anzahl der Oszillator
+    //max number of oscillators
 	maxAnzahl_Osci = Noten.size();
 
 	valOld = 0.0;
@@ -77,149 +91,160 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
 										osci[5]->getNextSample() +
 										osci[6]->getNextSample()) / 7;
                 if(filterStatus) {
-                	outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); //hand over to filter
+                	//hand over to filter
+                	outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); 
                 }
-                if(distortion_on) outBufs[0][frameCNT] = distortion->process(outBufs[0][frameCNT]); //hand over to distortion
+                //hand over to distortion
+                if(distortion_on) outBufs[0][frameCNT] = distortion->process(outBufs[0][frameCNT]); 
 		
 				lfo->getNextSample();
 		}
     }
 
-        ///return 0 on success
-         
+        
+ 	///return 0 on success        
     return 0;
 }
 
 
-
+// The Midi Handler receives messages from the midi manager
+// all note on and note off handling happens here
 void RoMaSynthi::midiHandler() {
 
 
-      /// process midi messages
+      	/// process midi messages
         
-        // In RT Midi werden definierte Note On und Note off Werte ausgeggeben
-        // val1 : 144 -> Note on, 128 -> Note off
-        //val2 : Tonhöhe von 0 bis 127 - > Tonhöhe wird bei Note On und Note Off ausgegeben
-        //val3 : Velocity - bei Note On wird Wert zwischen 0 un 126 ausgegeben, bei Note Off: 127
+        // In RT Midi defined values for note-on and note-off are being sent:
+        // val1 : 144 -> note on, 128 -> note off
+        //val2 : mote pitch from 0 bis 127 - > note pitch is being sent at both note-on and note-off
+        //val3 : velocity - when note on, value is between 0 and 126, note off: 127
         
 		midiMessage info = midi->get_rtmidi();
-		// int val = midiMan->get_rtmidi;
+	
 		int val1 = info.byte1;
 		int val2 = info.byte2;
 		double val3 = info.byte3;
 		double delta_time = info.stamp; // get time information
-      
-		t_tracking = t_tracking + delta_time; //akkumuliere Zeit
+
+      	//accumulate time
+		t_tracking = t_tracking + delta_time; 
        
-		//int n   = midiMan->getNumFaderMessages();
+
 		int osci_nummer = 0;
 		int position = 0;
 		
-		// Prezedur bei Note-On
+		///////////////////
+		// note-on procedure
+		///////////////////
         if(val1==144) {
-             //wenn alle Oszillatoren benutzte werden, kill oldest
+
+            //if all oscillators are being used, kill oldest
             if(counter==7) {
 				int min = timetracker[0];
 				int index = 0;
-				//finde den aeltesten Wert == kleinste Zeit
+				//find oldest value, i.e. smallest time value
 				for(int i=1; i<timetracker.size(); i++) {
 					if(timetracker[i]<min) {
 						min = timetracker[i];
 						index = i;
 					}
 				}
-				//kill oldest Oszi und
+
+				//kill oldest oscillator
 
 				osci[index]->setReleaseNoteState(2);
 				osci[index]->setADSRState(4);
-				//osci[index]->amplitude(0);
-				//value im Notenarray loeschen
+				
+				//delete value in note vector
 				Noten[index] = -1;
-				//freigewordenen Oszi zurueckgeben
+
+				//return free osci to according vector
 				freeOsci.push_back(index);
 				  
-				//Zeitinstanz löschen
+				//delete time entry
 				timetracker[index] = -1;
 				   
 				counter--;
 			}
 
 
-			//Berechnung der Frequnenz aus der Midi Note
+			//formula to calculate the frequency from midi note value
 			double f0 = std::pow(double (2), (val2-double(69))/double(12))*440;
 				  
-			//freien Oszi finden
+			//find a free oscillator
 			osci_nummer = freeOsci.back();
-			//std::cout << oszi_nummer<<" benutzt"<<endl;
+			
 				  
-			//verwendeten Oszi loeschen
+			//make used osci unavailable
 			freeOsci.pop_back();
-			//std::cout << freeOszi.back()<<" ware der nachste"<<endl;
+			
 			osci[osci_nummer]->frequency(f0);
 				  
 				 
-			//Amplitude aus der Midi-Info uebergeben 
+			//hand amplitude and ADSR data to oscillator
 			osci[osci_nummer]->setReleaseNoteState(1);
 			osci[osci_nummer]->setADSRState(1);
 
+			//n set amplitude and phase
 			osci[osci_nummer]->amplitude(val3/126);
 			osci[osci_nummer]->phase(0);
 				  
-			//Notenwert zwischenspeichern
+			//safe the played midi value
 			Noten[osci_nummer] = val2;
 				  
-			//Zeit zwischenspeichern
+			//safe the time instnace
 			timetracker[osci_nummer] = t_tracking;
 			
-
-			// at some point, by MIDI perhaps, the envelope is gated "on"
-			//env->gate(true);
 				  
 			counter++;
         }
-            
-        //Note off bei Note off Befehl (128)
+        
+        ///////////////////
+		// note-off procedure (val1 = 128)
+		///////////////////    
+        
         if(val1==128 ) {
 
-           //finde Oszillator
-           //std::cout << val2<<" Ton aus"<<endl;
+        	//find the oscillator that plays the frequency refering to the note-off order
             position = find(Noten.begin(), Noten.end(), val2) - Noten.begin();
             
-            //Sicherheitsabfrage - wenn bei find nichts gefunden wird, wird hinter das letzte gezeigt und des kommt zu stackdump
-            if(position<maxAnzahl_Osci) {
+            
+            if(position<maxAnzahl_Osci) {	// security measure to prevent stack dump
+            	// enter into release mode
               	osci[position]->setReleaseNoteState(2);
               	osci[position]->setADSRState(4);
-              	//osci[position]->amplitude(0);
+              	
               
-              	//value im Notenarray loeschen
+              	//delete array in notes vector
               	Noten[position]= -1;
-              	//freigewordenen Oszi zurueckgeben
+              	//return freed oscillator
               	freeOsci.insert(freeOsci.begin(),position);
               
-                //Zeitinstanz löschen
+                //delete time instance
                	timetracker[position]= -1;
                
                	counter--;
             }  
-              // and some time later, it's gated "off"
-			//env->gate(false); 
+ 
         }
             
-         //Kontrollsausgabe
+         /*
+         //for debugging
         if (val1>=0) {
-         //std::cout << "Frei: " << freeOsci.size() << " Zeit: " << t_tracking << "Counter: " << counter << endl;
-       }
+         std::cout << "Frei: " << freeOsci.size() << " Zeit: " << t_tracking << "Counter: " << counter << endl;
+       }*/
 }
 
 
+// OSC Handler receives messegas from OSC manager and hands them over to Setters
 void RoMaSynthi::oscHandler() {
 
   	double val;
+  	// determine the osc message type ()
 	string type = osc->getLastType();
 	
 	if (type != "empty")
 	{
-
 	  	if (type== "f") val =  osc->getLastDouble();
 
 	  	else if (type== "i") val =  osc->getLastInt();
@@ -254,7 +279,7 @@ void RoMaSynthi::oscHandler() {
 			osci[6]->setSawAmpl(val);
 		}
 		if (path.compare("/SquareAmpl") == 0) {
-			//cout << "Harm: " << val << endl;
+			//cout << "SqureAmpl: " << val << endl;
 			osci[0]->setSquareAmpl(val);
 			osci[1]->setSquareAmpl(val);
 			osci[2]->setSquareAmpl(val);
@@ -264,7 +289,7 @@ void RoMaSynthi::oscHandler() {
 			osci[6]->setSquareAmpl(val);
 		}
 		if (path.compare("/NoiseAmpl") == 0) {
-			//cout << "NoiseLevel: " << val << endl;
+
 			osci[0]->setNoiseAmpl(val);
 			osci[1]->setNoiseAmpl(val);
 			osci[2]->setNoiseAmpl(val);

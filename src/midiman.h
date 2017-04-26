@@ -1,3 +1,7 @@
+////////////////////////////////////////////////////////////////////////
+
+//  The Code was edited in certain areas by Robert Pelzer and Markus Wende
+
 #ifndef MIDIMAN_H
 #define MIDIMAN_H
 

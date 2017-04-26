@@ -14,7 +14,10 @@
 //  You may copy and distribute verbatim copies of this document.
 //  You may modify and use this source code to create binary code
 //  for your own purposes, free or commercial.
-//
+////////////////////////////////////////////////////////////////////////
+
+//  The Code was edited in certain areas by Robert Pelzer and Markus Wende
+//  Where the Code was edited, comments were created
 
 
 #include "Biquad.h"
@@ -22,7 +25,7 @@
 #include <unistd.h>
 
 Biquad::Biquad() {
-    type = bq_type_notch;//bq_type_lowpass;
+    type = bq_type_lowpass;//bq_type_lowpass;
     a0 = 1.0;
     a1 = a2 = b1 = b2 = 0.0;
     Fc = 0.50;
@@ -43,7 +46,9 @@ void Biquad::setType(int type) {
     this->type = type;
     calcBiquad();
 
-    if(type==bq_type_peak || type==bq_type_lowshelf || type==bq_type_highshelf) setGainReduce(1); //reduce gain for peak, highshelf and lowshelf
+    //  reduce gain for peak, highshelf and lowshelf
+    //  This leads to a reduction of the volume, however a high peakGain then works similar to the Q factor
+    if(type==bq_type_peak || type==bq_type_lowshelf || type==bq_type_highshelf) setGainReduce(1); 
     else setGainReduce(0);
 }
 
@@ -61,6 +66,7 @@ void Biquad::status() {
 
     std::cout<<"Filter Type: "<<type<<std::endl;
 }
+
 void Biquad::setPeakGain(double peakGainDB) {
     this->peakGain = peakGainDB;
     calcBiquad();
@@ -73,7 +79,7 @@ void Biquad::setBiquad(int type, double Fc, double Q, double peakGainDB) {
     setPeakGain(peakGainDB);
 }
 
-
+// turn on the gain reduction for applicable filter types
 void Biquad::setGainReduce(int on) {
 
     if (on==1) {
