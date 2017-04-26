@@ -1,11 +1,13 @@
 #include "adsr.h"
 
-// constructor
+/* constructor
+ */
 ADSR::ADSR(void) {
     reset();
 }
 
-// set the state of the adsr
+/* set the state of the adsr
+ */
 void ADSR::gate(int gate) {
     if (gate == 0)
         state = note_off;
@@ -19,12 +21,14 @@ void ADSR::gate(int gate) {
         state = release;
 }
 
-// get the current state of the adsr
+/* get the current state of the adsr
+ */
 int ADSR::getState() {
     return this->state;
 }
 
-// reset the adsr with preset values for the envelope
+/* reset the adsr with preset values for the envelope
+ */
 void ADSR::reset() {
     state = note_off;
     output = 0.0;
@@ -35,7 +39,8 @@ void ADSR::reset() {
     release_time = 1.0;
 }
 
-// returns the output
+/* returns the output
+ */
 float ADSR::getOutput() {
     return output;
 }

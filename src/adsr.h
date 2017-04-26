@@ -9,7 +9,7 @@ private:
     int state;
     // previous state
     int oldState;
-    // output value, which the signal is multipled
+    // output value, which the signal is multiplied with
     float output;
     // variables to manipulate the envelope of the adsr
     float attack_time;
@@ -21,7 +21,6 @@ public:
     // constructor
 	ADSR(void);
 
-    // helper functions
 	float process(void);
 	void gate(int on);
     void reset(void);
@@ -48,8 +47,8 @@ public:
 
 /* process() function
  * returns the value which the signal is muliplied with
- * the calculation depends on the state in which the signal is
- * and the envelope variables:
+ * the calculation depends on the envelope state and 
+ * the following envelope coefficients:
  * float attack_time
  * float decay_time
  * float sustain_level

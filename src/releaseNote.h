@@ -3,18 +3,24 @@
 
 class releaseNote {
 private:
+    // state of the releaseNote envelope, e.g. note_on, note_off ...
     int state;
+    // output value, which the signal is multiplied with
     float output;
     
 public:
+    // constructor
 	releaseNote(void);
-	~releaseNote(void);
+
 	float process(void);
-    float getOutput(void);
 	void gate(int on);
     void reset(void);
+
+    // getters
+    float getOutput(void);
     int getState(void);
 
+    // states of the envelope
     enum noteState {
         note_off = 0,
         note_on = 1,
@@ -22,6 +28,10 @@ public:
     };
 };
 
+/* process() function
+ * returns the output value which the signal is muliplied with
+ * the calculation depends on the envelope state
+ */
 inline float releaseNote::process() {
 
     if(state == note_release) {
