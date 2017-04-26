@@ -1,4 +1,5 @@
-////////////////////////////////////////////////////////////////////////
+// Midi manager receives messages from RT-Midi class 
+///////////////////////////////////////////////////////////////////////
 
 //  The Code was edited in certain areas by Robert Pelzer and Markus Wende
 
@@ -96,19 +97,12 @@ midiMessage MidiMan::get_rtmidi() {
 
 
 //////////////////////////////////////////////////////////////////
-// FLUSH
+// FLUSH the buffer
 //////////////////////////////////////////////////////////////////
 
 void MidiMan::flushProcessedMessages() {
-// vektor von val zu a geändert
+
    buffer.clear();
 
 }
 
-
-int MidiMan::getNumFaderMessages() {
-
-    int v  = (int) val.size();
-
-    return v;
-}

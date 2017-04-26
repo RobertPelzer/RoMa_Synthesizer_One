@@ -62,7 +62,6 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	valOld = 0.0;
 	typeOld = "";
 	pathOld = "";
-	bool distortion_on = false;
 
 }
 
@@ -94,9 +93,11 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
                 	//hand over to filter
                 	outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); 
                 }
+
                 //hand over to distortion
-                if(distortion_on) outBufs[0][frameCNT] = distortion->process(outBufs[0][frameCNT]); 
-		
+                outBufs[0][frameCNT] = distortion->process(outBufs[0][frameCNT]); 
+				
+				// rotate lfo oscillator to next step
 				lfo->getNextSample();
 		}
     }
@@ -240,7 +241,9 @@ void RoMaSynthi::midiHandler() {
 void RoMaSynthi::oscHandler() {
 
   	double val;
-  	// determine the osc message type ()
+
+  	// determine the osc message type and use the according getter method 
+  	// (intiger = i, float= f, string =s)
 	string type = osc->getLastType();
 	
 	if (type != "empty")
@@ -256,7 +259,13 @@ void RoMaSynthi::oscHandler() {
 		typeOld = type;
 		pathOld = path;
 		valOld = val;
-		cout<<val<<path<<"Type:"<<type<<endl;
+
+		// display osc messages
+		//cout<<val<<path<<"Type:"<<type<<endl;
+
+		////////////////////////////////////////////////////////
+		// this section sends osc messages to according setters
+		///////////////////////////////////////////////////////
 		if (path.compare("/SineAmpl") == 0) {
 			osci[0]->setSineAmpl(val);
 			osci[1]->setSineAmpl(val);
@@ -321,7 +330,6 @@ void RoMaSynthi::oscHandler() {
 
 		if (path.compare("/Distortion_Gain") == 0) {
 	      	distortion->setGain((int)val);
-	    	lfo->setLFOtype((int)val);
 		}
 
 		if (path.compare("/Filter_Status") == 0) {
@@ -402,9 +410,10 @@ void RoMaSynthi::oscHandler() {
 }
 
 
+
 void RoMaSynthi::lfoHandler() {
 
-	//limits LFO Signal to 9- Bit (0.5/512)
+	//limits LFO Signal to certain step size
 	double lfo_step = 0.001;
 
 	//smallest value for Cutoff Frequency

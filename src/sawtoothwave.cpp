@@ -1,8 +1,11 @@
 //class Sawtoothwave
+//
+// sawtoothsginal is generated with sawtooth formula (no additive sinusoidal synthesis)
 
 #include "sawtoothwave.h"
 
 using namespace std;
+// Constructor
 Sawtoothwave::Sawtoothwave(double f, double a, double p,  int fS)
 {
     freq    = f;
@@ -37,11 +40,13 @@ double Sawtoothwave::getNextSample() {
 
 }
 
+// getter methods
 
 double Sawtoothwave::frequency() {
     return freq;
 }
 
+// method returns the non time-dependand (peak) amplitude
 double Sawtoothwave::amplitude() {
     return amp;
 }
@@ -50,10 +55,13 @@ double Sawtoothwave::phase() {
     return phi;
 }
 
+// method returns the current time-dependend amplitude of the oscillating signal 
 double Sawtoothwave::getCurrentAmpl() {
     return curr_ampl;
 }
 
+
+// setter methods
 void Sawtoothwave::frequency(double f) {
     freq = f;
 }

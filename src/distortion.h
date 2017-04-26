@@ -1,4 +1,5 @@
 //
+// This class is a distortion filter
 //  distortion.h
 
 
@@ -12,12 +13,18 @@ using namespace std;
 
 class Distortion {
 public:
+
+	//constructors
     Distortion();
     Distortion(int gain);
+
+    //destructor
     ~Distortion();
 
+    //setter
     void setGain(int gain);
 
+    // process method
     float process(float in);
 
     
@@ -28,6 +35,7 @@ protected:
 
 };
 
+// distorion filter function
 inline float Distortion::process(float in) {
     float out = in;
     

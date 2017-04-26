@@ -1,3 +1,7 @@
+//class Sinusoid
+//
+// Sinusoid signal is generated with sin function from math.h
+
 #ifndef SINUSOID_H
 #define SINUSOID_H
 
