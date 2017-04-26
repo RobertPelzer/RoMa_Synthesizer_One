@@ -1,3 +1,7 @@
+//class Noise
+//
+// Noise sginal is generated numerically with random values
+
 #ifndef NOISE_H
 #define NOISE_H
 

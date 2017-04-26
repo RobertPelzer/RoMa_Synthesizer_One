@@ -1,3 +1,7 @@
+//class Squarewave
+//
+// square sginal is generated with  formula (no additive sinusoidal synthesis)
+
 #include "squarewave.h"
 
 Squarewave::Squarewave(double f, double a, double p,  int fS) {
@@ -40,10 +44,12 @@ double Squarewave::getNextSample() {
 }
 
 
+//getters
 double Squarewave::frequency() {
     return freq;
 }
 
+// method returns the non time-dependand (peak) amplitude
 double Squarewave::amplitude() {
     return amp;
 }
@@ -52,6 +58,14 @@ double Squarewave::phase() {
     return phi;
 }
 
+// method returns the current time-dependend amplitude of the oscillating signal 
+double Squarewave::getCurrentAmpl() {
+
+    return curr_ampl;
+
+}
+
+//setters
 void Squarewave::frequency(double f) {
     freq = f;
 }
@@ -64,8 +78,3 @@ void Squarewave::phase(double p) {
     phi = p;
 }
 
-double Squarewave::getCurrentAmpl() {
-
-    return curr_ampl;
-
-}

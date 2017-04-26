@@ -1,3 +1,8 @@
+// Romasynth Class
+// In this class all oscillators and filter obejcts are created
+// Midi handling and OSC handling happens here
+// Callback function of the jack client is loaded with output buffers here as well
+
 #include "romasynthi.h"
 
 
@@ -5,12 +10,15 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	reserveInPorts(2);
 	reserveOutPorts(2);
 
+	// delivers the sample rate
 	fs = getSampleRate();
+	// delivers the buffer size
 	nframes = getBufferSize();
 
 	std::cout << "fs: " << fs << " Hz";
 	std::cout << " || buffer size: " << nframes << " samples" << endl;
 
+	// Osclillator Containers for all available playable notes are created here
 	osci = new Oscicontainer *[7];
 
 	osci[0] = new Oscicontainer(fs);
@@ -21,13 +29,19 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	osci[5] = new Oscicontainer(fs);
 	osci[6] = new Oscicontainer(fs);
 
+	// osc manager is created
 	osc = new OscMan(50000);
+	// midi manager is created
 	midi = new MidiMan();
-	//filter= new Biquad();
 
+	// the filter object is created
 	filter= new Biquad(0, 0.3, 0.2, 1.0);
+	// creates the lfo oscillator
 	lfo= new Oscicontainer(0, 1);
+	// disortion object is created
 	distortion = new Distortion();
+
+
 	filterStatus = false;
 
 	midi->flushProcessedMessages();
@@ -48,7 +62,6 @@ RoMaSynthi::RoMaSynthi() : JackCpp::AudioIO("RoMaSynthi", 0,1) {
 	valOld = 0.0;
 	typeOld = "";
 	pathOld = "";
-	bool distortion_on = false;
 
 }
 
@@ -80,24 +93,27 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
                 	//hand over to filter
                 	outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); 
                 }
+
                 //hand over to distortion
-                if(distortion_on) outBufs[0][frameCNT] = distortion->process(outBufs[0][frameCNT]); 
-		
+                outBufs[0][frameCNT] = distortion->process(outBufs[0][frameCNT]); 
+				
+				// rotate lfo oscillator to next step
 				lfo->getNextSample();
 		}
     }
 
-        ///return 0 on success
-         
+        
+ 	///return 0 on success        
     return 0;
 }
 
 
-
+// The Midi Handler receives messages from the midi manager
+// all note on and note off handling happens here
 void RoMaSynthi::midiHandler() {
 
 
-      /// process midi messages
+      	/// process midi messages
         
         // In RT Midi defined values for note-on and note-off are being sent:
         // val1 : 144 -> note on, 128 -> note off
@@ -158,11 +174,11 @@ void RoMaSynthi::midiHandler() {
 				  
 			//find a free oscillator
 			osci_nummer = freeOsci.back();
-			//std::cout << oszi_nummer<<" benutzt"<<endl;
+			
 				  
 			//make used osci unavailable
 			freeOsci.pop_back();
-			//std::cout << freeOszi.back()<<" ware der nachste"<<endl;
+			
 			osci[osci_nummer]->frequency(f0);
 				  
 				 
@@ -170,6 +186,7 @@ void RoMaSynthi::midiHandler() {
 			osci[osci_nummer]->setReleaseNoteState(1);
 			osci[osci_nummer]->setADSRState(1);
 
+			//n set amplitude and phase
 			osci[osci_nummer]->amplitude(val3/126);
 			osci[osci_nummer]->phase(0);
 				  
@@ -179,55 +196,58 @@ void RoMaSynthi::midiHandler() {
 			//safe the time instnace
 			timetracker[osci_nummer] = t_tracking;
 			
-
-			// at some point, by MIDI perhaps, the envelope is gated "on"
-			//env->gate(true);
 				  
 			counter++;
         }
-            
-        //Note off bei Note off Befehl (128)
+        
+        ///////////////////
+		// note-off procedure (val1 = 128)
+		///////////////////    
+        
         if(val1==128 ) {
 
-           //finde Oszillator
-           //std::cout << val2<<" Ton aus"<<endl;
+        	//find the oscillator that plays the frequency refering to the note-off order
             position = find(Noten.begin(), Noten.end(), val2) - Noten.begin();
             
-            //Sicherheitsabfrage - wenn bei find nichts gefunden wird, wird hinter das letzte gezeigt und des kommt zu stackdump
-            if(position<maxAnzahl_Osci) {
+            
+            if(position<maxAnzahl_Osci) {	// security measure to prevent stack dump
+            	// enter into release mode
               	osci[position]->setReleaseNoteState(2);
               	osci[position]->setADSRState(4);
-              	//osci[position]->amplitude(0);
+              	
               
-              	//value im Notenarray loeschen
+              	//delete array in notes vector
               	Noten[position]= -1;
-              	//freigewordenen Oszi zurueckgeben
+              	//return freed oscillator
               	freeOsci.insert(freeOsci.begin(),position);
               
-                //Zeitinstanz löschen
+                //delete time instance
                	timetracker[position]= -1;
                
                	counter--;
             }  
-              // and some time later, it's gated "off"
-			//env->gate(false); 
+ 
         }
             
-         //Kontrollsausgabe
+         /*
+         //for debugging
         if (val1>=0) {
-         //std::cout << "Frei: " << freeOsci.size() << " Zeit: " << t_tracking << "Counter: " << counter << endl;
-       }
+         std::cout << "Frei: " << freeOsci.size() << " Zeit: " << t_tracking << "Counter: " << counter << endl;
+       }*/
 }
 
 
+// OSC Handler receives messegas from OSC manager and hands them over to Setters
 void RoMaSynthi::oscHandler() {
 
   	double val;
+
+  	// determine the osc message type and use the according getter method 
+  	// (intiger = i, float= f, string =s)
 	string type = osc->getLastType();
 	
 	if (type != "empty")
 	{
-
 	  	if (type== "f") val =  osc->getLastDouble();
 
 	  	else if (type== "i") val =  osc->getLastInt();
@@ -239,7 +259,13 @@ void RoMaSynthi::oscHandler() {
 		typeOld = type;
 		pathOld = path;
 		valOld = val;
-		cout<<val<<path<<"Type:"<<type<<endl;
+
+		// display osc messages
+		//cout<<val<<path<<"Type:"<<type<<endl;
+
+		////////////////////////////////////////////////////////
+		// this section sends osc messages to according setters
+		///////////////////////////////////////////////////////
 		if (path.compare("/SineAmpl") == 0) {
 			osci[0]->setSineAmpl(val);
 			osci[1]->setSineAmpl(val);
@@ -262,7 +288,7 @@ void RoMaSynthi::oscHandler() {
 			osci[6]->setSawAmpl(val);
 		}
 		if (path.compare("/SquareAmpl") == 0) {
-			//cout << "Harm: " << val << endl;
+			//cout << "SqureAmpl: " << val << endl;
 			osci[0]->setSquareAmpl(val);
 			osci[1]->setSquareAmpl(val);
 			osci[2]->setSquareAmpl(val);
@@ -272,7 +298,7 @@ void RoMaSynthi::oscHandler() {
 			osci[6]->setSquareAmpl(val);
 		}
 		if (path.compare("/NoiseAmpl") == 0) {
-			//cout << "NoiseLevel: " << val << endl;
+
 			osci[0]->setNoiseAmpl(val);
 			osci[1]->setNoiseAmpl(val);
 			osci[2]->setNoiseAmpl(val);
@@ -304,7 +330,6 @@ void RoMaSynthi::oscHandler() {
 
 		if (path.compare("/Distortion_Gain") == 0) {
 	      	distortion->setGain((int)val);
-	    	lfo->setLFOtype((int)val);
 		}
 
 		if (path.compare("/Filter_Status") == 0) {
@@ -373,10 +398,6 @@ void RoMaSynthi::oscHandler() {
 			osci[6]->setADSRDecayTime(val);
 		}
 
-		if (path.compare("/Dist_On") == 0) {
-	      	distortion_on=(int)val;
-		}
-
 
 	}
 	
@@ -385,9 +406,10 @@ void RoMaSynthi::oscHandler() {
 }
 
 
+
 void RoMaSynthi::lfoHandler() {
 
-	//limits LFO Signal to 9- Bit (0.5/512)
+	//limits LFO Signal to certain step size
 	double lfo_step = 0.001;
 
 	//smallest value for Cutoff Frequency
@@ -419,5 +441,3 @@ void RoMaSynthi::lfoHandler() {
 	 }
 
 }
-
-  

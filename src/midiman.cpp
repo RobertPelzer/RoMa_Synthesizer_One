@@ -1,10 +1,18 @@
+// Midi manager receives messages from RT-Midi class 
+///////////////////////////////////////////////////////////////////////
+
+//  The Code was edited in certain areas by Robert Pelzer and Markus Wende
+
+
 #include "midiman.h"
 
 using namespace std;
 
-bool MidiMan::done;
+
 vector<unsigned char>  a;
+// vector to buffer the incoming data from rt midi
 vector<unsigned char>  buffer;
+// vector to safe the time instances
 vector<double>  Zeit;
 
 MidiMan::MidiMan() {
@@ -22,7 +30,6 @@ MidiMan::MidiMan() {
     midiin->openPort( 0 );
     //    // Don't ignore sysex, timing, or active sensing messages.
     midiin->ignoreTypes( false, false, false );
-    done = false;
 	isVerbose = false;
 
 	cout << "Started Midi Server!" << endl;
@@ -58,16 +65,18 @@ midiMessage MidiMan::get_rtmidi() {
 
             }
 
+            // fill the buffer and the time vector by inserting new instances in the beginning
             buffer.insert(buffer.begin(), {a[0], a[1], a[2]});
             Zeit.insert(Zeit.begin(), stamp);
-            //std::cout<<std::endl;
-            //std::cout<<Zeit.size()<<std::endl;
+
         }
 
 	sleep(0.01);
     
 	}
-    //nur wenn Buffer  mindestens eine Message hat
+
+    //	when the buffer holds at least 1 entry which consits of 3 values
+    //	the MidiMessage is loaded with the oldest available values which are then being deleted
     if(buffer.size()>=3) {
 		mm.byte3 = buffer.back();
 		buffer.pop_back();
@@ -77,7 +86,7 @@ midiMessage MidiMan::get_rtmidi() {
 		buffer.pop_back();
 		mm.stamp=Zeit.back();
 		Zeit.pop_back();
-		//std::cout<<mm.byte1<< mm.byte2<<mm.byte3<<"stamp :"<< mm.stamp<<std::endl;
+
     }
     
     return mm;
@@ -87,19 +96,12 @@ midiMessage MidiMan::get_rtmidi() {
 
 
 //////////////////////////////////////////////////////////////////
-// FLUSH
+// FLUSH the buffer
 //////////////////////////////////////////////////////////////////
 
 void MidiMan::flushProcessedMessages() {
-// vektor von val zu a geändert
+
    buffer.clear();
 
 }
 
-
-int MidiMan::getNumFaderMessages() {
-
-    int v  = (int) val.size();
-
-    return v;
-}

@@ -15,6 +15,10 @@
 //  You may modify and use this source code to create binary code
 //  for your own purposes, free or commercial.
 //
+//////////////////////////////////////////////////////////////////////////////////////
+
+//	The Code was edited in certain areas by Robert Pelzer and Markus Wende
+// 	Where the Code was edited, comments were created
 
 #ifndef Biquad_h
 #define Biquad_h
@@ -59,8 +63,10 @@ inline float Biquad::process(float in) {
     z1 = in * a1 + z2 - b1 * out;
     z2 = in * a2 - b2 * out;
     
+    // 	Section to reduce gain in areas where peak gain was applied earlier. 
+    //	This leads to a reduction of the volume, however a high peakGain then works similar to the Q factor
     if(gain_reduce) {
-        out = out / pow(10, peakGain/20);
+    	out = out / pow(10, peakGain/20);
     }
     
     return out;

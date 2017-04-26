@@ -1,4 +1,4 @@
-//
+// This class is a distortion filter
 //  distortion.cpp
 
 #include "distortion.h"

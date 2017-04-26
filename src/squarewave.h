@@ -1,3 +1,7 @@
+//class Squarewave
+//
+// square sginal is generated with  formula (no additive sinusoidal synthesis)
+
 #ifndef SQUAREWAVE_H
 #define SQUAREWAVE_H
 

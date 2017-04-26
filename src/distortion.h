@@ -1,4 +1,5 @@
 //
+// This class is a distortion filter
 //  distortion.h
 
 
@@ -12,27 +13,34 @@ using namespace std;
 
 class Distortion {
 public:
+
+	//constructors
     Distortion();
     Distortion(int gain);
+
+    //destructor
     ~Distortion();
 
+    //setter
     void setGain(int gain);
 
+    // process method
     float process(float in);
 
     
 protected:
 
     int gain;
-    int daempfer;
+
 
 };
 
+// distorion filter function
 inline float Distortion::process(float in) {
     float out = in;
     
-
-    out=(out/abs(out))*(1-exp(gain*out*out/abs(out))); //Distortion Schetzen Formula  
+	//Distortion Schetzen Formula
+    out=(out/abs(out))*(1-exp(gain*out*out/abs(out)));   
     
 
     return out;

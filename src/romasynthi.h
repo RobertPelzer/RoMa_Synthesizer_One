@@ -32,36 +32,36 @@ private:
 	jack_nframes_t fs;
 	jack_nframes_t nframes;
 
-	double t_tracking; //Zeit Counter
-	int counter; //counter fue die Anzahl benutzer Oszillatoren
-	int maxAnzahl_Osci;
+	// variables for midi handling
+	double t_tracking; //time tracker
+	int counter; //counter for the number of used oscillators
+	int maxAnzahl_Osci;// max number of availible oscillators
 
+	// vecors for midi handling
 	vector<int> Noten;
 	vector<int> freeOsci;
 	vector<double> timetracker;
 
+	// variables for osc handling
 	double valOld;
 	string typeOld;
 	string pathOld;
 	double lfo_oldValue=0;
-	bool distortion_on;
 
 public:
 
-    //MidiMan *midiMan;
-    /// Audio Callback Function:
-    /// - the output buffers are filled here
+    /// Declaration of Audio Callback Function:
     virtual int audioCallback(jack_nframes_t nframes,
                               // A vector of pointers to each input port.
                               audioBufVector inBufs,
                               // A vector of pointers to each output port.
                               audioBufVector outBufs); 
+
     /// Constructor
     RoMaSynthi();
 
 	// Setters
 	
-
  	void lfoHandler();
 	void midiHandler();
 	void oscHandler();

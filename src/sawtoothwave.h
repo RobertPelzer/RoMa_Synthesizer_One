@@ -1,3 +1,7 @@
+//class Sawtoothwave
+//
+// sawtoothsginal is generated with sawtooth formula (no additive sinusoidal synthesis)
+
 #ifndef SAWTOOTHWAVE_H
 #define SAWTOOTHWAVE_H
 
