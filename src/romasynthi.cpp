@@ -268,21 +268,21 @@ void RoMaSynthi::oscHandler() {
 		///////////////////////////////////////////////////////
 		if (path.compare("/SineAmpl") == 0) {
 
-			setAllSineAmpl(double(val));
+			setAllSineAmpl(val);
 			//cout << "OSC01 Ampl: " << val	<< endl;
 		}
 		
 		if (path.compare("/SawAmpl") == 0) {
 			//cout << "OSC02 Ampl: " << val	<< endl;
-			setAllSawAmpl(double(val));
+			setAllSawAmpl(val);
 		}
 		if (path.compare("/SquareAmpl") == 0) {
 			//cout << "SqureAmpl: " << val << endl;
-			setAllSquareAmpl(double(val));
+			setAllSquareAmpl(val);
 		}
 
 		if (path.compare("/NoiseAmpl") == 0) {
-			setAllNoiseAmpl(double(val));
+			setAllNoiseAmpl(val);
 
 		}
 		
@@ -353,50 +353,51 @@ void RoMaSynthi::oscHandler() {
 }
 
 
+// These functions help to make changes to all created note (osci)-objects
 
 void RoMaSynthi::setAllSineAmpl(double val) {
-	cout<<"hello"<<endl;
 
-			osci[0]->setSineAmpl(val);
-			osci[1]->setSineAmpl(val);
-			osci[2]->setSineAmpl(val);
-			osci[3]->setSineAmpl(val);
-			osci[4]->setSineAmpl(val);
-			osci[5]->setSineAmpl(val);
-			osci[6]->setSineAmpl(val);
+	osci[0]->setSineAmpl(val);
+	osci[1]->setSineAmpl(val);
+	osci[2]->setSineAmpl(val);
+	osci[3]->setSineAmpl(val);
+	osci[4]->setSineAmpl(val);
+	osci[5]->setSineAmpl(val);
+	osci[6]->setSineAmpl(val);
 }
 
 void RoMaSynthi::setAllSawAmpl(double val){
 
-			osci[0]->setSawAmpl(val);
-			osci[1]->setSawAmpl(val);
-			osci[2]->setSawAmpl(val);
-			osci[3]->setSawAmpl(val);
-			osci[4]->setSawAmpl(val);
-			osci[5]->setSawAmpl(val);
-			osci[6]->setSawAmpl(val);
+	osci[0]->setSawAmpl(val);
+	osci[1]->setSawAmpl(val);
+	osci[2]->setSawAmpl(val);
+	osci[3]->setSawAmpl(val);
+	osci[4]->setSawAmpl(val);
+	osci[5]->setSawAmpl(val);
+	osci[6]->setSawAmpl(val);
 }
 
 void RoMaSynthi::setAllSquareAmpl(double val) {
-			osci[0]->setSquareAmpl(val);
-			osci[1]->setSquareAmpl(val);
-			osci[2]->setSquareAmpl(val);
-			osci[3]->setSquareAmpl(val);
-			osci[4]->setSquareAmpl(val);
-			osci[5]->setSquareAmpl(val);
-			osci[6]->setSquareAmpl(val);
+
+	osci[0]->setSquareAmpl(val);
+	osci[1]->setSquareAmpl(val);
+	osci[2]->setSquareAmpl(val);
+	osci[3]->setSquareAmpl(val);
+	osci[4]->setSquareAmpl(val);
+	osci[5]->setSquareAmpl(val);
+	osci[6]->setSquareAmpl(val);
 }
 
 void RoMaSynthi::setAllNoiseAmpl(double val) {
 
-			val=val*0.5;
-			osci[0]->setNoiseAmpl(val);
-			osci[1]->setNoiseAmpl(val);
-			osci[2]->setNoiseAmpl(val);
-			osci[3]->setNoiseAmpl(val);
-			osci[4]->setNoiseAmpl(val);
-			osci[5]->setNoiseAmpl(val);
-			osci[6]->setNoiseAmpl(val);
+	val=val*0.5;
+	osci[0]->setNoiseAmpl(val);
+	osci[1]->setNoiseAmpl(val);
+	osci[2]->setNoiseAmpl(val);
+	osci[3]->setNoiseAmpl(val);
+	osci[4]->setNoiseAmpl(val);
+	osci[5]->setNoiseAmpl(val);
+	osci[6]->setNoiseAmpl(val);
 }
 
 void RoMaSynthi::setAllADSRStatus(int val) {
@@ -421,7 +422,7 @@ void RoMaSynthi::setAllADSRStatus(int val) {
 	}
 }
 
-void RoMaSynthi::setADSRSustainLevel(double val) {
+void RoMaSynthi::setAllADSRSustainLevel(double val) {
 
 	osci[0]->setADSRSustainLevel(val);
 	osci[1]->setADSRSustainLevel(val);
@@ -432,7 +433,7 @@ void RoMaSynthi::setADSRSustainLevel(double val) {
 	osci[6]->setADSRSustainLevel(val);
 }
 
-void RoMaSynthi::setADSRAttackTime(double val) {
+void RoMaSynthi::setAllADSRAttackTime(double val) {
 
 	osci[0]->setADSRAttackTime(val);
 	osci[1]->setADSRAttackTime(val);
@@ -443,7 +444,7 @@ void RoMaSynthi::setADSRAttackTime(double val) {
 	osci[6]->setADSRAttackTime(val);
 }
 
-void RoMaSynthi::setADSRReleaseTime(double val) {
+void RoMaSynthi::setAllADSRReleaseTime(double val) {
 
 	osci[0]->setADSRReleaseTime(val);
 	osci[1]->setADSRReleaseTime(val);
@@ -455,7 +456,7 @@ void RoMaSynthi::setADSRReleaseTime(double val) {
 }
 
 
-void RoMaSynthi::setADSRDecayTime(double val) {
+void RoMaSynthi::setAllADSRDecayTime(double val) {
 
 	osci[0]->setADSRDecayTime(val);
 	osci[1]->setADSRDecayTime(val);
@@ -467,6 +468,8 @@ void RoMaSynthi::setADSRDecayTime(double val) {
 }
 
 
+
+//function that processes and scales the lfo-signal
 void RoMaSynthi::lfoHandler() {
 
 	//limits LFO Signal to certain step size
@@ -507,8 +510,69 @@ void RoMaSynthi::presets(int preset) {
 
 	switch(preset) {
 
-		case 1:
+		case wobble:
+
+			//oscillator settings
+			setAllSineAmpl(1);
+			setAllSquareAmpl(1);
+			setAllSawAmpl(1);
+			setAllNoiseAmpl(0);
+
+			//ADSR Settings
+			setAllADSRStatus(1);
+			setAllADSRAttackTime(1);
+			setAllADSRSustainLevel(1);
+			setAllADSRDecayTime(1);
+			setAllADSRReleaseTime(1);
+			setAllADSRSustainLevel(1);
+			
+			//Biquad settings
+			filterStatus = true;
+			filter->setType(5);
+			//filter->setQ(1);
+			filter->setPeakGain(100);
+
+			//lfo settings
+			lfo->setLFOtype(0);
+			lfo->frequency(2);
+
+			//gain (distortion) settings
+			distortion->setGain(50);
+
 
 		break;
+
+		case nett:
+
+			//oscillator settings
+			setAllSineAmpl(1);
+			setAllSquareAmpl(1);
+			setAllSawAmpl(0);
+			setAllNoiseAmpl(0);
+
+			//ADSR Settings
+			setAllADSRStatus(1);
+			setAllADSRAttackTime(50);
+			setAllADSRSustainLevel(30);
+			setAllADSRDecayTime(80);
+			setAllADSRReleaseTime(80);
+			setAllADSRSustainLevel(4);
+			
+			//Biquad settings
+			filterStatus = true;
+			filter->setType(3);
+			filter->setQ(0.01);
+			//filter->setPeakGain(100);
+
+			//lfo settings
+			lfo->setLFOtype(0);
+			lfo->frequency(2);
+
+			//gain (distortion) settings
+			distortion->setGain(5);
+
+
+		break;
+
 	}
 }

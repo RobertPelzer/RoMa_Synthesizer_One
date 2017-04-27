@@ -15,6 +15,14 @@
 
 using namespace std;
 
+//Preset Numbers
+enum presetnumber{
+    wobble = 1,
+    nett = 2,
+
+};
+
+
 class RoMaSynthi: public JackCpp::AudioIO {
 
 private:
@@ -67,15 +75,15 @@ public:
 	void oscHandler();
 	void presets(int preset);
 
-	void setOsciSineAmpl(double val);
+	void setAllSineAmpl(double val);
 	void setAllSawAmpl(double val);
 	void setAllSquareAmpl(double val);
 	void setAllNoiseAmpl(double val);
 	void setAllADSRStatus(int val);
-	void setADSRSustainLevel(double val);
-	void setADSRAttackTime(double val);
-	void setADSRReleaseTime(double val);
-	void setADSRDecayTime(double val);
+	void setAllADSRSustainLevel(double val);
+	void setAllADSRAttackTime(double val);
+	void setAllADSRReleaseTime(double val);
+	void setAllADSRDecayTime(double val);
 
 };
 
