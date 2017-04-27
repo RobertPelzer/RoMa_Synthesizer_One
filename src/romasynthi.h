@@ -65,6 +65,18 @@ public:
  	void lfoHandler();
 	void midiHandler();
 	void oscHandler();
+	void presets(int preset);
+
+	void setOsciSineAmpl(double val);
+	void setAllSawAmpl(double val);
+	void setAllSquareAmpl(double val);
+	void setAllNoiseAmpl(double val);
+	void setAllADSRStatus(int val);
+	void setADSRSustainLevel(double val);
+	void setADSRAttackTime(double val);
+	void setADSRReleaseTime(double val);
+	void setADSRDecayTime(double val);
+
 };
 
 #endif // ROMASYNTHI_H

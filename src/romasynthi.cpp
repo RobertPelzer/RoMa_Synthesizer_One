@@ -267,45 +267,23 @@ void RoMaSynthi::oscHandler() {
 		// this section sends osc messages to according setters
 		///////////////////////////////////////////////////////
 		if (path.compare("/SineAmpl") == 0) {
-			osci[0]->setSineAmpl(val);
-			osci[1]->setSineAmpl(val);
-			osci[2]->setSineAmpl(val);
-			osci[3]->setSineAmpl(val);
-			osci[4]->setSineAmpl(val);
-			osci[5]->setSineAmpl(val);
-			osci[6]->setSineAmpl(val);
+
+			setAllSineAmpl(double(val));
 			//cout << "OSC01 Ampl: " << val	<< endl;
 		}
 		
 		if (path.compare("/SawAmpl") == 0) {
 			//cout << "OSC02 Ampl: " << val	<< endl;
-			osci[0]->setSawAmpl(val);
-			osci[1]->setSawAmpl(val);
-			osci[2]->setSawAmpl(val);
-			osci[3]->setSawAmpl(val);
-			osci[4]->setSawAmpl(val);
-			osci[5]->setSawAmpl(val);
-			osci[6]->setSawAmpl(val);
+			setAllSawAmpl(double(val));
 		}
 		if (path.compare("/SquareAmpl") == 0) {
 			//cout << "SqureAmpl: " << val << endl;
-			osci[0]->setSquareAmpl(val);
-			osci[1]->setSquareAmpl(val);
-			osci[2]->setSquareAmpl(val);
-			osci[3]->setSquareAmpl(val);
-			osci[4]->setSquareAmpl(val);
-			osci[5]->setSquareAmpl(val);
-			osci[6]->setSquareAmpl(val);
+			setAllSquareAmpl(double(val));
 		}
-		if (path.compare("/NoiseAmpl") == 0) {
 
-			osci[0]->setNoiseAmpl(val);
-			osci[1]->setNoiseAmpl(val);
-			osci[2]->setNoiseAmpl(val);
-			osci[3]->setNoiseAmpl(val);
-			osci[4]->setNoiseAmpl(val);
-			osci[5]->setNoiseAmpl(val);
-			osci[6]->setNoiseAmpl(val);
+		if (path.compare("/NoiseAmpl") == 0) {
+			setAllNoiseAmpl(double(val));
+
 		}
 		
 	    if (path.compare("/LFO_Q") == 0) {
@@ -338,64 +316,33 @@ void RoMaSynthi::oscHandler() {
 		}
 
 		if (path.compare("/ADSR_Status") == 0) {
-			if ((int)val == 1) {
-				osci[0]->setADSRStatus(true);
-				osci[1]->setADSRStatus(true);
-				osci[2]->setADSRStatus(true);
-				osci[3]->setADSRStatus(true);
-				osci[4]->setADSRStatus(true);
-				osci[5]->setADSRStatus(true);
-				osci[6]->setADSRStatus(true);
-			}
-			else {
-				osci[0]->setADSRStatus(false);
-				osci[1]->setADSRStatus(false);
-				osci[2]->setADSRStatus(false);
-				osci[3]->setADSRStatus(false);
-				osci[4]->setADSRStatus(false);
-				osci[5]->setADSRStatus(false);
-				osci[6]->setADSRStatus(false);
-			}
+
+			setAllADSRStatus(val);
+			
 		}
 
 		if (path.compare("/ADSR_Sustain_Level") == 0) {
-	    	osci[0]->setADSRSustainLevel(val);
-			osci[1]->setADSRSustainLevel(val);
-			osci[2]->setADSRSustainLevel(val);
-			osci[3]->setADSRSustainLevel(val);
-			osci[4]->setADSRSustainLevel(val);
-			osci[5]->setADSRSustainLevel(val);
-			osci[6]->setADSRSustainLevel(val);
+			setAllADSRSustainLevel(val);
 		}
 
 		if (path.compare("/ADSR_Attack_Time") == 0) {
-	    	osci[0]->setADSRAttackTime(val);
-			osci[1]->setADSRAttackTime(val);
-			osci[2]->setADSRAttackTime(val);
-			osci[3]->setADSRAttackTime(val);
-			osci[4]->setADSRAttackTime(val);
-			osci[5]->setADSRAttackTime(val);
-			osci[6]->setADSRAttackTime(val);
+
+	    	setAllADSRAttackTime(val);
 		}
 
 		if (path.compare("/ADSR_Release_Time") == 0) {
-	    	osci[0]->setADSRReleaseTime(val);
-			osci[1]->setADSRReleaseTime(val);
-			osci[2]->setADSRReleaseTime(val);
-			osci[3]->setADSRReleaseTime(val);
-			osci[4]->setADSRReleaseTime(val);
-			osci[5]->setADSRReleaseTime(val);
-			osci[6]->setADSRReleaseTime(val);
+			setAllADSRReleaseTime(val);
 		}
 
 		if (path.compare("/ADSR_Decay_Time") == 0) {
-	    	osci[0]->setADSRDecayTime(val);
-			osci[1]->setADSRDecayTime(val);
-			osci[2]->setADSRDecayTime(val);
-			osci[3]->setADSRDecayTime(val);
-			osci[4]->setADSRDecayTime(val);
-			osci[5]->setADSRDecayTime(val);
-			osci[6]->setADSRDecayTime(val);
+
+			setAllADSRDecayTime(val);
+		}
+
+		if (path.compare("/Preset") == 0) {
+
+			presets(int(val));
+
 		}
 
 
@@ -405,6 +352,119 @@ void RoMaSynthi::oscHandler() {
 	usleep(500);
 }
 
+
+
+void RoMaSynthi::setAllSineAmpl(double val) {
+	cout<<"hello"<<endl;
+
+			osci[0]->setSineAmpl(val);
+			osci[1]->setSineAmpl(val);
+			osci[2]->setSineAmpl(val);
+			osci[3]->setSineAmpl(val);
+			osci[4]->setSineAmpl(val);
+			osci[5]->setSineAmpl(val);
+			osci[6]->setSineAmpl(val);
+}
+
+void RoMaSynthi::setAllSawAmpl(double val){
+
+			osci[0]->setSawAmpl(val);
+			osci[1]->setSawAmpl(val);
+			osci[2]->setSawAmpl(val);
+			osci[3]->setSawAmpl(val);
+			osci[4]->setSawAmpl(val);
+			osci[5]->setSawAmpl(val);
+			osci[6]->setSawAmpl(val);
+}
+
+void RoMaSynthi::setAllSquareAmpl(double val) {
+			osci[0]->setSquareAmpl(val);
+			osci[1]->setSquareAmpl(val);
+			osci[2]->setSquareAmpl(val);
+			osci[3]->setSquareAmpl(val);
+			osci[4]->setSquareAmpl(val);
+			osci[5]->setSquareAmpl(val);
+			osci[6]->setSquareAmpl(val);
+}
+
+void RoMaSynthi::setAllNoiseAmpl(double val) {
+
+			val=val*0.5;
+			osci[0]->setNoiseAmpl(val);
+			osci[1]->setNoiseAmpl(val);
+			osci[2]->setNoiseAmpl(val);
+			osci[3]->setNoiseAmpl(val);
+			osci[4]->setNoiseAmpl(val);
+			osci[5]->setNoiseAmpl(val);
+			osci[6]->setNoiseAmpl(val);
+}
+
+void RoMaSynthi::setAllADSRStatus(int val) {
+
+	if (val == 1) {
+		osci[0]->setADSRStatus(true);
+		osci[1]->setADSRStatus(true);
+		osci[2]->setADSRStatus(true);
+		osci[3]->setADSRStatus(true);
+		osci[4]->setADSRStatus(true);
+		osci[5]->setADSRStatus(true);
+		osci[6]->setADSRStatus(true);
+	}
+	else {
+		osci[0]->setADSRStatus(false);
+		osci[1]->setADSRStatus(false);
+		osci[2]->setADSRStatus(false);
+		osci[3]->setADSRStatus(false);
+		osci[4]->setADSRStatus(false);
+		osci[5]->setADSRStatus(false);
+		osci[6]->setADSRStatus(false);
+	}
+}
+
+void RoMaSynthi::setADSRSustainLevel(double val) {
+
+	osci[0]->setADSRSustainLevel(val);
+	osci[1]->setADSRSustainLevel(val);
+	osci[2]->setADSRSustainLevel(val);
+	osci[3]->setADSRSustainLevel(val);
+	osci[4]->setADSRSustainLevel(val);
+	osci[5]->setADSRSustainLevel(val);
+	osci[6]->setADSRSustainLevel(val);
+}
+
+void RoMaSynthi::setADSRAttackTime(double val) {
+
+	osci[0]->setADSRAttackTime(val);
+	osci[1]->setADSRAttackTime(val);
+	osci[2]->setADSRAttackTime(val);
+	osci[3]->setADSRAttackTime(val);
+	osci[4]->setADSRAttackTime(val);
+	osci[5]->setADSRAttackTime(val);
+	osci[6]->setADSRAttackTime(val);
+}
+
+void RoMaSynthi::setADSRReleaseTime(double val) {
+
+	osci[0]->setADSRReleaseTime(val);
+	osci[1]->setADSRReleaseTime(val);
+	osci[2]->setADSRReleaseTime(val);
+	osci[3]->setADSRReleaseTime(val);
+	osci[4]->setADSRReleaseTime(val);
+	osci[5]->setADSRReleaseTime(val);
+	osci[6]->setADSRReleaseTime(val);
+}
+
+
+void RoMaSynthi::setADSRDecayTime(double val) {
+
+	osci[0]->setADSRDecayTime(val);
+	osci[1]->setADSRDecayTime(val);
+	osci[2]->setADSRDecayTime(val);
+	osci[3]->setADSRDecayTime(val);
+	osci[4]->setADSRDecayTime(val);
+	osci[5]->setADSRDecayTime(val);
+	osci[6]->setADSRDecayTime(val);
+}
 
 
 void RoMaSynthi::lfoHandler() {
@@ -440,4 +500,15 @@ void RoMaSynthi::lfoHandler() {
       
 	 }
 
+}
+
+
+void RoMaSynthi::presets(int preset) {
+
+	switch(preset) {
+
+		case 1:
+
+		break;
+	}
 }
