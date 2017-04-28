@@ -261,7 +261,7 @@ void RoMaSynthi::oscHandler() {
 		valOld = val;
 
 		// display osc messages
-		//cout<<val<<path<<"Type:"<<type<<endl;
+		cout<<val<<path<<"Type:"<<type<<endl;
 
 		////////////////////////////////////////////////////////
 		// this section sends osc messages to according setters
@@ -519,12 +519,11 @@ void RoMaSynthi::presets(int preset) {
 			setAllNoiseAmpl(0);
 
 			//ADSR Settings
-			setAllADSRStatus(1);
-			setAllADSRAttackTime(1);
-			setAllADSRSustainLevel(1);
+			setAllADSRStatus(0);
+			/*setAllADSRAttackTime(1);
 			setAllADSRDecayTime(1);
 			setAllADSRReleaseTime(1);
-			setAllADSRSustainLevel(1);
+			setAllADSRSustainLevel(1);*/
 			
 			//Biquad settings
 			filterStatus = true;
@@ -542,7 +541,7 @@ void RoMaSynthi::presets(int preset) {
 
 		break;
 
-		case nett:
+		case dreamy:
 
 			//oscillator settings
 			setAllSineAmpl(1);
@@ -552,21 +551,87 @@ void RoMaSynthi::presets(int preset) {
 
 			//ADSR Settings
 			setAllADSRStatus(1);
-			setAllADSRAttackTime(50);
-			setAllADSRSustainLevel(30);
+			setAllADSRAttackTime(20);
 			setAllADSRDecayTime(80);
-			setAllADSRReleaseTime(80);
-			setAllADSRSustainLevel(4);
+			setAllADSRSustainLevel(50);
+			setAllADSRReleaseTime(50);
+
 			
 			//Biquad settings
 			filterStatus = true;
-			filter->setType(3);
+			filter->setType(2);
 			filter->setQ(0.01);
 			//filter->setPeakGain(100);
 
 			//lfo settings
 			lfo->setLFOtype(0);
 			lfo->frequency(2);
+
+			//gain (distortion) settings
+			distortion->setGain(2);
+
+
+		break;
+
+
+		case nice_pulse:
+
+			//oscillator settings
+			setAllSineAmpl(1);
+			setAllSquareAmpl(1);
+			setAllSawAmpl(1);
+			setAllNoiseAmpl(0);
+
+			//ADSR Settings
+			setAllADSRStatus(1);
+			setAllADSRAttackTime(30);
+			setAllADSRDecayTime(30);
+			setAllADSRSustainLevel(50);
+			setAllADSRReleaseTime(50);
+
+			
+			//Biquad settings
+			filterStatus = true;
+			filter->setType(6);
+			//filter->setQ(0.01);
+			filter->setPeakGain(15);
+
+			//lfo settings
+			lfo->setLFOtype(2);
+			lfo->frequency(5);
+
+			//gain (distortion) settings
+			distortion->setGain(5);
+
+
+		break;
+
+
+		case in_the_night:
+
+			//oscillator settings
+			setAllSineAmpl(0);
+			setAllSquareAmpl(1);
+			setAllSawAmpl(1);
+			setAllNoiseAmpl(0);
+
+			//ADSR Settings
+			setAllADSRStatus(1);
+			setAllADSRAttackTime(3);
+			setAllADSRDecayTime(15);
+			setAllADSRSustainLevel(70);
+			setAllADSRReleaseTime(30);
+
+			
+			//Biquad settings
+			filterStatus = true;
+			filter->setType(0);
+			filter->setQ(0.5);
+			//filter->setPeakGain(15);
+
+			//lfo settings
+			lfo->setLFOtype(1);
+			lfo->frequency(3);
 
 			//gain (distortion) settings
 			distortion->setGain(5);
