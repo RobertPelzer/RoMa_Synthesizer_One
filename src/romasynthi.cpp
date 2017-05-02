@@ -639,5 +639,38 @@ void RoMaSynthi::presets(int preset) {
 
 		break;
 
+
+		case high_hat:
+
+			//oscillator settings
+			setAllSineAmpl(1);
+			setAllSquareAmpl(1);
+			setAllSawAmpl(1);
+			setAllNoiseAmpl(1);
+
+			//ADSR Settings
+			setAllADSRStatus(0);
+			/*setAllADSRAttackTime(3);
+			setAllADSRDecayTime(15);
+			setAllADSRSustainLevel(70);
+			setAllADSRReleaseTime(30);*/
+
+			
+			//Biquad settings
+			filterStatus = true;
+			filter->setType(1);
+			filter->setQ(0.09);
+			//filter->setPeakGain(15);
+
+			//lfo settings
+			lfo->setLFOtype(1);
+			lfo->frequency(8);
+
+			//gain (distortion) settings
+			distortion->setGain(30);
+
+
+		break;
+
 	}
 }

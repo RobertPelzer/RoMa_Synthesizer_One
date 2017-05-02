@@ -17,10 +17,11 @@ using namespace std;
 
 //Preset Numbers
 enum presetnumber{
-    wobble = 1,
-    dreamy = 2,
-    nice_pulse=3,
-    in_the_night=4,
+    wobble = 		1,
+    dreamy = 		2,
+    nice_pulse=		3,
+    in_the_night=	4,
+    high_hat=		5,
 
 
 };
