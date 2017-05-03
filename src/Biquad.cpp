@@ -19,6 +19,22 @@
 //  The Code was edited in certain areas by Robert Pelzer and Markus Wende
 //  Where the Code was edited, comments were created
 
+//The biquad filter class is the implementation of a digital biquad filter, 
+// which is a second-order recursive linear filter, containing two poles and two zeros. 
+// The source code was taken from the following website: http://www.earlevel.com/main/2012/11/26/biquad-c-source-code/
+// Some changes were made to the filter to make it fit our needs. 
+// The Biquad has seven different selectable filters (lowpass, high pass, band pass, notch, peak, low shelf, high shelf). 
+// For each filter a set of formulas is implemented which calculate the filter coefficients. 
+// The advantage of using this biquad filter is, that it is a pretty flexible solution, 
+// however on the downside of is the fact that every little parameter change of the filter leads to a re-calculation of the coefficients. 
+// Fortunately, this doesn´t create any processing problems.
+// The lowpass, high pass, band pass and the peak filter respond to a Q value which determines bandwidth for the band pass filter, 
+// a steepness for low and high pass filters and the width of the peak filter. The low shelf, high shelf and peak filter don´t respond to Q value, but to a peak Gain. 
+// A high gain additionally led to distortion, which in some cases wwas very nice sounding. 
+// However, we undid this rise of gain to be able to implement a general distortion class. 
+// This had the effect that the peak gain didn´t increase the signals volume, but in praxis has a similar effect as Q for the other filters.
+
+
 
 #include "Biquad.h"
 #include <iostream> 
