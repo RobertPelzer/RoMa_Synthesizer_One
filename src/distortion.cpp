@@ -8,7 +8,7 @@
 
 
 Distortion::Distortion() {
-    gain=0;
+    gain=1;
 
 }
 

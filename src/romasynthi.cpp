@@ -89,13 +89,16 @@ int RoMaSynthi::audioCallback(jack_nframes_t nframes,
 										osci[4]->getNextSample() +
 										osci[5]->getNextSample() +
 										osci[6]->getNextSample()) / 7;
+
+
                 if(filterStatus) {
                 	//hand over to filter
                 	outBufs[0][frameCNT] = filter->process(outBufs[0][frameCNT]); 
                 }
-
+                
                 //hand over to distortion
                 outBufs[0][frameCNT] = distortion->process(outBufs[0][frameCNT]); 
+
 				
 				// rotate lfo oscillator to next step
 				lfo->getNextSample();

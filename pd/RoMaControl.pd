@@ -1,9 +1,9 @@
-#N canvas 1280 48 1276 972 10;
+#N canvas 515 141 1276 972 10;
 #X declare -lib mrpeach;
-#X obj 212 363 packOSC;
-#X obj 212 387 udpsend;
+#X obj 210 364 packOSC;
+#X obj 210 388 udpsend;
 #X obj 15 21 import mrpeach;
-#X msg 292 431 disconnect;
+#X msg 290 432 disconnect;
 #X floatatom 11 103 5 0 0 0 - - -;
 #X floatatom 81 103 5 0 0 0 - - -;
 #X floatatom 122 104 5 0 0 0 - - -;
@@ -12,68 +12,81 @@
 #X msg 46 146 send /SawAmpl \$1;
 #X msg 81 125 send /SquareAmpl \$1;
 #X msg 124 177 send /NoiseAmpl \$1;
-#X obj 245 53 vsl 32 128 0.001 0.9 1 0 empty empty LFO_Q 0 -9 0 10
--258113 -110593 -1 8000 1;
+#X obj 245 53 vsl 32 128 0.001 2 1 0 empty empty LFO_Q 0 -9 0 10 -258113
+-110593 -1 11200 1;
 #X floatatom 241 193 5 0 0 0 - - -;
-#X obj 281 53 vsl 32 128 0.5 6.5 1 0 empty empty Filter_Type 0 -9 0
-10 -4032 -110593 -1 9500 1;
-#X msg 212 319 send /LFO_Q \$1;
-#X floatatom 280 198 5 0 0 0 - - -;
-#X msg 249 296 send /Filter_Type \$1;
-#X obj 320 67 vsl 32 128 0.2 50 1 0 empty empty Filter_Gain 0 -9 0
-10 -159808 -110593 -1 0 1;
-#X floatatom 320 203 5 0 0 0 - - -;
-#X msg 320 272 send /Filter_Gain \$1;
-#X obj 359 78 vsl 32 128 0.1 10 1 0 empty empty LFO_Frequency 0 -9
-0 10 -191407 -110593 -1 11900 1;
-#X msg 385 249 send /LFO_Freq \$1;
-#X floatatom 360 217 5 0 0 0 - - -;
-#X obj 399 99 vradio 30 1 0 4 empty empty LFO_Type 0 -8 0 20 -262144
--1 -1 2;
-#X floatatom 403 223 5 0 0 0 - - -;
-#X msg 394 294 send /LFO_Type \$1;
-#X msg 293 394 connect 192.168.23.1 50000;
-#X msg 296 360 connect localhost 50000;
-#X obj 561 166 tgl 30 0 empty empty Filter_On/Off -20 -10 0 10 -4160
--257985 -1 0 1;
-#X floatatom 511 181 5 0 0 0 - - -;
-#X msg 511 202 send /Filter_Status \$1;
+#X msg 190 286 send /LFO_Q \$1;
+#X floatatom 540 339 5 0 0 0 - - -;
+#X msg 261 317 send /Filter_Type \$1;
+#X obj 286 62 vsl 32 128 0.2 50 1 0 empty empty Filter_Peak_Gain 0
+-9 0 10 -159808 -110593 -1 7300 1;
+#X floatatom 334 223 5 0 0 0 - - -;
+#X msg 294 294 send /Filter_Gain \$1;
+#X obj 342 82 vsl 32 128 0.1 10 1 0 empty empty LFO_Frequency 0 -9
+0 10 -191407 -110593 -1 9400 1;
+#X msg 397 270 send /LFO_Freq \$1;
+#X floatatom 374 237 5 0 0 0 - - -;
+#X obj 382 105 vradio 30 1 0 3 empty empty LFO_Type 0 -8 0 15 -262144
+-1 -1 1;
+#X floatatom 415 244 5 0 0 0 - - -;
+#X msg 286 341 send /LFO_Type \$1;
+#X msg 188 576 connect 192.168.23.1 50000;
+#X msg 183 598 connect localhost 50000;
+#X obj 583 393 tgl 30 0 empty empty Filter_On/Off -20 -10 0 10 -4160
+-257985 -1 1 1;
+#X floatatom 583 425 5 0 0 0 - - -;
+#X msg 273 403 send /Filter_Status \$1;
 #X obj 70 295 tgl 30 0 empty empty ADSR_On/Off -20 -10 0 10 -4160 -257985
 -1 1 1;
-#X floatatom 4 235 5 0 0 0 - - -;
+#X floatatom 105 301 5 0 0 0 - - -;
 #X msg 115 242 send /ADSR_Status \$1;
 #X obj 81 67 tgl 30 0 empty empty Square 0 -10 0 10 -13381 -262144
 -1 1 1;
 #X obj 46 67 tgl 30 0 empty empty Saw 0 -10 0 10 -13381 -262144 -1
-0 1;
+1 1;
 #X obj 11 67 tgl 30 0 empty empty Sine 0 -10 0 10 -13381 -262144 -1
 1 1;
 #X obj 122 67 tgl 30 0 empty empty Noise 0 -10 0 10 -260097 -262144
--1 0 1;
+-1 1 1;
 #X obj 80 342 vsl 32 128 1 99 1 0 empty empty Sust 0 -9 0 10 -4160
--257985 -1 0 1;
+-257985 -1 12400 1;
 #X floatatom 80 478 5 0 0 0 - - -;
-#X msg 218 479 send /ADSR_Sustain_Level \$1;
-#X obj -2 342 vsl 32 128 0.05 0.0001 1 0 empty empty Attack 0 -9 0
-10 -4160 -257985 -1 10400 1;
+#X msg 216 480 send /ADSR_Sustain_Level \$1;
+#X obj -2 342 vsl 32 128 1 99 1 0 empty empty Attack 0 -9 0 10 -4160
+-257985 -1 9200 1;
 #X floatatom -2 478 5 0 0 0 - - -;
-#X msg 193 523 send /ADSR_Attack_Time \$1;
+#X msg 191 524 send /ADSR_Attack_Time \$1;
 #X obj 41 342 vsl 32 128 1 99 1 0 empty empty Decay 0 -9 0 10 -4160
--257985 -1 0 1;
+-257985 -1 9400 1;
 #X obj 120 341 vsl 32 128 1 99 1 0 empty empty Release 0 -9 0 10 -4160
--257985 -1 3500 1;
+-257985 -1 9400 1;
 #X floatatom 41 476 5 0 0 0 - - -;
 #X floatatom 120 477 5 0 0 0 - - -;
-#X msg 232 457 send /ADSR_Release_Time \$1;
-#X msg 200 504 send /ADSR_Decay_Time \$1;
-#X obj 438 119 vsl 32 128 1 1000 1 0 empty empty Overdrive_gain 0 -9
-0 12 -261682 -110593 -1 1600 1;
-#X floatatom 455 272 5 0 0 0 - - -;
-#X obj 474 131 tgl 30 0 empty empty Distortion_on 0 -5 0 12 -262144
--1 -1 0 1;
-#X floatatom 510 293 5 0 0 0 - - -;
-#X msg 401 341 send /Dist_On \$1;
-#X msg 402 319 send /Distortion_Gain \$1;
+#X msg 230 458 send /ADSR_Release_Time \$1;
+#X msg 198 505 send /ADSR_Decay_Time \$1;
+#X obj 465 121 vsl 32 128 1 30 1 0 empty empty Overdrive_gain 0 -9
+0 12 -261682 -110593 -1 8900 1;
+#X floatatom 520 295 5 0 0 0 - - -;
+#X msg 402 316 send /Distortion_Gain \$1;
+#X obj 586 132 vradio 30 1 0 7 empty empty Filter_Type 0 -8 0 15 -262144
+-1 -1 2;
+#X text 619 138 lowpass;
+#X text 619 169 highpass;
+#X text 619 200 bandpass;
+#X text 619 231 notch filter;
+#X text 619 262 peak filter;
+#X text 619 293 lowshelf;
+#X text 619 324 highshelf;
+#X obj 469 467 vradio 30 1 1 5 empty empty Presets 0 -8 0 15 -261234
+-1 -1 0;
+#X obj 467 629 + 1;
+#X msg 208 550 send /Preset \$1;
+#X text 503 474 wobble;
+#X text 503 505 dreamy;
+#X text 504 567 in_the_night;
+#X text 503 598 high hat;
+#X text 503 534 nice_pulse;
+#X text 503 629;
 #X connect 0 0 1 0;
 #X connect 3 0 1 0;
 #X connect 4 0 8 0;
@@ -85,47 +98,47 @@
 #X connect 10 0 0 0;
 #X connect 11 0 0 0;
 #X connect 12 0 13 0;
-#X connect 13 0 15 0;
-#X connect 14 0 16 0;
-#X connect 15 0 0 0;
-#X connect 16 0 17 0;
-#X connect 17 0 0 0;
+#X connect 13 0 14 0;
+#X connect 14 0 0 0;
+#X connect 15 0 16 0;
+#X connect 16 0 0 0;
+#X connect 17 0 18 0;
 #X connect 18 0 19 0;
-#X connect 19 0 20 0;
-#X connect 20 0 0 0;
-#X connect 21 0 23 0;
-#X connect 22 0 0 0;
-#X connect 23 0 22 0;
+#X connect 19 0 0 0;
+#X connect 20 0 22 0;
+#X connect 21 0 0 0;
+#X connect 22 0 21 0;
+#X connect 23 0 24 0;
 #X connect 24 0 25 0;
-#X connect 25 0 26 0;
-#X connect 26 0 0 0;
+#X connect 25 0 0 0;
+#X connect 26 0 1 0;
 #X connect 27 0 1 0;
-#X connect 28 0 1 0;
+#X connect 28 0 29 0;
 #X connect 29 0 30 0;
-#X connect 30 0 31 0;
-#X connect 31 0 0 0;
+#X connect 30 0 0 0;
+#X connect 31 0 32 0;
 #X connect 32 0 33 0;
-#X connect 33 0 34 0;
-#X connect 34 0 0 0;
-#X connect 35 0 5 0;
-#X connect 36 0 7 0;
-#X connect 37 0 4 0;
-#X connect 38 0 6 0;
+#X connect 33 0 0 0;
+#X connect 34 0 5 0;
+#X connect 35 0 7 0;
+#X connect 36 0 4 0;
+#X connect 37 0 6 0;
+#X connect 38 0 39 0;
 #X connect 39 0 40 0;
-#X connect 40 0 41 0;
-#X connect 41 0 0 0;
+#X connect 40 0 0 0;
+#X connect 41 0 42 0;
 #X connect 42 0 43 0;
-#X connect 43 0 44 0;
-#X connect 44 0 0 0;
+#X connect 43 0 0 0;
+#X connect 44 0 46 0;
 #X connect 45 0 47 0;
-#X connect 46 0 48 0;
-#X connect 47 0 50 0;
-#X connect 48 0 49 0;
+#X connect 46 0 49 0;
+#X connect 47 0 48 0;
+#X connect 48 0 0 0;
 #X connect 49 0 0 0;
-#X connect 50 0 0 0;
+#X connect 50 0 51 0;
 #X connect 51 0 52 0;
-#X connect 52 0 56 0;
-#X connect 53 0 54 0;
-#X connect 54 0 55 0;
-#X connect 55 0 0 0;
-#X connect 56 0 0 0;
+#X connect 52 0 0 0;
+#X connect 53 0 15 0;
+#X connect 61 0 62 0;
+#X connect 62 0 63 0;
+#X connect 63 0 0 0;
