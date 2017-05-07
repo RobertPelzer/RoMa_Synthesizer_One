@@ -24,8 +24,8 @@ system:
 ### Jack
 A [Jack](http://www.jackaudio.org/) audio server is fundamental to run the 
 synthesizer. Make sure you have a solid jack audio environment running. The 
-buffer size we use on the Raspberry Pi is <span style="color:red">256</span> 
-and the sample rate is <span style="color:red">48kHz</span>. This might differ 
+buffer size we use on the Raspberry Pi is ```256```
+and the sample rate is ```48kHz```. This might differ 
 from your system and you are free to find the right jack settings.
 
 ### Open Sound Control
