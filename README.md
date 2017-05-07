@@ -1,4 +1,4 @@
-# RoMaSynthesizer
+# RoMaSynthesizer :copyright:
 The RoMaSythesizer is a polyphone software synthesizer written in C++, which generates sound 
 in a combination of additive and subtractive synthesis. The software is part of 
 a project at [TU Berlin](http://www.ak.tu-berlin.de) in the seminar 
