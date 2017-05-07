@@ -40,9 +40,10 @@ the flowchart, or you can connect in jack a software midi keyboard like the
 
 ## Installation
 To install the software, make sure you checked out the dependencys and follow the 
-next steps. First clone the repo:
+next steps.
+
+1. Download / Clone the Repository:
 
 ```javascript
-var s = "JavaScript syntax highlighting";
-alert(s);
+    git clone git@gitlab.tubit.tu-berlin.de:markus.wende/RoMa_Synthesizer_One.git
 ```
