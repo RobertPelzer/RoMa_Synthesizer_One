@@ -46,10 +46,22 @@ next steps.
 ```javascript
     git clone git@gitlab.tubit.tu-berlin.de:markus.wende/RoMa_Synthesizer_One.git
 ```
+2. (Optional) if you downloaded as a .zip file, unzip the archiv
 
-2. (optional) if you downloaded as a .zip file, unzip the archiv
-
-3. cd into the folder:
+3. Go into the folder:
 ```javascript
     cd RoMa_Synthesizer_One*
 ```
+4. Compile the source code:
+```javascript
+    make
+```
+
+## Usage
+If you want to start the synthesizer, make sure you are in the folder you 
+compiled it. If you want global access to the synthesizer you have to add the 
+program to your PATH variable. In the terminal type: 
+```javascript
+    export PATH=$PATH:/path/to/my/RoMaSynthi
+```
+And make sure you changed the path to the right one.
