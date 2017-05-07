@@ -12,7 +12,7 @@ below. The following flowchart gives an overview of the implementation.
     <img src="./Flowchart.png" width="800">
 </p>
 
-## Dependencys
+## Requirements
 ### Library
 The following external librarys are needed to compile the senthesizer onto your 
 system:  
@@ -39,7 +39,7 @@ the flowchart, or you can connect in jack a software midi keyboard like the
 [Cadence-XY Controller](http://kxstudio.linuxaudio.org/Applications:Cadence-XYController).
 
 ## Installation
-To install the software, make sure you checked out the dependencys and follow the 
+To install the software, make sure you checked out the requirements and follow the 
 next steps.
 
 1. Download / Clone the Repository:
