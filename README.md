@@ -39,3 +39,10 @@ the flowchart, or you can connect in jack a software midi keyboard like the
 [Cadence-XY Controller](http://kxstudio.linuxaudio.org/Applications:Cadence-XYController).
 
 ## Installation
+To install the software, make sure you checked out the dependencys and follow the 
+next steps. First clone the repo:
+
+```javascript
+var s = "JavaScript syntax highlighting";
+alert(s);
+```
