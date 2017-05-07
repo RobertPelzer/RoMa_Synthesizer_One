@@ -12,8 +12,15 @@ below. The following flowchart gives an overview of the implementation.
     <img src="./Flowchart.png" width="800">
 </p>
 
-## Installation
+## Dependencys
 ### Library
+The following external librarys are needed to compile the senthesizer onto your 
+system:  
+* [liblo](http://liblo.sourceforge.net/)
+* [jackcpp](https://github.com/x37v/jackcpp)
+* [rtmidi](https://www.music.mcgill.ca/~gary/rtmidi/index.html#download)
+* [boost](http://www.boost.org/)
+
 ### Jack
 A [Jack](http://www.jackaudio.org/) audio server is fundamental to run the 
 synthesizer. Make sure you have a solid jack audio environment running. The 
@@ -30,3 +37,5 @@ Alternativley the Pure Data file in ./osc can be used to control the parameters.
 To "play" the Synthesizer you need a external midi keyboard, which is shown in 
 the flowchart, or you can connect in jack a software midi keyboard like the 
 [Cadence-XY Controller](http://kxstudio.linuxaudio.org/Applications:Cadence-XYController).
+
+## Installation
