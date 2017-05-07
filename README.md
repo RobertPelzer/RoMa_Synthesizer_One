@@ -7,7 +7,8 @@ This software is designed to run on the [Raspberry Pi 3](https://www.raspberrypi
 with a costum [Arch Linux](https://www.archlinux.org/) distribution. If you want
 to use this software yourself, make sure you follow the installation instructions
 below. The following flowchart gives an overview of the implementation.
-<img src="./Flowchart.png" width="50">
+
+<img src="./Flowchart.png" width="600">
 
 ## Open Sound Control
 The RoMaSynthesizer can be controlled via OSC. We use the app TouchOSC by 
