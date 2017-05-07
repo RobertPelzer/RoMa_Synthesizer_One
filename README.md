@@ -67,4 +67,18 @@ program to your PATH variable. In the terminal type:
 ```javascript
     export PATH=$PATH:/path/to/my/RoMaSynthi
 ```
-And make sure you changed the path to the right one.
+And make sure you changed the path to the right one. 
+
+Now you can run the synthesizer from the command line by:
+
+```javascript
+    RoMaSynth
+```
+
+If you have exported the program to your PATH, or by:
+
+```javascript
+    ./RoMaSynth
+```
+
+If you are still in the compile directory. Have fun! :)
