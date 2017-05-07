@@ -31,7 +31,9 @@ from your system and you are free to find the right jack settings.
 ### Open Sound Control
 The RoMaSynthesizer can be controlled via OSC. We use the app [TouchOSC](https://hexler.net/software/touchosc) by 
 Hexler, which is available in the Android and iOS Appstores.
-Alternativley the Pure Data file in ./osc can be used to control the parameters.
+Alternativley the Pure Data file in ./osc can be used to control the parameters. 
+Make sure you have installed pd-extended with the mrpeach modul included, otherwise 
+the pd patch file will not work.
 
 ### Midi
 To "play" the Synthesizer you need a external midi keyboard, which is shown in 
@@ -81,4 +83,16 @@ If you have exported the program to your PATH, or by:
     ./RoMaSynth
 ```
 
-If you are still in the compile directory. Have fun! :)
+If you are still in the compile directory. If everything works fine you should 
+see something similar to:
+
+```javascript
+    fs: 48000 Hz || buffer size: 512 samples
+    Started OSC Server!
+    Started Midi Server!
+    
+```
+
+The senthesizer is now running and ready to be connected with pd-extended 
+or TouchOSC. Check your jack connections and connect in jack the midi controller 
+to the RtMidi Input Client. Now you are ready to rock. Have fun! :)
