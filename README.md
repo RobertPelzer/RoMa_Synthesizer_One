@@ -41,7 +41,7 @@ the flowchart, or you can connect in jack a software midi keyboard like the
 [Cadence-XY Controller](http://kxstudio.linuxaudio.org/Applications:Cadence-XYController).
 
 ## Installation
-To install the software, make sure you checked out the requirements and follow the 
+To install the software, make sure you checked the requirements and follow the 
 next steps.
 
 1. Download / Clone the Repository:
