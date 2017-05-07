@@ -1,5 +1,5 @@
 # RoMaSynthesizer
-The :metal: RoMaSythesizer :metal: is a polyphone software synthesizer written in C++, which generates sound 
+The RoMaSythesizer is a polyphone software synthesizer written in C++, which generates sound 
 in a combination of additive and subtractive synthesis. The software is part of 
 a project at [TU Berlin](http://www.ak.tu-berlin.de) in the seminar 
 [Klangsynthese](https://gitlab.tubit.tu-berlin.de/henrikvoncoler/Klangsynthese_PI). 
@@ -35,7 +35,7 @@ Alternativley the [Pure Data](https://puredata.info/downloads/pd-extended) file 
 Make sure you have installed pd-extended with the ```mrpeach``` modul included, otherwise 
 the pd patch file will not work.
 
-### Midi
+### Midi :musical_keyboard:
 To "play" the synthesizer you need a external usb midi keyboard, which is shown in 
 the flowchart, or you can connect in jack a software midi keyboard like the 
 [Cadence-XY Controller](http://kxstudio.linuxaudio.org/Applications:Cadence-XYController).
