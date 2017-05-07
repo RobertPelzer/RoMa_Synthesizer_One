@@ -8,7 +8,9 @@ with a costum [Arch Linux](https://www.archlinux.org/) distribution. If you want
 to use this software yourself, make sure you follow the installation instructions
 below. The following flowchart gives an overview of the implementation.
 
-<img src="./Flowchart.png" width="800">
+<p align="center">
+    <img src="./Flowchart.png" width="800">
+</p>
 
 ## Open Sound Control
 The RoMaSynthesizer can be controlled via OSC. We use the app [TouchOSC](https://hexler.net/software/touchosc) by 
