@@ -1,7 +1,7 @@
 # RoMaSynthi
 The RoMaSythi is a software synthesizer written in C++, which generates sound 
 in a combination of additive and subtractive synthesis. The software is part of 
-a project at [TU Berlin](http://www.ak.tu-berlin.de) and the Seminar 
+a project at [TU Berlin](http://www.ak.tu-berlin.de) in a seminar called 
 [Klangsynthese](https://gitlab.tubit.tu-berlin.de/henrikvoncoler/Klangsynthese_PI).
 
 This software is designed to run on the [Raspberry Pi 3](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/) 
