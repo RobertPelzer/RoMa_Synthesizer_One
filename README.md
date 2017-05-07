@@ -12,7 +12,21 @@ below. The following flowchart gives an overview of the implementation.
     <img src="./Flowchart.png" width="800">
 </p>
 
-## Open Sound Control
+## Installation
+### Library
+### Jack
+A [Jack](http://www.jackaudio.org/) audio server is fundamental to run the 
+synthesizer. Make sure you have a solid jack audio environment running. The 
+buffer size we use on the Raspberry Pi is <span style="color:blue">256</span> 
+and the sample rate is <span style="color:blue">48kHz</span>. This might differ 
+from your system and you are free to find the right jack settings.
+
+### Open Sound Control
 The RoMaSynthesizer can be controlled via OSC. We use the app [TouchOSC](https://hexler.net/software/touchosc) by 
 Hexler, which is available in the Android and iOS Appstores.
 Alternativley the Pure Data file in ./osc can be used to control the parameters.
+
+### Midi
+To "play" the Synthesizer you need a external midi keyboard, which is shown in 
+the flowchart, or you can connect in jack a software midi keyboard like the 
+[Cadence-XY Controller](http://kxstudio.linuxaudio.org/Applications:Cadence-XYController).
