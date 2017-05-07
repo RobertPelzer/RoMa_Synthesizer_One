@@ -36,7 +36,7 @@ Make sure you have installed pd-extended with the ```mrpeach``` modul included, 
 the pd patch file will not work.
 
 ### Midi
-To "play" the Synthesizer you need a external midi keyboard, which is shown in 
+To "play" the synthesizer you need a external usb midi keyboard, which is shown in 
 the flowchart, or you can connect in jack a software midi keyboard like the 
 [Cadence-XY Controller](http://kxstudio.linuxaudio.org/Applications:Cadence-XYController).
 
