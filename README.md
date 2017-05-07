@@ -31,7 +31,7 @@ from your system and you are free to find the right jack settings.
 ### Open Sound Control
 The RoMaSynthesizer can be controlled via OSC. We use the app [TouchOSC](https://hexler.net/software/touchosc) by 
 Hexler, which is available in the Android and iOS Appstores.
-Alternativley the Pure Data file in ./osc can be used to control the parameters. 
+Alternativley the [Pure Data](https://puredata.info/downloads/pd-extended) file in ./osc can be used to control the parameters. 
 Make sure you have installed pd-extended with the mrpeach modul included, otherwise 
 the pd patch file will not work.
 
