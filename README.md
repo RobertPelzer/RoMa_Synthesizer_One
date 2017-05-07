@@ -12,8 +12,8 @@ section carefully. The following flowchart gives an overview of the implementati
     <img src="./Flowchart.png" width="800">
 </p>
 
-## Requirements
-### Library
+# Requirements
+## Library
 The following external librarys are needed to compile the senthesizer onto your 
 system:  
 * [liblo](http://liblo.sourceforge.net/)
@@ -21,26 +21,26 @@ system:
 * [rtmidi](https://www.music.mcgill.ca/~gary/rtmidi/index.html#download)
 * [boost](http://www.boost.org/)
 
-### Jack
+## Jack
 A [Jack](http://www.jackaudio.org/) audio server is fundamental to run the 
 synthesizer. Make sure you have a solid jack audio environment running. The 
 buffer size we use on the Raspberry Pi is ```256```
 and the sample rate is ```48kHz```. This might differ 
 from your system and you are free to find the right jack settings.
 
-### Open Sound Control
+## Open Sound Control
 The RoMaSynthesizer can be controlled via OSC. We use the app [TouchOSC](https://hexler.net/software/touchosc) by 
 Hexler, which is available in the Android and iOS Appstores.
 Alternativley the [Pure Data](https://puredata.info/downloads/pd-extended) file in ./osc can be used to control the parameters. 
 Make sure you have installed pd-extended with the ```mrpeach``` modul included, otherwise 
 the pd patch file will not work.
 
-### Midi
+## Midi
 To "play" the synthesizer you need a external usb midi keyboard, which is shown in 
 the flowchart, or you can connect in jack a software midi keyboard like the 
 [Cadence-XY Controller](http://kxstudio.linuxaudio.org/Applications:Cadence-XYController).
 
-## Installation
+# Installation
 To install the software, make sure you fulfill the requirements and follow the 
 next steps.
 
@@ -62,7 +62,7 @@ next steps.
     make
 ```
 
-## Usage
+# Usage
 If you want to start the synthesizer, make sure you are in the folder you 
 compiled it. If you want global access to the synthesizer you have to add the 
 program to your PATH variable. In the terminal type: 
