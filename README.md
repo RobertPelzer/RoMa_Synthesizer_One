@@ -43,7 +43,8 @@ the flowchart, or you can connect in jack a software midi keyboard like the
 To install the software, make sure you fulfill the requirements and follow the 
 next steps.
 
-1. Download / Clone the Repository: 
+1. Download / Clone the Repository:
+
 ```javascript
     git clone git@gitlab.tubit.tu-berlin.de:markus.wende/RoMa_Synthesizer_One.git
 ```
