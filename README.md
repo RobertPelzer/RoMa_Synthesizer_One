@@ -44,6 +44,9 @@ To install the software, make sure you fulfill the requirements and follow the
 next steps.
 
 1. Download / Clone the Repository:
+```javascript
+    make
+```
 
 ```javascript
     git clone git@gitlab.tubit.tu-berlin.de:markus.wende/RoMa_Synthesizer_One.git
