@@ -19,7 +19,6 @@ system:
 * [liblo](http://liblo.sourceforge.net/)
 * [jackcpp](https://github.com/x37v/jackcpp)
 * [rtmidi](https://www.music.mcgill.ca/~gary/rtmidi/index.html#download)
-* [boost](http://www.boost.org/)
 
 ## Jack
 A [Jack](http://www.jackaudio.org/) audio server is fundamental to run the 
